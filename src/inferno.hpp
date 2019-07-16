@@ -30,6 +30,7 @@ public:
     bool InitWindow(int xRes, int yRes);
 
     void Ready();
+    void Render();
 
     // Queries the modules, if one of them errored it finds their error string
     // and returns it to the main execution code, the same happens for warnings

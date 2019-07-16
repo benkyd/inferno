@@ -11,6 +11,6 @@ int main(int argc, char** argv) {
         std::cout << "Error initializing window: " << inferno.LastError() << std::endl;
     }
 
-
     inferno.Ready();
+    inferno.Render();
 }

@@ -41,8 +41,10 @@ bool InfernoEngine::InitWindow(int xRes, int yRes) {
 
 void InfernoEngine::Ready() {
     if (!m_initialized) m_initialized = true;
+}
 
-    while (m_display->WindowOpen) {
+void InfernoEngine::Render() {
+        while (m_display->WindowOpen) {
         SDL_Event e;
         while (SDL_PollEvent(&e) == SDL_TRUE) 
             if (e.type == SDL_QUIT) m_display->CloseDisplay();
