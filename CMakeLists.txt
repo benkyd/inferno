@@ -8,6 +8,8 @@ set(CMAKE_BUILD_TYPE Debug)
 set(executable output)
 set(SrcDIR ./src)
 set(TestDIR ./test)
+set(CurrentTest main.cpp)
+
 set(IncludeDIR ./include)
 
 if (UNIX)
@@ -54,7 +56,11 @@ include_directories(${executable}
 
 file(GLOB SourceFiles 
 	${SrcDIR}/*
-	${SrcDIR}/util/*	
+    ${SrcDIR}/core/*
+    ${SrcDIR}/display/*
+    ${SrcDIR}/primatives/*
+	${SrcDIR}/util/*
+    ${TestDIR}/${CurrentTest}
 )
 
 add_executable(${executable} ${SourceFiles})

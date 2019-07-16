@@ -1,9 +1,14 @@
 #include <iostream>
-#include "../src/inferno.hppd"
+#include "../src/inferno.hpp"
 
 int main(int argc, char** argv) {
+    InfernoEngine inferno;
 
-    Inferno inferno;
+    inferno.SetMode(MODE_PROGRESSIVE_GUI);
+    bool status = inferno.InitWindow();
+    if (!status {
+        std::cout << "Error initializing window: " << inferno.LastError() << std::endl;
+    }
 
-    std::cout << "lol" << std::endl;
+
 }
