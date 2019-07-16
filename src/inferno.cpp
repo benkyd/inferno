@@ -1,5 +1,6 @@
 #include "inferno.hpp"
 
+#include <iostream>
 #include <SDL2/SDL.h>
 #include "pixel.hpp"
 
@@ -19,14 +20,17 @@ void InfernoEngine::SetMode(OperationMode mode) {
 }
 
 bool InfernoEngine::InitWindow(int xRes, int yRes) {
-    if (!m_initialized) { 
+    if (m_initialized) { 
         // warn = 
         return true;    
     }
     
-    m_display = new Display();
+    if (m_display == nullptr)
+        m_display = new Display();
 
-    if (!m_display->InitVideoDisplay("Inferno Engine", xRes, yRes)) {
+    bool status = m_display->InitVideoDisplay("Inferno Engine", xRes, yRes);
+
+    if (!status) {
         return false;
     }
 
@@ -38,13 +42,13 @@ bool InfernoEngine::InitWindow(int xRes, int yRes) {
 void InfernoEngine::Ready() {
     if (!m_initialized) m_initialized = true;
 
-    while (1) {
+    while (m_display->WindowOpen) {
         SDL_Event e;
         while (SDL_PollEvent(&e) == SDL_TRUE) 
             if (e.type == SDL_QUIT) m_display->CloseDisplay();
         
         for (int i = 0; i < 360000; i++) {
-            m_display->SetPixel(rand() % m_display->XRes,
+            m_display->SetPixelSafe(rand() % m_display->XRes,
                                 rand() % m_display->YRes,
                                 rgb888(rand() % 255, rand() % 255, rand() % 255));
         }

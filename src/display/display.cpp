@@ -23,6 +23,8 @@ bool Display::InitVideoDisplay(std::string title, int x, int y) {
         return false;
     }
 
+    this->WindowOpen = true;
+
     m_renderer = SDL_CreateRenderer(
         m_window, -1, SDL_RENDERER_ACCELERATED
     );
@@ -88,7 +90,11 @@ void Display::Refresh() {
 }
 
 void Display::CloseDisplay() {
-
+    free(Framebuffer);
+    SDL_DestroyTexture(m_texture);
+    SDL_DestroyRenderer(m_renderer);
+    SDL_DestroyWindow(m_window);
+    SDL_Quit();
 }
 
 Display::~Display() {

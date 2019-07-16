@@ -13,6 +13,7 @@ public:
 
     bool InitVideoDisplay(std::string title, int x, int y);
 
+    bool WindowOpen = false;
     int XRes, YRes;
     std::string Title;
     unsigned int Scale = 1;
