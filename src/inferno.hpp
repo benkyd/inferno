@@ -3,17 +3,12 @@
 
 #include <string>
 #include <vector>
-// TODO: this errored for some reason lol
-// #include <pair>
+#include <utility>
+
+#include "./common.hpp"
 
 class Display;
 class Renderer;
-
-enum OperationMode {
-    MODE_PROGRESSIVE_GUI,
-    MODE_PROGRESSIVE_IMG,
-    MODE_SAMPLES_IMG
-};
 
 // General idea is that the rendering stays the same (Other than progressive / sampling)
 // and the renderer passes a full framebuffer (different depending on mode) to either the

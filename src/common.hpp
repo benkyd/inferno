@@ -1,0 +1,11 @@
+#ifndef INFERNO_COMMON_H_
+#define INFERNO_COMMON_H_
+
+enum OperationMode {
+    MODE_DEFAULT,
+    MODE_PROGRESSIVE_GUI,
+    MODE_PROGRESSIVE_IMG,
+    MODE_SAMPLES_IMG
+};
+
+#endif
