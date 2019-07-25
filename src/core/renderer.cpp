@@ -1,3 +1,4 @@
+#include "../display/display.hpp"
 #include "./renderer.hpp"
 
 Renderer::Renderer(OperationMode mode) {
@@ -19,6 +20,17 @@ void Renderer::Render() {
     }
 }
 
+void Renderer::Render(uint32_t* framebuffer) {
+    m_framebuffer = framebuffer;
+    if (m_mode == MODE_PROGRESSIVE_GUI || m_mode == MODE_PROGRESSIVE_IMG) {
+        RenderProgressive();
+    } else if (m_mode == MODE_SAMPLES_IMG) {
+        RenderSamples();
+    } else {
+        // Add an error & return
+    }
+}
+
 void Renderer::Init() {
 
 }
@@ -26,7 +38,7 @@ void Renderer::Init() {
 void Renderer::Init(Display* display) {
     // Add warning
     if (!display) return;
-    m_display = display;
+    m_framebuffer = display->Framebuffer;
 }
 
 void Renderer::RenderProgressive() {

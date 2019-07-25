@@ -16,12 +16,13 @@ public:
     void Init(Display* display);
 
     void Render();
+    void Render(uint32_t* framebuffer);
 
 private:
     int m_samples = -1;
     OperationMode m_mode = MODE_DEFAULT;
 
-    Display* m_display = nullptr;
+    uint32_t* m_framebuffer = nullptr;
 
     void RenderProgressive();
     void RenderSamples();

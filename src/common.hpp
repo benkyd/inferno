@@ -1,6 +1,8 @@
 #ifndef INFERNO_COMMON_H_
 #define INFERNO_COMMON_H_
 
+#include <string>
+
 enum OperationMode {
     MODE_DEFAULT,
     MODE_PROGRESSIVE_GUI,

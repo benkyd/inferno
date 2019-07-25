@@ -5,6 +5,7 @@
 #include "pixel.hpp"
 
 #include "display/display.hpp"
+#include "core/renderer.hpp"
 
 InfernoEngine::InfernoEngine() {
     m_initialized = false;
@@ -29,10 +30,15 @@ bool InfernoEngine::InitWindow(int xRes, int yRes) {
         m_display = new Display();
 
     bool status = m_display->InitVideoDisplay("Inferno Engine", xRes, yRes);
-
     if (!status) {
         return false;
     }
+
+    m_renderer = new Renderer(m_mode);
+    if (!m_renderer) {
+        return false;
+    }
+    m_renderer->Init(m_display);
 
     m_initialized = true;
 
@@ -44,7 +50,8 @@ void InfernoEngine::Ready() {
 }
 
 void InfernoEngine::Render() {
-        while (m_display->WindowOpen) {
+    m_renderer->Render(m_display->Framebuffer);
+    while (m_display->WindowOpen) {
         SDL_Event e;
         while (SDL_PollEvent(&e) == SDL_TRUE) 
             if (e.type == SDL_QUIT) m_display->CloseDisplay();
