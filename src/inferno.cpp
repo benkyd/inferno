@@ -51,19 +51,6 @@ void InfernoEngine::Ready() {
 
 void InfernoEngine::Render() {
     m_renderer->Render(m_display->Framebuffer);
-    while (m_display->WindowOpen) {
-        SDL_Event e;
-        while (SDL_PollEvent(&e) == SDL_TRUE) 
-            if (e.type == SDL_QUIT) m_display->CloseDisplay();
-        
-        for (int i = 0; i < 360000; i++) {
-            m_display->SetPixelSafe(rand() % m_display->XRes,
-                                rand() % m_display->YRes,
-                                rgb888(rand() % 255, rand() % 255, rand() % 255));
-        }
-
-        m_display->Refresh();
-    }
 }
 
 std::string InfernoEngine::LastError() {

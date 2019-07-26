@@ -1,4 +1,5 @@
 #include "../display/display.hpp"
+#include "../pixel.hpp"
 #include "./renderer.hpp"
 
 Renderer::Renderer(OperationMode mode) {
@@ -35,14 +36,29 @@ void Renderer::Init() {
 
 }
 
-void Renderer::Init(Display* display) {
+void Renderer::Init(DisplayInterface* display) {
     // Add warning
     if (!display) return;
-    m_framebuffer = display->Framebuffer;
+    if(!m_framebuffer) {
+        m_framebuffer = display->Framebuffer;
+    }
+    m_interface = display;
 }
 
 void Renderer::RenderProgressive() {
+    while (m_interface->Active) {
+        SDL_Event e;
+        while (SDL_PollEvent(&e) == SDL_TRUE) 
+            if (e.type == SDL_QUIT) m_interface->Close();
+        
+        for (int i = 0; i < 360000; i++) {
+            m_interface->SetPixelSafe(rand() % m_interface->XRes,
+                                    rand() % m_interface->YRes,
+                                    rgb888(rand() % 255, rand() % 255, rand() % 255));
+        }
 
+        m_interface->Update();
+    }
 }
 
 void Renderer::RenderSamples() {

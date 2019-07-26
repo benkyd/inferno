@@ -4,8 +4,13 @@
 
 #include "../pixel.hpp"
 
-Display::Display() {
+Display::Display() 
+    : DisplayInterface() {
 
+}
+
+bool Display::Init() {
+    return true;
 }
 
 bool Display::InitVideoDisplay(std::string title, int x, int y) {
@@ -23,7 +28,7 @@ bool Display::InitVideoDisplay(std::string title, int x, int y) {
         return false;
     }
 
-    this->WindowOpen = true;
+    this->Active = true;
 
     m_renderer = SDL_CreateRenderer(
         m_window, -1, SDL_RENDERER_ACCELERATED
@@ -83,13 +88,13 @@ void Display::SetFramebuffer(uint32_t* fb) {
     Framebuffer = fb;
 }
 
-void Display::Refresh() {
+void Display::Update() {
     SDL_UpdateTexture(m_texture, NULL, Framebuffer, this->XRes * sizeof(uint32_t));
     SDL_RenderCopy(m_renderer, m_texture, NULL, NULL);
     SDL_RenderPresent(m_renderer);
 }
 
-void Display::CloseDisplay() {
+void Display::Close() {
     free(Framebuffer);
     SDL_DestroyTexture(m_texture);
     SDL_DestroyRenderer(m_renderer);

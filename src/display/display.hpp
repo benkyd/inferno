@@ -5,32 +5,27 @@
 
 #include <string>
 
+#include "./displayinterface.hpp"
+
 class Pixel;
 
-class Display {
+class Display : public DisplayInterface {
 public:
     Display();
 
+    bool Init() override;
     bool InitVideoDisplay(std::string title, int x, int y);
 
-    bool WindowOpen = false;
-    int XRes, YRes;
-    std::string Title;
-    unsigned int Scale = 1;
+    void SetPixel(int x, int y, Pixel p) override;
+    void SetPixel(int x, int y, uint32_t p) override;
+    void SetPixelSafe(int x, int y, Pixel p) override;
+    void SetPixelSafe(int x, int y, uint32_t p) override;
 
-    void SetPixel(int x, int y, Pixel p);
-    void SetPixel(int x, int y, uint32_t p);
-    void SetPixelSafe(int x, int y, Pixel p);
-    void SetPixelSafe(int x, int y, uint32_t p);
-
-    uint32_t* Framebuffer;
     void SetFramebuffer(uint32_t* fb);
 
-    void Refresh();
+    void Update() override;
 
-    // Error and warn
-
-    void CloseDisplay();
+    void Close() override;
 
     virtual ~Display();
 private:
@@ -38,7 +33,6 @@ private:
     SDL_Window* m_window;
     SDL_Renderer* m_renderer;
     SDL_Texture* m_texture;
-
 };
 
 #endif
