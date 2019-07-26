@@ -1,6 +1,8 @@
 #ifndef INFERNO_COMMON_H_
 #define INFERNO_COMMON_H_
 
+#include <SDL2/SDL.h>
+
 #include <string>
 
 enum OperationMode {

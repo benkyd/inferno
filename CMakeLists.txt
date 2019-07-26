@@ -57,7 +57,7 @@ include_directories(${executable}
 file(GLOB SourceFiles 
 	${SrcDIR}/*
     ${SrcDIR}/core/*
-    ${SrcDIR}/core/renderengine/*
+    ${SrcDIR}/engine/*
     ${SrcDIR}/display/*
     ${SrcDIR}/primatives/*
 	${SrcDIR}/util/*

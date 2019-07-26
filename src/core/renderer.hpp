@@ -5,6 +5,8 @@
 
 class DisplayInterface;
 
+class ProgressiveRenderer;
+
 // Function initProgressive or whatever takes a pointer to the display
 class Renderer {
 public:
@@ -27,8 +29,10 @@ private:
     uint32_t* m_framebuffer = nullptr;
 
     void RenderProgressive();
+    ProgressiveRenderer* m_progressive = nullptr;
+    
+    
     void RenderSamples();
-
 };
 
 #endif

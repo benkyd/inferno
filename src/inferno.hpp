@@ -5,7 +5,10 @@
 #include <vector>
 #include <utility>
 
-#include "./common.hpp"
+#include "common.hpp"
+
+#include "definitions/camera.hpp"
+#include "definitions/scene.hpp"
 
 class Display;
 class Renderer;

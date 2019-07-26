@@ -1,11 +1,8 @@
 #ifndef INFERNO_DISPLAY_DISPLAY_H_
 #define INFERNO_DISPLAY_DISPLAY_H_
 
-#include <SDL2/SDL.h>
-
-#include <string>
-
-#include "./displayinterface.hpp"
+#include "../common.hpp"
+#include "displayinterface.hpp"
 
 class Pixel;
 
