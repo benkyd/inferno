@@ -1,4 +1,4 @@
-#include "./progressiveRenderer.hpp"
+#include "./progressiverenderer.hpp"
 
 ProgressiveRenderer::ProgressiveRenderer() {
     
