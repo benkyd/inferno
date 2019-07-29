@@ -8,8 +8,8 @@
 #include "common.hpp"
 
 // Give the user access to the base classes to define shit
-#include "definitions/camera.hpp"
 #include "definitions/scene.hpp"
+#include "definitions/camera.hpp"
 
 class Display;
 class Renderer;
@@ -18,7 +18,6 @@ class Renderer;
 // and the renderer passes a full framebuffer (different depending on mode) to either the
 // display or an image generator, undecided how this will work but it will make for some
 // interesting features, ImGui can be used for settings inside the progressive mode gui
-
 class InfernoEngine {
 public:
     InfernoEngine();

@@ -7,6 +7,7 @@ class Camera;
 class Primative;
 
 class Scene {
+public:
     Camera* camera;
     std::vector<Primative*> objects;
 };

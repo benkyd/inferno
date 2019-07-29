@@ -59,7 +59,8 @@ file(GLOB SourceFiles
     ${SrcDIR}/core/*
     ${SrcDIR}/engine/*
     ${SrcDIR}/display/*
-    ${SrcDIR}/primatives/*
+    ${SrcDIR}/definitions/*
+    ${SrcDIR}/primatives/definitions/*
 	${SrcDIR}/util/*
     ${TestDIR}/${CurrentTest}
 )
