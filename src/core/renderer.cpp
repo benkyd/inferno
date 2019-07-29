@@ -26,8 +26,7 @@ void Renderer::Init(DisplayInterface* display) {
     m_interface = display;
 }
 
-void Renderer::InitRender(Camera* camera, Scene* scene) {
-    m_camera = camera;
+void Renderer::InitRender(Scene* scene) {
     m_scene = scene;
     RendererInitialized = true;
 }
@@ -58,7 +57,7 @@ void Renderer::Render(uint32_t* framebuffer) {
 void Renderer::RenderProgressive() {
     m_progressive = new ProgressiveRenderer();
     
-    m_progressive->Init(m_interface, m_camera, m_scene);
+    m_progressive->Init(m_interface, m_scene);
     m_progressive->Render();
 }
 

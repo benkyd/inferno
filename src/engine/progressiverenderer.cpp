@@ -11,9 +11,8 @@ ProgressiveRenderer::ProgressiveRenderer() {
     
 }
 
-void ProgressiveRenderer::Init(DisplayInterface* interface, Camera* camera, Scene* scene) {
+void ProgressiveRenderer::Init(DisplayInterface* interface, Scene* scene) {
     m_interface = interface;
-    m_camera = camera;
     m_scene = scene;
 }
 

@@ -30,8 +30,6 @@ public:
 
     // Functions related to raytracing
     void SetScene(Scene* scene);
-    void SetCamera(Camera* camera);
-    void AutoInitCamera();
 
     void Ready();
     void Render();
@@ -61,7 +59,6 @@ private:
     Display* m_display = nullptr;
     Renderer* m_renderer = nullptr;
 
-    Camera* m_camera = nullptr;
     Scene* m_scene = nullptr;
 };
 

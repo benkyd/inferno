@@ -11,7 +11,6 @@ int main(int argc, char** argv) {
         std::cout << "Error initializing window: " << inferno.LastError() << std::endl;
     }
 
-    inferno.SetCamera(new Camera());
     inferno.SetScene(new Scene());
 
     inferno.Ready();
