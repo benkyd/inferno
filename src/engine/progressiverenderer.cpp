@@ -1,15 +1,20 @@
-#include "./progressiverenderer.hpp"
+#include "progressiverenderer.hpp"
 
 #include "../common.hpp"
 #include "../pixel.hpp"
 #include "../display/displayinterface.hpp"
 
+#include "../definitions/camera.hpp"
+#include "../definitions/scene.hpp"
+
 ProgressiveRenderer::ProgressiveRenderer() {
     
 }
 
-void ProgressiveRenderer::Init(DisplayInterface* interface) {
+void ProgressiveRenderer::Init(DisplayInterface* interface, Camera* camera, Scene* scene) {
     m_interface = interface;
+    m_camera = camera;
+    m_scene = scene;
 }
 
 void ProgressiveRenderer::Render() {
@@ -22,8 +27,8 @@ void ProgressiveRenderer::Render() {
         
         for (int i = 0; i < 360000; i++) {
             m_interface->SetPixelSafe(rand() % m_interface->XRes,
-                                    rand() % m_interface->YRes,
-                                    rgb888(rand() % 255, rand() % 255, rand() % 255));
+                                      rand() % m_interface->YRes,
+                                      rgb888(rand() % 255, rand() % 255, rand() % 255));
         }
 
         m_interface->Update();

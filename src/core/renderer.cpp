@@ -26,7 +26,14 @@ void Renderer::Init(DisplayInterface* display) {
     m_interface = display;
 }
 
+void Renderer::InitRender(Camera* camera, Scene* scene) {
+    m_camera = camera;
+    m_scene = scene;
+    RendererInitialized = true;
+}
+
 void Renderer::Render() {
+    if (!RendererInitialized) return;
     if (m_mode == MODE_PROGRESSIVE_GUI || m_mode == MODE_PROGRESSIVE_IMG) {
         RenderProgressive();
     } else if (m_mode == MODE_SAMPLES_IMG) {
@@ -37,6 +44,7 @@ void Renderer::Render() {
 }
 
 void Renderer::Render(uint32_t* framebuffer) {
+    if (!RendererInitialized) return;
     m_framebuffer = framebuffer;
     if (m_mode == MODE_PROGRESSIVE_GUI || m_mode == MODE_PROGRESSIVE_IMG) {
         RenderProgressive();
@@ -50,7 +58,7 @@ void Renderer::Render(uint32_t* framebuffer) {
 void Renderer::RenderProgressive() {
     m_progressive = new ProgressiveRenderer();
     
-    m_progressive->Init(m_interface);
+    m_progressive->Init(m_interface, m_camera, m_scene);
     m_progressive->Render();
 }
 

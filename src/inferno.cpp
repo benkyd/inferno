@@ -45,7 +45,22 @@ bool InfernoEngine::InitWindow(int xRes, int yRes) {
     return true;
 }
 
+void InfernoEngine::SetScene(Scene* scene) {
+    m_scene = scene;
+}
+
+void InfernoEngine::SetCamera(Camera* camera) {
+    m_camera = camera;
+}
+
+void InfernoEngine::AutoInitCamera() {
+    // set up a camera
+}
+
 void InfernoEngine::Ready() {
+    if (!m_camera || !m_scene) return;
+    m_renderer->InitRender(m_camera, m_scene);
+    
     if (!m_initialized) m_initialized = true;
 }
 

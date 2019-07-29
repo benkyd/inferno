@@ -7,6 +7,7 @@
 
 #include "common.hpp"
 
+// Give the user access to the base classes to define shit
 #include "definitions/camera.hpp"
 #include "definitions/scene.hpp"
 
@@ -26,6 +27,11 @@ public:
 
     // Initializes the SDL framebuffer with OpenGL
     bool InitWindow(int xRes, int yRes);
+
+    // Functions related to raytracing
+    void SetScene(Scene* scene);
+    void SetCamera(Camera* camera);
+    void AutoInitCamera();
 
     void Ready();
     void Render();
@@ -54,6 +60,9 @@ private:
     // mode is not selected then it is nothing
     Display* m_display = nullptr;
     Renderer* m_renderer = nullptr;
+
+    Camera* m_camera = nullptr;
+    Scene* m_scene = nullptr;
 };
 
 #endif

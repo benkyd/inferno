@@ -7,6 +7,9 @@ class DisplayInterface;
 
 class ProgressiveRenderer;
 
+class Camera;
+class Scene;
+
 // Function initProgressive or whatever takes a pointer to the display
 class Renderer {
 public:
@@ -17,6 +20,9 @@ public:
     void Init();
 
     void Init(DisplayInterface* display);
+    void InitRender(Camera* camera, Scene* scene);
+
+    bool RendererInitialized = false;
 
     void Render();
     void Render(uint32_t* framebuffer);
@@ -28,11 +34,14 @@ private:
     DisplayInterface* m_interface = nullptr;
     uint32_t* m_framebuffer = nullptr;
 
+    Camera* m_camera = nullptr;
+    Scene* m_scene = nullptr;
+
     void RenderProgressive();
     ProgressiveRenderer* m_progressive = nullptr;
     
-    
     void RenderSamples();
+    int m_sampleCount = -1;
 };
 
 #endif
