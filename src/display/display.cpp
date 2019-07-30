@@ -100,6 +100,7 @@ void Display::Close() {
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_window);
     SDL_Quit();
+    Active = false;
 }
 
 Display::~Display() {

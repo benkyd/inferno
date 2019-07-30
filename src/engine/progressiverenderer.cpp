@@ -19,13 +19,11 @@ void ProgressiveRenderer::Init(DisplayInterface* interface, Scene* scene) {
 }
 
 void ProgressiveRenderer::Render() {
-    // RENDERING CAN ACTUALLY START
-
     while (m_interface->Active) {
 
         // Take input
         SDL_Event e;
-        while (SDL_PollEvent(&e) == SDL_TRUE) 
+        while (SDL_PollEvent(&e)) 
             if (e.type == SDL_QUIT) m_interface->Close();
 
         // Update the camera
@@ -42,8 +40,6 @@ void ProgressiveRenderer::Render() {
                 }
             }
         }
-
-        std::cout << "frame" << std::endl;
 
         // Swap framebuffers
         m_interface->Update();
