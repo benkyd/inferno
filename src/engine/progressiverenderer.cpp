@@ -43,6 +43,8 @@ void ProgressiveRenderer::Render() {
             }
         }
 
+        std::cout << "frame" << std::endl;
+
         // Swap framebuffers
         m_interface->Update();
     }
