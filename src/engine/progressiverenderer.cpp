@@ -20,16 +20,18 @@ void ProgressiveRenderer::Render() {
     // RENDERING CAN ACTUALLY START
 
     while (m_interface->Active) {
+
+        // Take input
         SDL_Event e;
         while (SDL_PollEvent(&e) == SDL_TRUE) 
             if (e.type == SDL_QUIT) m_interface->Close();
-        
-        for (int i = 0; i < 360000; i++) {
-            m_interface->SetPixelSafe(rand() % m_interface->XRes,
-                                      rand() % m_interface->YRes,
-                                      rgb888(rand() % 255, rand() % 255, rand() % 255));
-        }
 
+        // Update the camera
+        m_scene->camera->Update();
+        
+        
+
+        // Swap framebuffers
         m_interface->Update();
     }
 }

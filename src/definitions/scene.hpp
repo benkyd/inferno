@@ -8,6 +8,8 @@ class Primative;
 
 class Scene {
 public:
+    Scene(int width, int height);
+    int w, h;
     Camera* camera;
     std::vector<Primative*> objects;
 };

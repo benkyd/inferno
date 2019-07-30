@@ -1,8 +1,6 @@
 #include "inferno.hpp"
 
-#include <iostream>
-#include <SDL2/SDL.h>
-#include "pixel.hpp"
+#include "common.hpp"
 
 #include "display/display.hpp"
 #include "core/renderer.hpp"

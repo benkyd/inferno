@@ -11,6 +11,6 @@ public:
     glm::vec3 direction;
 };
 
-Ray GeneratePrimaryRay(int x, int y, Scene& scene, float xSubPix = 0.5f, float ySubPix = 0.5f);
+Ray GeneratePrimaryRay(int x, int y, Scene* scene, float xSubPix = 0.5f, float ySubPix = 0.5f);
 
 #endif
