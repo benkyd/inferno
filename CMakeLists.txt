@@ -60,7 +60,7 @@ file(GLOB SourceFiles
     ${SrcDIR}/engine/*
     ${SrcDIR}/display/*
     ${SrcDIR}/definitions/*
-    ${SrcDIR}/primatives/definitions/*
+    ${SrcDIR}/definitions/primatives/*
 	${SrcDIR}/util/*
     ${TestDIR}/${CurrentTest}
 )

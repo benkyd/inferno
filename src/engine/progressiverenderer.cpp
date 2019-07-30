@@ -29,7 +29,10 @@ void ProgressiveRenderer::Render() {
         // Update the camera
         m_scene->camera->Update();
         
-        
+        for (int x = 0; x < m_scene->w; x++)
+        for (int y = 0; y < m_scene->h; y++) {
+            
+        }
 
         // Swap framebuffers
         m_interface->Update();

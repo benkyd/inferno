@@ -4,7 +4,7 @@
 #include "primative.hpp"
 
 class Sphere : public Primative {
-
+public:
     Sphere(glm::vec3 center, float radius)
         : Primative(center, radius) { }
 

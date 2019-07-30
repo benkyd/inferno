@@ -1,19 +1,8 @@
+#include "../ray.hpp"
 #include "sphere.hpp"
-#include "ray.hpp"
 
 bool Sphere::DoesIntersect(Ray& ray, float& t) {
 	float t0, t1; // Solutions for intersect
-
-	// glm::vec3 L = ray.origin - center;
-	
-	// float a = glm::dot(ray.direction, ray.direction);
-	// float b = 2 * glm::dot(ray.direction, L);
-	// float c = glm::dot(L, L) - radius;
-
-	// if (!quadratic(a, b, c, t0, t1)) {
-	// 	t = INFINITY;
-	// 	return false;
-	// };
 
 	glm::vec3 l = center - ray.origin;
 	float tca = glm::dot(l, ray.direction);

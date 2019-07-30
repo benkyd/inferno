@@ -10,6 +10,7 @@
 // Give the user access to the base classes to define shit
 #include "definitions/scene.hpp"
 #include "definitions/camera.hpp"
+#include "definitions/primatives/sphere.hpp"
 
 class Display;
 class Renderer;

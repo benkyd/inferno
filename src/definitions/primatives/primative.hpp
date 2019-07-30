@@ -1,7 +1,7 @@
 #ifndef INFERNO_DEFINITIONS_PRIMATIVES_PRIMATIVE_H_
 #define INFERNO_DEFINITIONS_PRIMATIVES_PRIMATIVE_H_
 
-#include "../maths.hpp"
+#include "../../maths.hpp"
 
 class Ray;
 

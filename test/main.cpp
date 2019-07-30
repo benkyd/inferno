@@ -13,6 +13,7 @@ int main(int argc, char** argv) {
 
     Scene* scene = new Scene(600, 600);
     scene->camera = new Camera({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, 600, 600);
+    scene->objects.push_back(new Sphere({0.0f, 0.0f, 2.0f}, 1.0f));
 
     inferno.SetScene(scene);
 
