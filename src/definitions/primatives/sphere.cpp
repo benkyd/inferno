@@ -16,9 +16,9 @@ bool Sphere::DoesIntersect(Ray& ray, float& t) {
 	if (t0 < t1) t = t0;
 	else t = t1;
 
-	return true; // (t0 > t1 && t1 > 0.0f) ? t1 > 0.0f : t0 > 0.0f;
+	return true; 
 }
-
+ 
 glm::vec3 Sphere::SurfaceNormal(glm::vec3 hitPoint) {
 	return glm::normalize(hitPoint - center);
 }
@@ -26,7 +26,7 @@ glm::vec3 Sphere::SurfaceNormal(glm::vec3 hitPoint) {
 glm::vec2 Sphere::TexCoords(glm::vec3 hitPoint) {
 	glm::vec3 hit = hitPoint - center;
 	return { (1.0 + atan2(hit.z, hit.x) / PI) * 0.5,
-			acos(hit.y / radius) / PI };
+		        	acos(hit.y / radius) / PI };
 }
 
 void Sphere::Translate(glm::vec3 trans) {
