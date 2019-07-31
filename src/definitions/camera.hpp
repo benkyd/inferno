@@ -9,11 +9,11 @@ public:
 
     void Update();
 
-    glm::vec3 point;
-    glm::vec3 direction;
-    glm::vec3 planeCenter;
-    glm::vec3 planeDirX;
-    glm::vec3 planeDirY;
+    glm::vec3 point = {};
+    glm::vec3 direction = {};
+    glm::vec3 planeCenter = {};
+    glm::vec3 planeDirX = {};
+    glm::vec3 planeDirY = {};
     float focalLen, w, h;
 };
 

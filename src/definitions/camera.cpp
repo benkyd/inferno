@@ -1,6 +1,7 @@
 #include "camera.hpp"
 
 Camera::Camera(glm::vec3 point, glm::vec3 dir, float w, float h, float f) {
+    point = { 0.0f, 0.0f, 0.0f };
     point = point;
     direction = dir;
     w = w; h = h; focalLen = f;
