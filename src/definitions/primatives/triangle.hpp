@@ -12,6 +12,7 @@ public:
 	glm::vec3 SurfaceNormal(glm::vec3 hitPoint) override;
 	glm::vec2 TexCoords(glm::vec3 hitPoint) override;
 	void Translate(glm::vec3 trans) override;
+    glm::vec3 Midpoint(Triangle* t);
 };
 
 #endif

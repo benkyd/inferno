@@ -57,6 +57,7 @@ include_directories(${executable}
 
 file(GLOB SourceFiles 
 	${SrcDIR}/*
+    ${SrcDIR}/acceleration/*
     ${SrcDIR}/core/*
     ${SrcDIR}/engine/*
     ${SrcDIR}/display/*

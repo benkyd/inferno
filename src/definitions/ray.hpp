@@ -4,6 +4,7 @@
 #include "../maths.hpp"
 
 class Scene;
+class Primative;
 
 class Ray {
 public:
@@ -11,6 +12,6 @@ public:
     glm::vec3 direction = {};
 };
 
-bool TraceRay(Ray ray, Scene* scene, float& t, float& iOfHit);
+bool TraceRay(Ray ray, Scene* scene, float& t, Primative*& hit);
 
 #endif

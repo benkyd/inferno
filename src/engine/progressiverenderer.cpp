@@ -47,14 +47,14 @@ void ProgressiveRenderer::Render() {
 
             Ray ray = m_scene->camera->CastRay(x, y);
             
-            float t, i;
-            bool didhit = TraceRay(ray, m_scene, t, i);
+            float t;
+            Primative* hit = nullptr;
+            bool didhit = TraceRay(ray, m_scene, t, hit);
             if (!didhit) {
                 m_interface->SetPixelSafe(x, y, 0x000000);
                 continue;
             }
     
-            Primative* hit = m_scene->objects[i];
             glm::vec3 hitPoint = ray.origin + ray.direction * t;
 
 
