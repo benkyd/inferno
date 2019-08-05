@@ -44,12 +44,12 @@ std::vector<Primative*> loadTriangles(std::string path) {
 	bool canLoad = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, path.c_str());
 
 	if (!err.empty() || !canLoad) {
-		std::cerr << "Cannot load obj '" << path << "': " << err << std::endl;
+		std::cerr << "Cannot load obj: '" << path << "': " << err << std::endl;
         exit(0);
 	}
 
 	if (!warn.empty()) {
-		std::cerr << "Warning from obj loader while loading obj '" << path << "': " << warn << std::endl;
+		std::cerr << "Warning from obj loader while loading obj: '" << path << "': " << warn << std::endl;
 	}
 
 
