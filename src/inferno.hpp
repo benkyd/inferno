@@ -12,6 +12,7 @@
 #include "definitions/camera.hpp"
 #include "definitions/primatives/sphere.hpp"
 #include "definitions/primatives/plane.hpp"
+#include "definitions/primatives/triangle.hpp"
 
 class Display;
 class Renderer;

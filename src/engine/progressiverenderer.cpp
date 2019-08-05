@@ -26,6 +26,7 @@ void ProgressiveRenderer::Render() {
         while (SDL_PollEvent(&e)) 
             if (e.type == SDL_QUIT) m_interface->Close();
 
+		#pragma omp parallel for schedule(dynamic)
         for (int x = 0; x < m_scene->w; x++)
         for (int y = 0; y < m_scene->h; y++) {
             Ray ray = m_scene->camera->CastRay(x, y);
@@ -36,12 +37,16 @@ void ProgressiveRenderer::Render() {
                 if (smh->DoesIntersect(ray, t)) {
                     if (smh->type == TYPE_SPHERE) {
                         m_interface->SetPixelSafe(x, y, 0x00FF00);
-                    } else {
+                    } else if (smh->type == TYPE_PLANE) {
                         m_interface->SetPixelSafe(x, y, 0x00FFFF);
+                    } else {
+                        m_interface->SetPixelSafe(x, y, 0xFF00FF);
                     }
                 }
             }
         }
+
+        m_scene->objects[1]->center.y += 0.01f;
 
         // Swap framebuffers
         m_interface->Update();
