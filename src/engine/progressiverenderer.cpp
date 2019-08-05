@@ -32,6 +32,7 @@ void ProgressiveRenderer::Render() {
     int frames = 0;
     auto startTime = std::chrono::high_resolution_clock::now();
 
+
     while (m_interface->Active) {
         auto frameStartTime = std::chrono::high_resolution_clock::now();
 
@@ -39,7 +40,7 @@ void ProgressiveRenderer::Render() {
         for (int x = 0; x < m_scene->w; x++)
 		#pragma omp parallel for schedule(dynamic)
         for (int y = 0; y < m_scene->h; y++) {
-            
+
             SDL_Event e;
             while (SDL_PollEvent(&e)) 
                 if (e.type == SDL_QUIT) m_interface->Close();

@@ -5,6 +5,7 @@
 
 class Camera;
 class Primative;
+class Mesh;
 
 class Scene {
 public:
@@ -12,6 +13,7 @@ public:
     int w, h;
     Camera* camera;
     std::vector<Primative*> objects;
+    std::vector<Mesh*> meshs;
 };
 
 #endif

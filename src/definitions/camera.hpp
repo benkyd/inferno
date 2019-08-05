@@ -17,6 +17,7 @@ public:
 
     glm::vec3 position;
     glm::vec3 direction, right, up;
+    int width, height;
 };
 
 #endif
