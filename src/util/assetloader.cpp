@@ -14,7 +14,7 @@ glm::vec3 getNormal(glm::vec3 p0, glm::vec3 p1, glm::vec3 p2) {
     glm::vec3 normal;
     normal.x = u.y * v.z - u.z * v.y;
     normal.y = u.z * v.x - u.x * v.z;
-    normal.z = u.x * v.y - u.y - v.x;
+    normal.z = u.x * v.y - u.y * v.x;
 
 	return normal;
 }
@@ -66,14 +66,22 @@ std::vector<Primative*> LoadTrianglesBasic(std::string path) {
 
                     // tinyobj::material_t material = materials[shapes[s].mesh.material_ids[f]];
 
-                    Triangle* tmp = new Triangle {
-								{avx[0], avy[0], avz[0]},
-								{avx[1], avy[1], avz[1]},
-								{avx[2], avy[2], avz[2]},
+                    // glm::vec3 normal = getNormal(
+                    //     {avx[0], avy[0], avz[0]},
+                    //     {avx[1], avy[1], avz[1]},
+                    //     {avx[2], avy[2], avz[2]}
+                    // );
 
-                                {anx[0], any[0], anz[0]},
-								{anx[1], any[1], anz[1]},
-								{anx[2], any[2], anz[2]},
+                    Triangle* tmp = new Triangle {
+                        {avx[0], avy[0], avz[0]},
+                        {avx[1], avy[1], avz[1]},
+                        {avx[2], avy[2], avz[2]},
+
+                        // normal, normal, normal
+
+                        {anx[0], any[0], anz[0]},
+                        {anx[1], any[1], anz[1]},
+                        {anx[2], any[2], anz[2]},
                     };
 
                     triangles.push_back(tmp);
