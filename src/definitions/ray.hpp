@@ -7,10 +7,8 @@ class Scene;
 
 class Ray {
 public:
-    glm::vec3 origin;
-    glm::vec3 direction;
+    glm::vec3 origin = {};
+    glm::vec3 direction = {};
 };
-
-Ray GeneratePrimaryRay(int x, int y, Scene* scene, float xSubPix = 0.5f, float ySubPix = 0.5f);
 
 #endif

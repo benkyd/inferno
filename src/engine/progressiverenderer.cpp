@@ -26,17 +26,19 @@ void ProgressiveRenderer::Render() {
         while (SDL_PollEvent(&e)) 
             if (e.type == SDL_QUIT) m_interface->Close();
 
-        // Update the camera
-        m_scene->camera->Update();
-        
         for (int x = 0; x < m_scene->w; x++)
         for (int y = 0; y < m_scene->h; y++) {
-            Ray ray = GeneratePrimaryRay(x, y, m_scene);
+            Ray ray = m_scene->camera->CastRay(x, y);
             
             for (int i = 0; i < m_scene->objects.size(); i++) {
+                Primative* smh = m_scene->objects[i];
                 float t = 0;
-                if (m_scene->objects[i]->DoesIntersect(ray, t)) {
-                    m_interface->SetPixelSafe(x, y, rgb888(0, 255, 0));
+                if (smh->DoesIntersect(ray, t)) {
+                    if (smh->type == TYPE_SPHERE) {
+                        m_interface->SetPixelSafe(x, y, 0x00FF00);
+                    } else {
+                        m_interface->SetPixelSafe(x, y, 0x00FFFF);
+                    }
                 }
             }
         }

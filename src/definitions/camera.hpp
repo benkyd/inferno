@@ -3,18 +3,20 @@
 
 #include "../maths.hpp"
 
+class Ray;
+
 class Camera {
 public:
-    Camera(glm::vec3 point, glm::vec3 dir, float w, float h, float f = 500.0f);
+    Camera(int width, int height);
+    Camera(glm::vec3 position, glm::vec3 direction, glm::vec3 right, glm::vec3 up);
+    Camera(glm::vec3 position, int width, int height);
 
-    void Update();
+    void LookAt(glm::vec3 position, glm::vec3 sky, glm::vec3 lookAt, float angle, int width, int height);
 
-    glm::vec3 point = {};
-    glm::vec3 direction = {};
-    glm::vec3 planeCenter = {};
-    glm::vec3 planeDirX = {};
-    glm::vec3 planeDirY = {};
-    float focalLen, w, h;
+    Ray CastRay(int x, int y, float spX = 0.5f, float spY = 0.5f);
+
+    glm::vec3 position;
+    glm::vec3 direction, right, up;
 };
 
 #endif

@@ -1,30 +1,42 @@
 #include "camera.hpp"
 
-Camera::Camera(glm::vec3 point, glm::vec3 dir, float w, float h, float f) {
-    point = { 0.0f, 0.0f, 0.0f };
-    point = point;
-    direction = dir;
-    w = w; h = h; focalLen = f;
+#include "ray.hpp"
+
+Camera::Camera(int width, int height)
+    : position({0,0,0}),
+        direction({0,0,1}),
+        right({(float)width/(float)height,0,0}),
+        up({0,1,0}) { }
+
+Camera::Camera(glm::vec3 position, glm::vec3 direction, glm::vec3 right, glm::vec3 up)
+    : position(position), direction(direction), right(right), up(up) { }
+
+Camera::Camera(glm::vec3 position, int width, int height)
+    : position(position),
+        direction({0,0,1}),
+        right({(float)width/(float)height,0,0}),
+        up({0,1,0}) { }
+
+void Camera::LookAt(glm::vec3 position, glm::vec3 sky, glm::vec3 lookAt, float angle, int width, int height) {
+    float rightL = width / (float) height;
+    float dirL = 0.5f * rightL / tan(angle / 2.0f);
+
+    direction = glm::normalize(glm::vec3 {position.x - lookAt.x, position.y - lookAt.y, position.z - lookAt.z}) * dirL;
+    right = glm::normalize(glm::cross(sky, direction)) * rightL;
+    up = glm::normalize(glm::cross(direction, right));
 }
 
-void Camera::Update() {
-    glm::vec3 up = {0.0f, -1.0f, 0.0f};
-    glm::vec3 c0 = point + (direction * focalLen);
-    glm::vec3 uX = glm::normalize(glm::cross(direction, up));
-    glm::vec3 uY = glm::cross((direction * -1.0f), uX);
-    planeCenter = c0;
-    planeDirX = uX;
-    planeDirY = uY;
-    
-    // Vector3 x_c = c->position;
-    // Vector3 u_c = c->direction;
-    // double z_p = c->focalLength;
-    // Vector3 v_up = vec3_make(0.0, -1.0, 0.0);
-    // Vector3 c_0 = vec3_add(position, vec3_mult(direction, focalLength));
-    // Vector3 u_x = vec3_unit(vec3_cross(direction, v_up));
-    // Vector3 u_y = vec3_cross(vec3_mult(direction, -1.0), u_x);
-    // c->planeCenter = c_0;
-    // c->planeDirectionX = u_x;
-    // c->planeDirectionY = u_y;
-    // Vector3 u_z = vec3_mult(direction, -1.0); // Normal to the view plane
+Ray Camera::CastRay(int x, int y, float spX, float spY) {
+    // TODO: ACTUALLY GET A WORKING CAMERA
+    float camX = (((float)x + spX) / (float)600  * 2.0f - 1.0f) * getAspectRatio(600, 600) * getFovAdjustment(45.0f);
+    // 1.0 is taken first here as y is in the vertical
+    float camY = (1.0f - ((float)y + spY) / (float)600 * 2.0f) * getFovAdjustment(45.0f);
+    Ray ray{ {0.0f, 0.0f, 0.0f}, {camX, camY, -1.0f} };
+    ray.direction = glm::normalize(ray.direction);
+
+    return ray;
+
+    // glm::vec3 value = direction + (right * ((float)x + spX)) + (up * ((float)y + spY));
+    // glm::normalize(value);
+    // return {position, value};
 }

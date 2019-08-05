@@ -11,6 +11,7 @@
 #include "definitions/scene.hpp"
 #include "definitions/camera.hpp"
 #include "definitions/primatives/sphere.hpp"
+#include "definitions/primatives/plane.hpp"
 
 class Display;
 class Renderer;

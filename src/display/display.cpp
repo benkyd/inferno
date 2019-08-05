@@ -52,7 +52,7 @@ bool Display::InitVideoDisplay(std::string title, int x, int y) {
     }
 
     Framebuffer = (uint32_t*)malloc(this->XRes * this->YRes * sizeof(uint32_t));
-
+    memset((void*)Framebuffer, 0, this->XRes * this->YRes * sizeof(uint32_t));
     if (!Framebuffer) {
         // Add error
         std::cout << "ERROR: COULD NOT ALLOCATE FRAMEBUFFER" << std::endl;
@@ -92,6 +92,7 @@ void Display::Update() {
     SDL_UpdateTexture(m_texture, NULL, Framebuffer, this->XRes * sizeof(uint32_t));
     SDL_RenderCopy(m_renderer, m_texture, NULL, NULL);
     SDL_RenderPresent(m_renderer);
+    memset((void*)Framebuffer, 0, this->XRes * this->YRes * sizeof(uint32_t));
 }
 
 void Display::Close() {
