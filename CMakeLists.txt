@@ -4,6 +4,7 @@ project(Inferno)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} CMakeModules/)
 cmake_policy(SET CMP0037 OLD)
 set(CMAKE_BUILD_TYPE Debug)
+SET(CMAKE_CXX_FLAGS "-g")
 
 set(executable output)
 set(SrcDIR ./src)

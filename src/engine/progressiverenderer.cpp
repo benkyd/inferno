@@ -81,11 +81,7 @@ std::vector<Primative*> loadTriangles(std::string path) {
                         anz[v] = attrib.normals[3 * idx.normal_index + 2];
                     }
 
-                    tinyobj::material_t material = materials[shapes[s].mesh.material_ids[f]];
-
-                    // glm::vec3 normal = getNormal({avx[0], avy[0], avz[0]},
- 					// 			                 {avx[1], avy[1], avz[1]},
- 					// 		                	 {avx[2], avy[2], avz[2]});
+                    // tinyobj::material_t material = materials[shapes[s].mesh.material_ids[f]];
 
                     Triangle* tmp = new Triangle {
 								{avx[0], avy[0], avz[0]},
@@ -113,6 +109,9 @@ std::vector<Primative*> loadTriangles(std::string path) {
 
 
 void ProgressiveRenderer::Render() {
+    m_scene->objects = loadTriangles("/home/ben/programming/inferno/resources/cornell.obj");
+    for (const auto& object : m_scene->objects)
+		object->Translate({ 0.0f, -1.0f, -3.0f });
 
     while (m_interface->Active) {
 
@@ -129,15 +128,17 @@ void ProgressiveRenderer::Render() {
             float t, i;
             bool didhit = TraceRay(ray, m_scene, t, i);
             if (!didhit) {
-                m_interface->SetPixelSafe(x, y, 0xFFFFFF);
+                m_interface->SetPixelSafe(x, y, 0x000000);
                 continue;
             }
     
             Primative* hit = m_scene->objects[i];
+            glm::vec3 hitPoint = ray.origin + ray.direction * t;
 
-            if (hit->type == TYPE_SPHERE) {
-                m_interface->SetPixelSafe(x, y, 0xFFFF00);
-            }
+
+            glm::vec3 normal = hit->SurfaceNormal(hitPoint);
+            Pixel col((normal.x + 1.0f) * 127.5f, (normal.y + 1.0f) * 127.5f, (normal.z + 1.0f) * 127.5f);
+            m_interface->SetPixelSafe(x, y, col.rgb());
 
         }
 
