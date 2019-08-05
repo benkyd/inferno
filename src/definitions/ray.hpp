@@ -11,4 +11,6 @@ public:
     glm::vec3 direction = {};
 };
 
+bool TraceRay(Ray ray, Scene* scene, float& t, float& iOfHit);
+
 #endif

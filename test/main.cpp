@@ -15,7 +15,6 @@ int main(int argc, char** argv) {
     scene->camera = new Camera(600, 600);
     scene->objects.push_back(new Plane({0.0f, -0.5f, 0.0f}, {0.0f, -1.0f, 0.0f}));
     scene->objects.push_back(new Sphere({0.0f, 0.0f, -4.0f}, 1.0f));
-    scene->objects.push_back(new Triangle({ 0.0f, 0.0f, -1.0f }, { 1.0f, 1.0f, 0.0f }, { -1.0f, 1.0f, 0.0f }, { 1.0f, -1.0f ,0.0f }, { 0.25f, 0.75f, 0.75f }, { 0.0f, 0.0f, 0.0f }));
 
     inferno.SetScene(scene);
 
