@@ -1,7 +1,7 @@
 #include "plane.hpp"
 #include "../ray.hpp"
 
-bool Plane::DoesIntersect(Ray& ray, float& t) {
+bool Plane::Intersect(Ray& ray, float& t) {
 	t = INFINITY;
 	float dNormal = glm::dot(normal, ray.direction);
 	if (dNormal > 1e-6) {

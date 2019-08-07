@@ -16,8 +16,15 @@ int main(int argc, char** argv) {
 
     Scene* scene = new Scene(width, height);
     scene->camera = new Camera(width, height);
-    scene->objects.push_back(new Plane({0.0f, -0.5f, 0.0f}, {0.0f, -1.0f, 0.0f}));
     scene->objects.push_back(new Sphere({0.0f, 0.0f, -4.0f}, 1.0f));
+    std::vector<Triangle*> tris = LoadTrianglesBasic("/home/ben/programming/inferno/resources/cornell.obj");
+    for (const auto& object : tris)
+		object->Translate({ 0.0f, -1.0f, -3.0f });
+
+    Mesh* mesh = new Mesh(tris);
+    mesh->Optimise();
+    scene->meshs.push_back(mesh);
+
 
     inferno.SetScene(scene);
 

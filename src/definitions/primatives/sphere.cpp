@@ -1,7 +1,7 @@
 #include "../ray.hpp"
 #include "sphere.hpp"
 
-bool Sphere::DoesIntersect(Ray& ray, float& t) {
+bool Sphere::Intersect(Ray& ray, float& t) {
 	float t0, t1; // Solutions for intersect
 
 	glm::vec3 l = center - ray.origin;

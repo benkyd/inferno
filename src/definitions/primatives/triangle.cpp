@@ -1,7 +1,7 @@
 #include "triangle.hpp"
 #include "../ray.hpp"
 
-bool Triangle::DoesIntersect(Ray& ray, float& t) {
+bool Triangle::Intersect(Ray& ray, float& t) {
     glm::vec3 vertex0 = points[0];
     glm::vec3 vertex1 = points[1];  
     glm::vec3 vertex2 = points[2];
@@ -42,4 +42,8 @@ void Triangle::Translate(glm::vec3 trans) {
     points[0] += trans;
     points[1] += trans;
     points[2] += trans;
+}
+
+glm::vec3 Triangle::Midpoint() {
+    return (points[0] + points[1] + points[2]) / 3.0f;
 }

@@ -1,27 +1,75 @@
 #include "ray.hpp"
 #include "scene.hpp"
-#include "primatives/primative.hpp"
 
-bool TraceRay(Ray ray, Scene* scene, float& t, Primative*& hit) {
+#include <iostream>
+
+#include "primatives/primative.hpp"
+#include "primatives/triangle.hpp"
+#include "primatives/mesh.hpp"
+
+bool TraceRayScene(Ray ray, Scene* scene, float& t, Primative*& hit) {
 	int i = 0;
 	float lastDistance = INFINITY;
-	int index = -1;
+
 	for (auto& object : scene->objects) {
 		float distance = INFINITY;
-		if (object->DoesIntersect(ray, distance)) {
+		if (object->Intersect(ray, distance)) {
 			if (distance < lastDistance) {
-				index = i;
+				hit = object;
 				lastDistance = distance;
 			}
 		}
-		i++;
+	}
+
+	for (auto& mesh : scene->meshs) {
+		float distance = INFINITY;
+		Triangle* triHit = nullptr;
+		if (mesh->Intersect(&ray, triHit, distance)) {
+			if (distance < lastDistance) {
+				hit = triHit;
+				lastDistance = distance;
+			}
+		}
 	}
 
 	t = lastDistance;
-
-    if (index == -1) return false;
-
-    hit = scene->objects[index];
+    if (lastDistance == INFINITY || hit == nullptr) return false;
 
 	return true;
+}
+
+bool TraceRayMesh(Ray ray, Mesh* scene, float& t, Triangle*& hit) {
+	float lastDistance = INFINITY;
+
+	for (auto& object : scene->triangles) {
+		float distance = INFINITY;
+		if (object->Intersect(ray, distance)) {
+			if (distance < lastDistance) {
+				hit = object;
+				lastDistance = distance;
+			}
+		}
+	}
+
+	t = lastDistance;
+	if (lastDistance == INFINITY || hit == nullptr) return false;
+	return true; 
+}
+
+bool TraceRayTriangles(Ray ray, std::vector<Triangle*> scene, float& t, Triangle*& hit) {
+	float lastDistance = INFINITY;
+
+	for (auto& object : scene) {
+		float distance = INFINITY;
+		if (object->Intersect(ray, distance)) {
+			if (distance < lastDistance) {
+				hit = object;
+				lastDistance = distance;
+			}
+		}
+	}
+
+	t = lastDistance;
+	if (lastDistance == INFINITY || hit == nullptr) return false;
+	return true; 
 }

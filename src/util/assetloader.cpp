@@ -19,7 +19,7 @@ glm::vec3 getNormal(glm::vec3 p0, glm::vec3 p1, glm::vec3 p2) {
 	return normal;
 }
 
-std::vector<Primative*> LoadTrianglesBasic(std::string path) {
+std::vector<Triangle*> LoadTrianglesBasic(std::string path) {
     tinyobj::attrib_t attrib;
     std::vector<tinyobj::shape_t> shapes;
     std::vector<tinyobj::material_t> materials;
@@ -90,11 +90,5 @@ std::vector<Primative*> LoadTrianglesBasic(std::string path) {
         }
     }
 
-    std::vector<Primative*> objects;
-
-    for (const auto& triangle : triangles)
-        objects.push_back(triangle);
-
-    return objects;
+    return triangles;
 }
-

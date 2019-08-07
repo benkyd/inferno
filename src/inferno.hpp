@@ -8,8 +8,11 @@
 #include "common.hpp"
 
 // Give the user access to the base classes to define shit
+#include "util/assetloader.hpp"
+
 #include "definitions/scene.hpp"
 #include "definitions/camera.hpp"
+#include "definitions/primatives/mesh.hpp"
 #include "definitions/primatives/sphere.hpp"
 #include "definitions/primatives/plane.hpp"
 #include "definitions/primatives/triangle.hpp"

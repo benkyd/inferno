@@ -8,7 +8,7 @@ public:
     Plane(glm::vec3 center, glm::vec3 normal)
         : Primative(center, normal) { }
 
-    bool DoesIntersect(Ray& ray, float& t) override;
+    bool Intersect(Ray& ray, float& t) override;
 	glm::vec3 SurfaceNormal(glm::vec3 hitPoint) override;
 	glm::vec2 TexCoords(glm::vec3 hitPoint) override;
 	void Translate(glm::vec3 trans) override;

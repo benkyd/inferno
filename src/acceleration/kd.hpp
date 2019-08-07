@@ -33,6 +33,6 @@ public:
 
 KDTree* BuildKDTree(const std::vector<Triangle*>& triangles);
 
-bool KDIntersect(KDTree* tree, Ray* ray, Triangle*& triMin, float& uMin, float& vMin, float& tMin);
+bool KDIntersect(KDTree* tree, Ray* ray, Triangle*& triMin, float& tMin);
 
 #endif

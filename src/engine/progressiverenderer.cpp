@@ -10,7 +10,6 @@
 #include "../util/assetloader.hpp"
 
 #include "../definitions/primatives/primative.hpp"
-#include "../definitions/primatives/triangle.hpp"
 #include "../definitions/camera.hpp"
 #include "../definitions/scene.hpp"
 #include "../definitions/ray.hpp"
@@ -25,10 +24,6 @@ void ProgressiveRenderer::Init(DisplayInterface* interface, Scene* scene) {
 }
 
 void ProgressiveRenderer::Render() {
-    m_scene->objects = LoadTrianglesBasic("/home/ben/programming/inferno/resources/cornell.obj");
-    for (const auto& object : m_scene->objects)
-		object->Translate({ 0.0f, -1.0f, -3.0f });
-
     int frames = 0;
     auto startTime = std::chrono::high_resolution_clock::now();
 
@@ -49,7 +44,7 @@ void ProgressiveRenderer::Render() {
             
             float t;
             Primative* hit = nullptr;
-            bool didhit = TraceRay(ray, m_scene, t, hit);
+            bool didhit = TraceRayScene(ray, m_scene, t, hit);
             if (!didhit) {
                 m_interface->SetPixelSafe(x, y, 0x000000);
                 continue;

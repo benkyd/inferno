@@ -46,7 +46,7 @@ public:
         type = TYPE_TRI;
     }
 
-    virtual bool DoesIntersect(Ray& ray, float& t) = 0;
+    virtual bool Intersect(Ray& ray, float& t) = 0;
 	virtual glm::vec3 SurfaceNormal(glm::vec3 hitPoint) = 0;
 	virtual glm::vec2 TexCoords(glm::vec3 hitPoint) = 0;
 	virtual void Translate(glm::vec3 trans) = 0;
