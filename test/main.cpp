@@ -19,9 +19,14 @@ int main(int argc, char** argv) {
     
     // scene->objects.push_back(new Sphere({0.0f, 0.0f, -4.0f}, 1.0f));
 
-    std::vector<Triangle*> tris = LoadTrianglesBasic("/home/ben/programming/inferno/resources/dragon.obj");
+    // std::vector<Triangle*> tris = LoadTrianglesBasic("/home/ben/programming/inferno/resources/dragon-normals.obj");
+    // for (const auto& object : tris)
+	// 	object->Translate({ 0.0f, -5.0f, -20.0f });
+    // std::cout << "loaded" << std::endl;
+
+    std::vector<Triangle*> tris = LoadTrianglesBasic("/home/ben/programming/inferno/resources/lucy-normals.obj");
     for (const auto& object : tris)
-		object->Translate({ 0.0f, -5.0f, -20.0f });
+		object->Translate({ 0.0f, -3.9f, -10.6f });
     std::cout << "loaded" << std::endl;
 
     Mesh* mesh = new Mesh(tris);
