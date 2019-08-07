@@ -59,29 +59,29 @@ std::vector<Triangle*> LoadTrianglesBasic(std::string path) {
                         avy[v] = attrib.vertices[3 * idx.vertex_index + 1];
                         avz[v] = attrib.vertices[3 * idx.vertex_index + 2];
 
-                        anx[v] = attrib.normals[3 * idx.normal_index + 0];
-                        any[v] = attrib.normals[3 * idx.normal_index + 1];
-                        anz[v] = attrib.normals[3 * idx.normal_index + 2];
+                        // anx[v] = attrib.normals[3 * idx.normal_index + 0];
+                        // any[v] = attrib.normals[3 * idx.normal_index + 1];
+                        // anz[v] = attrib.normals[3 * idx.normal_index + 2];
                     }
 
                     // tinyobj::material_t material = materials[shapes[s].mesh.material_ids[f]];
 
-                    // glm::vec3 normal = getNormal(
-                    //     {avx[0], avy[0], avz[0]},
-                    //     {avx[1], avy[1], avz[1]},
-                    //     {avx[2], avy[2], avz[2]}
-                    // );
+                    glm::vec3 normal = getNormal(
+                        {avx[0], avy[0], avz[0]},
+                        {avx[1], avy[1], avz[1]},
+                        {avx[2], avy[2], avz[2]}
+                    );
 
                     Triangle* tmp = new Triangle {
                         {avx[0], avy[0], avz[0]},
                         {avx[1], avy[1], avz[1]},
                         {avx[2], avy[2], avz[2]},
 
-                        // normal, normal, normal
+                        normal, normal, normal
 
-                        {anx[0], any[0], anz[0]},
-                        {anx[1], any[1], anz[1]},
-                        {anx[2], any[2], anz[2]},
+                        // {anx[0], any[0], anz[0]},
+                        // {anx[1], any[1], anz[1]},
+                        // {anx[2], any[2], anz[2]},
                     };
 
                     triangles.push_back(tmp);

@@ -16,13 +16,17 @@ int main(int argc, char** argv) {
 
     Scene* scene = new Scene(width, height);
     scene->camera = new Camera(width, height);
-    scene->objects.push_back(new Sphere({0.0f, 0.0f, -4.0f}, 1.0f));
-    std::vector<Triangle*> tris = LoadTrianglesBasic("/home/ben/programming/inferno/resources/cornell.obj");
+    
+    // scene->objects.push_back(new Sphere({0.0f, 0.0f, -4.0f}, 1.0f));
+
+    std::vector<Triangle*> tris = LoadTrianglesBasic("/home/ben/programming/inferno/resources/dragon.obj");
     for (const auto& object : tris)
-		object->Translate({ 0.0f, -1.0f, -3.0f });
+		object->Translate({ 0.0f, -5.0f, -20.0f });
+    std::cout << "loaded" << std::endl;
 
     Mesh* mesh = new Mesh(tris);
     mesh->Optimise();
+    std::cout << "tree built" << std::endl;
     scene->meshs.push_back(mesh);
 
 
