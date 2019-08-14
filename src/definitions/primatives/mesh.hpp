@@ -3,8 +3,10 @@
 
 #include <vector>
 
+#include "../../acceleration/bbox.hpp"
+
 class Triangle;
-class KDTree;
+class KDTreeNode;
 class Ray;
 
 class Mesh {
@@ -17,7 +19,8 @@ public:
     bool optimised = false;
     std::vector<Triangle*> triangles;
 private:
-    KDTree* m_kdTree = nullptr;
+    KDTreeNode* m_kdTree = nullptr;
+    BBox bbox;
 };
 
 #endif

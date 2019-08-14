@@ -4,35 +4,26 @@
 #include "../maths.hpp"
 
 class Triangle;
+class BBox;
 class Ray;
 
-class Box {
-public:
-	Box();
-	Box(Triangle* object);
+struct KDTreeNode {
+	Axis axis; // AXIS_NONE if this is a leaf node
+	float splitPos;	
+	union {
+		std::vector<Triangle*>* triangles;
+		KDTreeNode* children;
+	};
 
-	void ExtendTriangle(Triangle* object);
-	void ExtendPoint(glm::vec3 p);
-	int LongestAxis();
+	void InitLeaf(const std::vector<Triangle*>& triangles);
+	void InitTreeNode(Axis axis, float splitPos);
+	~KDTreeNode();
+};	
 
-	bool Hit(Ray* ray);
-	
-    glm::vec3 min;
-	glm::vec3 max;
-};
+// void BuildKDTree(const std::vector<Triangle*>& triangles);
+// bool KDIntersect(KDTree* tree, Ray* ray, Triangle*& triMin, float& tMin);
 
-class KDTree {
-public:
-	Box bounds;
-
-	KDTree* child0 = nullptr;
-	KDTree* child1 = nullptr;
-
-	std::vector<Triangle*> children;
-};
-
-KDTree* BuildKDTree(const std::vector<Triangle*>& triangles);
-
-bool KDIntersect(KDTree* tree, Ray* ray, Triangle*& triMin, float& tMin);
+void BuildKDTree(KDTreeNode* node, BBox bbox, std::vector<Triangle*>& triangleList, int depth);
+bool KDIntersect(KDTreeNode* node, BBox& bbox, Ray& ray, Triangle*& intersect, float& t);
 
 #endif

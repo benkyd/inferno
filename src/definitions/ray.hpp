@@ -11,8 +11,11 @@ class Primative;
 
 class Ray {
 public:
+    void Update();
+
     glm::vec3 origin = {};
     glm::vec3 direction = {};
+    glm::vec3 rdirection = {};
 };
 
 bool TraceRayScene(Ray ray, Scene* scene, float& t, Primative*& hit);

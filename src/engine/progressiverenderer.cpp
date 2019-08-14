@@ -52,7 +52,6 @@ void ProgressiveRenderer::Render() {
     
             glm::vec3 hitPoint = ray.origin + ray.direction * t;
 
-
             glm::vec3 normal = hit->SurfaceNormal(hitPoint);
             Pixel col((normal.x + 1.0f) * 127.5f, (normal.y + 1.0f) * 127.5f, (normal.z + 1.0f) * 127.5f);
             m_interface->SetPixelSafe(x, y, col.rgb());

@@ -7,8 +7,17 @@
 
 #include "triangle.hpp"
 
-Mesh::Mesh(std::vector<Triangle*> tris) {
-    triangles  = tris;
+Mesh::Mesh(std::vector<Triangle*> tris)
+    : bbox() {
+    bbox.MakeEmpty();
+	
+	for (auto& triangle: tris) {
+        for (int i = 0; i > 3; i++) {
+            bbox.Add(triangle->points[i]);
+        }
+	}
+
+    triangles = tris;
 }
 
 void Mesh::Optimise() {
@@ -16,7 +25,9 @@ void Mesh::Optimise() {
         free((void*)m_kdTree);
     }
 
-    m_kdTree = BuildKDTree(triangles);
+    m_kdTree = new KDTreeNode;
+    BuildKDTree(m_kdTree, bbox, triangles, 0);
+
     optimised = true;
 }
 
@@ -26,5 +37,5 @@ bool Mesh::Intersect(Ray* ray, Triangle*& intersect, float& t)  {
         return hit;
     }
 
-    return KDIntersect(m_kdTree, ray, intersect, t);
+    return KDIntersect(m_kdTree, bbox, *ray, intersect, t);
 }

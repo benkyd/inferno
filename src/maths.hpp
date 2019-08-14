@@ -14,22 +14,20 @@ const float RAD2DEG = 57.2957795130823208767981548141f;
 const float      PI = 3.14159265358979323846264338327f;
 const float EPSILON = 0.00001000000000000000000000000f;
 
+enum Axis {
+	AXIS_X,
+	AXIS_Y,
+	AXIS_Z,
+	
+	AXIS_NONE,
+};
 
-inline float fastDegreetoRadian(const float Degree) {
-	return (Degree * DEG2RAD);
-}
-
-inline float fastRadianToDegree(const float Radian) {
-	return (Radian * RAD2DEG);
-}
-
-inline float getFovAdjustment(const float fov) {
-	return tanf(fov * PI / 360.0f);
-}
-
-inline float getAspectRatio(const float w, const float h) {
-	return (float)w / (float)h;
-}
+inline float signOf(float x) { return x > 0 ? +1 : -1; }
+inline float sqr(float a) { return a * a; }
+inline float fastDegreetoRadian(const float Degree) { return (Degree * DEG2RAD); }
+inline float fastRadianToDegree(const float Radian) { return (Radian * RAD2DEG); }
+inline float getFovAdjustment(const float fov) { return tanf(fov * PI / 360.0f); }
+inline float getAspectRatio(const float w, const float h) { return (float)w / (float)h; }
 
 // (-b += sqrt(b^2-4ac)) / 2a
 inline bool quadratic(float a, float b, float c, float& x0, float& x1) {

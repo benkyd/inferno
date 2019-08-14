@@ -7,6 +7,12 @@
 #include "primatives/triangle.hpp"
 #include "primatives/mesh.hpp"
 
+void Ray::Update() {
+	rdirection.x = fabs(direction.x) > 1e-12 ? 1.0 / direction.x : 1e12;
+    rdirection.y = fabs(direction.y) > 1e-12 ? 1.0 / direction.y : 1e12;
+    rdirection.z = fabs(direction.z) > 1e-12 ? 1.0 / direction.z : 1e12;
+}
+
 bool TraceRayScene(Ray ray, Scene* scene, float& t, Primative*& hit) {
 	int i = 0;
 	float lastDistance = INFINITY;
