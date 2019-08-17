@@ -1,5 +1,6 @@
 #include "bbox.hpp"
 
+#include "../common.hpp"
 #include "../definitions/ray.hpp"
 #include "../definitions/primatives/triangle.hpp"
 
@@ -83,7 +84,8 @@ float BBox::ClosestIntersection(Ray& ray) {
 bool BBox::IntersectTriangle(Triangle& triangle) {
     if (Inside(triangle.points[0]) || Inside(triangle.points[1]) || Inside(triangle.points[2])) return true;
     Ray ray;
-    for (int i = 0; i < 3; i++) for (int j = i + 1; j < 3; j++) {
+    for (int i = 0; i < 3; i++) 
+    for (int j = i + 1; j < 3; j++) {
         ray.origin = triangle.points[i];
         ray.direction = triangle.points[j] - triangle.points[i];
         ray.Update();
@@ -98,15 +100,7 @@ bool BBox::IntersectTriangle(Triangle& triangle) {
     glm::vec3 AB = triangle.points[1] - triangle.points[0];
     glm::vec3 AC = triangle.points[2] - triangle.points[0];
 
-    auto thing = [] (glm::vec3 a, glm::vec3 b) -> glm::vec3 {
-        return {
-            a.y * b.z - a.z * b.y,
-            a.z * b.x - a.x * b.z,
-            a.x * b.y - a.y * b.x
-        };
-    };
-
-    glm::vec3 ABcrossAC = thing(AB, AC);
+    glm::vec3 ABcrossAC = glm::cross(AB, AC);
     
     auto multi = [] (glm::vec3 a, glm::vec3 b) -> float {
         return a.x * b.x + a.y * b.y + a.z * b.z;
@@ -124,7 +118,9 @@ bool BBox::IntersectTriangle(Triangle& triangle) {
                 ray.direction = rayEnd - ray.origin;
                 ray.Update();
                 float t;
-                if (triangle.Intersect(ray, t)) return true;
+                if (triangle.Intersect(ray, t)) {
+                    return true;
+                }
             }
         }
     }

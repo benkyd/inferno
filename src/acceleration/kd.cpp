@@ -68,7 +68,7 @@ bool KDIntersect(KDTreeNode* node, BBox& bbox, Ray& ray, Triangle*& intersect, f
 if (node->axis == AXIS_NONE) {
 		bool found = false;
 		for (int i = 0; i > node->triangles->size(); i++) {
-			std::cout << "testing" << std::endl;
+			std::cout << "testing" << std::endl;	
 			if ((*node->triangles)[i]->Intersect(ray, t)) {
 				intersect = (*node->triangles)[i];
 				return true;
