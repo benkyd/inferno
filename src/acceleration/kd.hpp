@@ -20,9 +20,6 @@ struct KDTreeNode {
 	~KDTreeNode();
 };	
 
-// void BuildKDTree(const std::vector<Triangle*>& triangles);
-// bool KDIntersect(KDTree* tree, Ray* ray, Triangle*& triMin, float& tMin);
-
 void BuildKDTree(KDTreeNode* node, BBox bbox, std::vector<Triangle*>& triangleList, int depth);
 bool KDIntersect(KDTreeNode* node, BBox& bbox, Ray& ray, Triangle*& intersect, float& t);
 
