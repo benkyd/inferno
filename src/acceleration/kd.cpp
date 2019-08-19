@@ -37,7 +37,6 @@ void BuildKDTree(KDTree* node, BBox bbox, std::vector<Triangle*>& triangleList, 
 	if (depth > MAX_TREE_DEPTH || int(triangleList.size()) < TRIANGLES_PER_LEAF) {
 		maxDepthSum += depth;
 		numNodes++;
-		std::cout << "leaf" << triangleList.size() << std::endl;
 		node->InitLeaf(triangleList);
 		return;
 	}
@@ -67,8 +66,7 @@ void BuildKDTree(KDTree* node, BBox bbox, std::vector<Triangle*>& triangleList, 
 bool KDIntersect(KDTree* node, BBox& bbox, Ray& ray, Triangle*& intersect, float& t) {
 if (node->axis == AXIS_NONE) {
 		bool found = false;
-		for (int i = 0; i > node->triangles->size(); i++) {
-			std::cout << "testing" << std::endl;	
+		for (int i = 0; i < node->triangles->size(); i++) {
 			if ((*node->triangles)[i]->Intersect(ray, t)) {
 				intersect = (*node->triangles)[i];
 				return true;

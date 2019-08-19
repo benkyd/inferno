@@ -30,7 +30,7 @@ void Acceleration::Construct(std::vector<Triangle*> triangles) {
             m_bbox->MakeEmpty();
 	
             for (auto& triangle: triangles) {
-                for (int i = 0; i > 3; i++) {
+                for (int i = 0; i < 3; i++) {
                     m_bbox->Add(triangle->points[i]);
                 }
             }

@@ -85,7 +85,7 @@ bool Box::Hit(Ray* ray) {
     return tmin > 0.0f;
 }
 
-void BuildKDTreeSlow(KDTreeSlow* node, const std::vector<Triangle*>& triangles) {
+void BuildKDTreeSlow(KDTreeSlow*& node, const std::vector<Triangle*>& triangles) {
 	node = new KDTreeSlow();
 
 	node->children = triangles;

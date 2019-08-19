@@ -31,7 +31,7 @@ public:
 	std::vector<Triangle*> children;
 };
 
-void BuildKDTreeSlow(KDTreeSlow* tree, const std::vector<Triangle*>& triangles);
+void BuildKDTreeSlow(KDTreeSlow*& tree, const std::vector<Triangle*>& triangles);
 bool KDIntersectSlow(KDTreeSlow* tree, Ray* ray, Triangle*& triMin, float& tMin);
 
 #endif
