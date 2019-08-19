@@ -30,7 +30,7 @@ bool TraceRayScene(Ray ray, Scene* scene, float& t, Primative*& hit) {
 	for (auto& mesh : scene->meshs) {
 		float distance = INFINITY;
 		Triangle* triHit = nullptr;
-		if (mesh->Intersect(&ray, triHit, distance)) {
+		if (mesh->Intersect(ray, triHit, distance)) {
 			if (distance < lastDistance) {
 				hit = triHit;
 				lastDistance = distance;
@@ -47,7 +47,7 @@ bool TraceRayScene(Ray ray, Scene* scene, float& t, Primative*& hit) {
 bool TraceRayMesh(Ray ray, Mesh* scene, float& t, Triangle*& hit) {
 	float lastDistance = INFINITY;
 
-	for (auto& object : scene->triangles) {
+	for (auto& object : scene->Triangles) {
 		float distance = INFINITY;
 		if (object->Intersect(ray, distance)) {
 			if (distance < lastDistance) {

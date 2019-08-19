@@ -7,20 +7,21 @@ class Triangle;
 class BBox;
 class Ray;
 
-struct KDTreeNode {
+struct KDTree {
 	Axis axis; // AXIS_NONE if this is a leaf node
-	float splitPos;	
+	float splitPos;
+	
 	union {
 		std::vector<Triangle*>* triangles;
-		KDTreeNode* children;
+		KDTree* children;
 	};
 
 	void InitLeaf(const std::vector<Triangle*>& triangles);
 	void InitTreeNode(Axis axis, float splitPos);
-	~KDTreeNode();
-};	
+	~KDTree();
+};
 
-void BuildKDTree(KDTreeNode* node, BBox bbox, std::vector<Triangle*>& triangleList, int depth);
-bool KDIntersect(KDTreeNode* node, BBox& bbox, Ray& ray, Triangle*& intersect, float& t);
+void BuildKDTree(KDTree* node, BBox bbox, std::vector<Triangle*>& triangleList, int depth);
+bool KDIntersect(KDTree* node, BBox& bbox, Ray& ray, Triangle*& intersect, float& t);
 
 #endif

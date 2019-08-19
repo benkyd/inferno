@@ -14,18 +14,18 @@ bool autoSmooth;
 int maxDepthSum;
 int numNodes;
 
-void KDTreeNode::InitLeaf(const std::vector<Triangle*>& triangles) {
+void KDTree::InitLeaf(const std::vector<Triangle*>& triangles) {
 	axis = AXIS_NONE;
 	this->triangles = new std::vector<Triangle*>(triangles);
 }
 
-void KDTreeNode::InitTreeNode(Axis axis, float splitPos) {
+void KDTree::InitTreeNode(Axis axis, float splitPos) {
 	this->axis = axis;
 	this->splitPos = splitPos;
-	this->children = new KDTreeNode[2];
+	this->children = new KDTree[2];
 }
 
-KDTreeNode::~KDTreeNode() {
+KDTree::~KDTree() {
 	if (axis == AXIS_NONE)
 		delete triangles;
 	else
@@ -33,7 +33,7 @@ KDTreeNode::~KDTreeNode() {
 }
 
 
-void BuildKDTree(KDTreeNode* node, BBox bbox, std::vector<Triangle*>& triangleList, int depth) {
+void BuildKDTree(KDTree* node, BBox bbox, std::vector<Triangle*>& triangleList, int depth) {
 	if (depth > MAX_TREE_DEPTH || int(triangleList.size()) < TRIANGLES_PER_LEAF) {
 		maxDepthSum += depth;
 		numNodes++;
@@ -64,7 +64,7 @@ void BuildKDTree(KDTreeNode* node, BBox bbox, std::vector<Triangle*>& triangleLi
 	BuildKDTree(&node->children[1], bboxRight, trianglesRight, depth + 1);
 }
 
-bool KDIntersect(KDTreeNode* node, BBox& bbox, Ray& ray, Triangle*& intersect, float& t) {
+bool KDIntersect(KDTree* node, BBox& bbox, Ray& ray, Triangle*& intersect, float& t) {
 if (node->axis == AXIS_NONE) {
 		bool found = false;
 		for (int i = 0; i > node->triangles->size(); i++) {
@@ -86,8 +86,8 @@ if (node->axis == AXIS_NONE) {
 		
 		BBox& firstBB = childBBox[childOrder[0]];
 		BBox& secondBB = childBBox[childOrder[1]];
-		KDTreeNode& firstChild = node->children[childOrder[0]];
-		KDTreeNode& secondChild = node->children[childOrder[1]];
+		KDTree& firstChild = node->children[childOrder[0]];
+		KDTree& secondChild = node->children[childOrder[1]];
 		// if the ray intersects the common wall between the two sub-boxes, then it invariably
 		// intersects both boxes (we can skip the testIntersect() checks):
 		// (see http://raytracing-bg.net/?q=node/68 )

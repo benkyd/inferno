@@ -2,40 +2,25 @@
 
 #include <iostream>
 
-#include "../../acceleration/kd.hpp"
+#include "../../acceleration/accel.hpp"
 #include "../ray.hpp"
 
 #include "triangle.hpp"
 
-Mesh::Mesh(std::vector<Triangle*> tris)
-    : bbox() {
-    bbox.MakeEmpty();
-	
-	for (auto& triangle: tris) {
-        for (int i = 0; i > 3; i++) {
-            bbox.Add(triangle->points[i]);
-        }
-	}
-
-    triangles = tris;
+Mesh::Mesh(std::vector<Triangle*> tris) {
+    Triangles = tris;
 }
 
-void Mesh::Optimise() {
-    if (!optimised) {
-        free((void*)m_kdTree);
-    }
-
-    m_kdTree = new KDTreeNode;
-    BuildKDTree(m_kdTree, bbox, triangles, 0);
-
-    optimised = true;
+void Mesh::Optimise(AccelerationMode mode) {
+    m_accelerator = new Acceleration(mode);
+    m_accelerator->Construct(Triangles);
+    if (m_accelerator->Constructed) Optimised = true;
 }
 
-bool Mesh::Intersect(Ray* ray, Triangle*& intersect, float& t)  {
-    if (!optimised) {
-        bool hit = TraceRayMesh(*ray, this, t, intersect);
-        return hit;
+bool Mesh::Intersect(Ray ray, Triangle*& intersect, float& t)  {
+    if (!Optimised) {
+        return TraceRayMesh(ray, this, t, intersect);
     }
 
-    return KDIntersect(m_kdTree, bbox, *ray, intersect, t);
+    return m_accelerator->Intersect(ray, intersect, t);
 }
