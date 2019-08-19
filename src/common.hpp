@@ -1,7 +1,11 @@
 #ifndef INFERNO_COMMON_H_
 #define INFERNO_COMMON_H_
 
+#if _WIN32
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
 
 #include <iostream>
 #include <string>

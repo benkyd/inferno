@@ -1,6 +1,8 @@
 #ifndef INFERNO_PIXEL_H_
 #define INFERNO_PIXEL_H_
 
+#include <algorithm>
+
 struct Pixel {
     uint8_t a;
     uint8_t r;

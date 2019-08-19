@@ -39,4 +39,6 @@ int main(int argc, char** argv) {
 
     inferno.Ready();
     inferno.Render();
+
+	return 0;
 }

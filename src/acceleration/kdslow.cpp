@@ -1,6 +1,7 @@
 #include "kdslow.hpp"
 
 #include <iostream>
+#include <algorithm>
 
 #include "../definitions/primatives/primative.hpp"
 #include "../definitions/primatives/triangle.hpp"

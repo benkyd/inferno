@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <algorithm>
+#include <vector>
 #include <math.h>
 
 const float DEG2RAD = 0.01745329251994329576923690768f;
