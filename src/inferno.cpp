@@ -31,6 +31,10 @@ bool InfernoEngine::InitWindow(int xRes, int yRes) {
     if (!status) {
         return false;
     }
+	status = m_display->InitImGui();
+	if (!status) {
+		return false;
+	}
 
     m_renderer = new Renderer(m_mode);
     if (!m_renderer) {

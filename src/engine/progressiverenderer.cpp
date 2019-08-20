@@ -31,9 +31,17 @@ void ProgressiveRenderer::Render() {
     while (m_interface->Active) {
         auto frameStartTime = std::chrono::high_resolution_clock::now();
 
+		ImGui::NewFrame();
+		ImGui::Begin("Thing");
+		ImGui::Text("Hello, world %d", 123);
+		if (ImGui::Button("Save")) {}
+		char* buf = ""; float f;
+		ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
+		ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+		ImGui::End();
 
-        for (int x = 0; x < m_scene->w; x++)
 		#pragma omp parallel for schedule(dynamic)
+        for (int x = 0; x < m_scene->w; x++)
         for (int y = 0; y < m_scene->h; y++) {
 
             SDL_Event e;
@@ -41,10 +49,10 @@ void ProgressiveRenderer::Render() {
                 if (e.type == SDL_QUIT) m_interface->Close();
 
             Ray ray = m_scene->camera->CastRay(x, y);
-            
+
             float t;
             Primative* hit = nullptr;
-            bool didhit = TraceRayScene(ray, m_scene, t, hit);
+			bool didhit = TraceRayScene(ray, m_scene, t, hit);
             if (!didhit) {
                 m_interface->SetPixelSafe(x, y, 0x000000);
                 continue;

@@ -24,14 +24,14 @@ int main(int argc, char** argv) {
   	//     object->Translate({ 0.0f, -5.0f, -20.0f });
 
 	// std::vector<Triangle*> tris = LoadTrianglesBasic("/home/ben/programming/inferno/resources/lucy-normals.obj");
-	std::vector<Triangle*> tris = LoadTrianglesBasic("E:/Projects/Inferno/resources/lucy-normals.obj");
-    for (const auto& object : tris)
-	    object->Translate({ 0.0f, -3.9f, -10.6f });
+	// std::vector<Triangle*> tris = LoadTrianglesBasic("E:/Projects/Inferno/resources/lucy-normals.obj");
+    // for (const auto& object : tris)
+	//     object->Translate({ 0.0f, -3.9f, -10.6f });
 
 	// std::vector<Triangle*> tris = LoadTrianglesBasic("/home/ben/programming/inferno/resources/cornell.obj");
-	// std::vector<Triangle*> tris = LoadTrianglesBasic("E:/Projects/Inferno/resources/cornell.obj");
-    // for (const auto& object : tris)
-	//     object->Translate({ 0.0f, -0.9f, -3.0f });
+	std::vector<Triangle*> tris = LoadTrianglesBasic("E:/Projects/Inferno/resources/cornell.obj");
+    for (const auto& object : tris)
+	    object->Translate({ 0.0f, -0.9f, -3.0f });
 
     Mesh* mesh = new Mesh(tris);
     mesh->Optimise();

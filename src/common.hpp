@@ -7,6 +7,9 @@
 #include <SDL2/SDL.h>
 #endif
 
+#include <imgui/imgui.h>
+#include <imgui/imgui_sdl.h>
+
 #include <iostream>
 #include <string>
 

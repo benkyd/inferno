@@ -15,6 +15,7 @@ bool Display::Init() {
 
 bool Display::InitVideoDisplay(std::string title, int x, int y) {
     this->XRes = x; this->YRes = y;
+	Title = title;
 
     m_window = SDL_CreateWindow(
         title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -62,6 +63,16 @@ bool Display::InitVideoDisplay(std::string title, int x, int y) {
     return true;
 }
 
+bool Display::InitImGui() {
+	ImGui::CreateContext();
+	ImGuiSDL::Initialize(m_renderer, XRes, YRes);
+
+	m_imguiTexture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_TARGET, 100, 100);
+
+	if (!m_imguiTexture) return false;
+	m_imGui = true;
+	return true;
+}
 
 void Display::SetPixel(int x, int y, Pixel p) {
     Framebuffer[y * this->XRes + x] = p.rgb();
@@ -89,15 +100,42 @@ void Display::SetFramebuffer(uint32_t* fb) {
 }
 
 void Display::Update() {
+	ImGuiIO& io = ImGui::GetIO();
+	int mouseX, mouseY, wheel = 0;
+	const int buttons = SDL_GetMouseState(&mouseX, &mouseY);
+	io.DeltaTime = 1.0f / 60.0f;
+	io.MousePos = ImVec2(static_cast<float>(mouseX), static_cast<float>(mouseY));
+	io.MouseDown[0] = buttons & SDL_BUTTON(SDL_BUTTON_LEFT);
+	io.MouseDown[1] = buttons & SDL_BUTTON(SDL_BUTTON_RIGHT);
+	io.MouseWheel = static_cast<float>(wheel);
+
     SDL_UpdateTexture(m_texture, NULL, Framebuffer, this->XRes * sizeof(uint32_t));
     SDL_RenderCopy(m_renderer, m_texture, NULL, NULL);
+
+	ImGui::Render();
+	ImGuiSDL::Render(ImGui::GetDrawData());
     SDL_RenderPresent(m_renderer);
-    memset((void*)Framebuffer, 0, this->XRes * this->YRes * sizeof(uint32_t));
+}
+
+void Display::UpdatePartial() {
+	SDL_UpdateTexture(m_texture, NULL, Framebuffer, this->XRes * sizeof(uint32_t));
+	SDL_RenderCopy(m_renderer, m_texture, NULL, NULL);
+	SDL_RenderPresent(m_renderer);
+}
+
+void Display::UpdateTitle(std::string title) {
+	Title = title;
+	UpdateTitle();
+}
+
+void Display::UpdateTitle() {
+	SDL_SetWindowTitle(m_window, Title.c_str());
 }
 
 void Display::Close() {
     free(Framebuffer);
-    SDL_DestroyTexture(m_texture);
+	SDL_DestroyTexture(m_texture);
+	SDL_DestroyTexture(m_imguiTexture);
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_window);
     SDL_Quit();

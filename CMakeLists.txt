@@ -64,6 +64,7 @@ file(GLOB SourceFiles
     ${SrcDIR}/definitions/*
     ${SrcDIR}/definitions/primatives/*
 	${SrcDIR}/util/*
+	${SrcDIR}/util/imgui/*
     ${TestDIR}/${CurrentTest}
 )
 
@@ -80,7 +81,7 @@ if (UNIX)
 		#SDL2_image
 		#PNG::PNG
 		#JPEG::JPEG
-		OpenGL::GL
+		OpenGL::OpenGL
 		Threads::Threads
 	)
 endif (UNIX)

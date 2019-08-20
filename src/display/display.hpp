@@ -12,6 +12,7 @@ public:
 
     bool Init() override;
     bool InitVideoDisplay(std::string title, int x, int y);
+	bool InitImGui();
 
     void SetPixel(int x, int y, Pixel p) override;
     void SetPixel(int x, int y, uint32_t p) override;
@@ -21,6 +22,9 @@ public:
     void SetFramebuffer(uint32_t* fb);
 
     void Update() override;
+	void UpdatePartial() override;
+	void UpdateTitle(std::string title);
+	void UpdateTitle();
 
     void Close() override;
 
@@ -30,6 +34,8 @@ private:
     SDL_Window* m_window;
     SDL_Renderer* m_renderer;
     SDL_Texture* m_texture;
+	SDL_Texture* m_imguiTexture;
+	bool m_imGui = false;
 };
 
 #endif
