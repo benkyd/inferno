@@ -13,8 +13,10 @@ Mesh::Mesh(std::vector<Triangle*> tris) {
 
 void Mesh::Optimise(AccelerationMode mode) {
     m_accelerator = new Acceleration(mode);
+
     m_accelerator->Construct(Triangles);
-    if (m_accelerator->Constructed) Optimised = true;
+    
+	if (m_accelerator->Constructed) Optimised = true;
 }
 
 bool Mesh::Intersect(Ray ray, Triangle*& intersect, float& t)  {

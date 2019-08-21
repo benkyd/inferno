@@ -1,6 +1,8 @@
 #ifndef INFERNO_DISPLAY_DISPLAY_H_
 #define INFERNO_DISPLAY_DISPLAY_H_
 
+#include <mutex>
+
 #include "../common.hpp"
 #include "displayinterface.hpp"
 
@@ -19,12 +21,13 @@ public:
     void SetPixelSafe(int x, int y, Pixel p) override;
     void SetPixelSafe(int x, int y, uint32_t p) override;
 
-    void SetFramebuffer(uint32_t* fb);
+    void SetFramebuffer(uint32_t* fb) override;
+	void ClearFramebuffer() override;
 
     void Update() override;
 	void UpdatePartial() override;
-	void UpdateTitle(std::string title);
-	void UpdateTitle();
+	void UpdateTitle(std::string title) override;
+	void UpdateTitle() override;
 
     void Close() override;
 
@@ -35,7 +38,7 @@ private:
     SDL_Renderer* m_renderer;
     SDL_Texture* m_texture;
 	SDL_Texture* m_imguiTexture;
-	bool m_imGui = false;
+	std::mutex m_framebufferMutex;
 };
 
 #endif

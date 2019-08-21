@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "../common.hpp"
 #include "../pixel.hpp"
 
 Display::Display() 
@@ -70,33 +71,49 @@ bool Display::InitImGui() {
 	m_imguiTexture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_TARGET, 100, 100);
 
 	if (!m_imguiTexture) return false;
-	m_imGui = true;
+	ImGui = true;
 	return true;
 }
 
 void Display::SetPixel(int x, int y, Pixel p) {
+	m_framebufferMutex.lock();
     Framebuffer[y * this->XRes + x] = p.rgb();
+	m_framebufferMutex.unlock();
 }
 
 void Display::SetPixel(int x, int y, uint32_t p) {
+	m_framebufferMutex.lock();
     Framebuffer[y * this->XRes + x] = p;
+	m_framebufferMutex.unlock();
 }
 
 void Display::SetPixelSafe(int x, int y, Pixel p) {
     if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
+		m_framebufferMutex.lock();
         Framebuffer[y * this->XRes + x] = p.rgb();
-    }
+		m_framebufferMutex.unlock();
+	}
 }
 
 void Display::SetPixelSafe(int x, int y, uint32_t p) {
     if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
+		m_framebufferMutex.lock();
         Framebuffer[y * this->XRes + x] = p;
-    }
+		m_framebufferMutex.unlock();
+	}
 }
 
 void Display::SetFramebuffer(uint32_t* fb) {
+	m_framebufferMutex.lock();
     Framebuffer = nullptr;
     Framebuffer = fb;
+	m_framebufferMutex.unlock();
+}
+
+void Display::ClearFramebuffer() {
+	m_framebufferMutex.lock();
+	memset((void*)Framebuffer, 0, (XRes * YRes) * sizeof(uint32_t));
+	m_framebufferMutex.unlock();
 }
 
 void Display::Update() {
@@ -114,6 +131,7 @@ void Display::Update() {
 
 	ImGui::Render();
 	ImGuiSDL::Render(ImGui::GetDrawData());
+
     SDL_RenderPresent(m_renderer);
 }
 
