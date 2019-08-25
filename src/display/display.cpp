@@ -87,6 +87,13 @@ void Display::SetPixel(int x, int y, uint32_t p) {
 	m_framebufferMutex.unlock();
 }
 
+void Display::SetPixel(int x, int y, glm::vec3 p) {
+	Pixel pixel{ (uint8_t)p.x, (uint8_t)p.y, (uint8_t)p.z };
+	m_framebufferMutex.lock();
+	Framebuffer[y * this->XRes + x] = pixel.rgb();
+	m_framebufferMutex.unlock();
+}
+
 void Display::SetPixelSafe(int x, int y, Pixel p) {
     if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
 		m_framebufferMutex.lock();
@@ -99,6 +106,15 @@ void Display::SetPixelSafe(int x, int y, uint32_t p) {
     if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
 		m_framebufferMutex.lock();
         Framebuffer[y * this->XRes + x] = p;
+		m_framebufferMutex.unlock();
+	}
+}
+
+void Display::SetPixelSafe(int x, int y, glm::vec3 p) {
+	if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
+		Pixel pixel{ (uint8_t)p.x, (uint8_t)p.y, (uint8_t)p.z };
+		m_framebufferMutex.lock();
+		Framebuffer[y * this->XRes + x] = pixel.rgb();
 		m_framebufferMutex.unlock();
 	}
 }
@@ -151,13 +167,13 @@ void Display::UpdateTitle() {
 }
 
 void Display::Close() {
-    free(Framebuffer);
+    Active = false;
 	SDL_DestroyTexture(m_texture);
 	SDL_DestroyTexture(m_imguiTexture);
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_window);
     SDL_Quit();
-    Active = false;
+    free(Framebuffer);
 }
 
 Display::~Display() {

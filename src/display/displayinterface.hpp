@@ -2,6 +2,7 @@
 #define INFERNO_DISPLAY_DISPLAYINTERFACE_H_
 
 #include "../common.hpp"
+#include "../maths.hpp"
 
 class Pixel;
 
@@ -21,8 +22,10 @@ public:
 
     virtual void SetPixel(int x, int y, Pixel p) = 0;
     virtual void SetPixel(int x, int y, uint32_t p) = 0;
+	virtual	void SetPixel(int x, int y, glm::vec3 p) = 0;
     virtual void SetPixelSafe(int x, int y, Pixel p) = 0;
     virtual void SetPixelSafe(int x, int y, uint32_t p) = 0;
+	virtual	void SetPixelSafe(int x, int y, glm::vec3 p) = 0;
 
 	virtual void SetFramebuffer(uint32_t* fb) = 0;
 	virtual void ClearFramebuffer() = 0;

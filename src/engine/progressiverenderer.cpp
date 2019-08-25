@@ -1,5 +1,7 @@
 #include "progressiverenderer.hpp"
 
+#include "renderengine.hpp"
+
 #include "../common.hpp"
 #include "../pixel.hpp"
 #include "../display/displayinterface.hpp"
@@ -16,8 +18,10 @@ ProgressiveRenderer::ProgressiveRenderer() {
 }
 
 void ProgressiveRenderer::Init(DisplayInterface* interface, Scene* scene) {
+	m_engine = new RenderEngine();
+	m_engine->SetScene(scene);
     m_interface = interface;
-    m_scene = scene;
+	m_scene = scene;
 }
 
 void ProgressiveRenderer::Input() {
@@ -31,69 +35,79 @@ void ProgressiveRenderer::Input() {
 	ImGui::Begin("Debug");
 	ImGui::Text("Hello, world %d", 123);
 	if (ImGui::Button("Save")) {}
-	char* buf = ""; float f;
 	ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
 	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
 	ImGui::End();
+}
+
+void workerThread(ProgressiveRenderer* renderer, int idd, int xStart, int xRange) {
+	while (!renderer->Ready) { 
+		std::chrono::milliseconds dura(10);
+		std::this_thread::sleep_for(dura);
+	}
+
+	while (renderer->Ready) {
+		for (int x = xStart; x < xStart + xRange; x++)
+		for (int y = 0; y < renderer->m_scene->h; y++) {
+			Ray ray = renderer->m_scene->camera->CastRay(x, y);
+			glm::vec3 col = renderer->m_engine->GetColour(ray, 0);
+			renderer->m_interface->SetPixelSafe(x, y, col);
+		}
+	}
 }
 
 void ProgressiveRenderer::Render() {
     int frames = 0;
     auto startTime = std::chrono::high_resolution_clock::now();
 
+	// Allocates threads with ranges to render
+	for (int i = 0; i < m_workerMax; i++) {
+		if (i == m_workerMax - 1) {
+			m_workers.push_back(new std::thread(workerThread, this, i, 
+				(m_scene->w / m_workerMax) * i, 
+				-((m_scene->w / m_workerMax) * i - m_scene->w)
+			));
+		} else {
+			m_workers.push_back(new std::thread(workerThread, this, i,
+				(m_scene->w / m_workerMax) * i, 
+				(m_scene->w / m_workerMax) * (i + 1) - (m_scene->w / m_workerMax) * i
+			));
+		}
+	}
 
+	int lastTime = SDL_GetTicks();
+	// Starts render loop
 	while (m_interface->Active) {
-
-
-
+		Ready = true;
+		
+		// TODO: Queue frame jobs properly
+		
 		Input();
-
 		m_interface->Update();
 	}
 
+	Ready = false;
+	for (auto& thread : m_workers) {
+		thread->join();
+	}
 
-    while (m_interface->Active) {
-        auto frameStartTime = std::chrono::high_resolution_clock::now();
+    // auto frameStartTime = std::chrono::high_resolution_clock::now();
 
-		#pragma omp parallel for schedule(dynamic)
-        for (int x = 0; x < m_scene->w; x++)
-        for (int y = 0; y < m_scene->h; y++) {
+    // auto endTime = std::chrono::high_resolution_clock::now();
 
-            Ray ray = m_scene->camera->CastRay(x, y);
+    // frames++;
+    // std::cout << "Frame: " << frames << std::endl;
+    // std::cout << "Frame Time:     " << std::chrono::duration_cast<std::chrono::seconds>(endTime - frameStartTime).count()
+    //           << ":" << std::chrono::duration_cast<std::chrono::milliseconds>(endTime - frameStartTime).count() << "s" << std::endl;
+    // std::cout << "Avg Frame Time: " << std::chrono::duration_cast<std::chrono::seconds>(endTime - startTime).count() / frames
+    //           << ":" << std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count() / frames << "s"
+    //           << std::endl << std::endl;
 
-            float t;
-            Primative* hit = nullptr;
-			bool didhit = TraceRayScene(ray, m_scene, t, hit);
-            if (!didhit) {
-                m_interface->SetPixelSafe(x, y, 0x000000);
-                continue;
-            }
-    
-            glm::vec3 hitPoint = ray.origin + ray.direction * t;
-
-            glm::vec3 normal = hit->SurfaceNormal(hitPoint);
-            Pixel col((normal.x + 1.0f) * 127.5f, (normal.y + 1.0f) * 127.5f, (normal.z + 1.0f) * 127.5f);
-            m_interface->SetPixelSafe(x, y, col.rgb());
-        }
-
-
-        auto endTime = std::chrono::high_resolution_clock::now();
-
-        frames++;
-        std::cout << "Frame: " << frames << std::endl;
-        std::cout << "Frame Time:     " << std::chrono::duration_cast<std::chrono::seconds>(endTime - frameStartTime).count()
-                  << ":" << std::chrono::duration_cast<std::chrono::milliseconds>(endTime - frameStartTime).count() << "s" << std::endl;
-        std::cout << "Avg Frame Time: " << std::chrono::duration_cast<std::chrono::seconds>(endTime - startTime).count() / frames
-                  << ":" << std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count() / frames << "s"
-                  << std::endl << std::endl;
-
-        // Swap framebuffers
-        m_interface->Update();
-		m_interface->ClearFramebuffer();
-    }
+    // Swap framebuffers
+    // m_interface->Update();
+	// m_interface->ClearFramebuffer();
 }
 
 void ProgressiveRenderer::RenderProgressive() {
 
 }
-

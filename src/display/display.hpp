@@ -3,8 +3,10 @@
 
 #include <mutex>
 
-#include "../common.hpp"
 #include "displayinterface.hpp"
+
+#include "../common.hpp"
+#include "../maths.hpp"
 
 class Pixel;
 
@@ -18,8 +20,10 @@ public:
 
     void SetPixel(int x, int y, Pixel p) override;
     void SetPixel(int x, int y, uint32_t p) override;
+	void SetPixel(int x, int y, glm::vec3 p) override;
     void SetPixelSafe(int x, int y, Pixel p) override;
-    void SetPixelSafe(int x, int y, uint32_t p) override;
+	void SetPixelSafe(int x, int y, glm::vec3 p) override;
+	void SetPixelSafe(int x, int y, uint32_t p) override;
 
     void SetFramebuffer(uint32_t* fb) override;
 	void ClearFramebuffer() override;

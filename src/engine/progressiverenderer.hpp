@@ -1,13 +1,18 @@
 #ifndef INFERNO_ENGINE_PROGRESSIVERENDERER_H_
 #define INFERNO_ENGINE_PROGRESSIVERENDERER_H_
 
+#include "../maths.hpp"
+
+#include <sstream>
 #include <vector>
 #include <chrono>
 #include <thread>
 #include <mutex>
 
 class DisplayInterface;
+class RenderEngine;
 class Scene;
+class Ray;
 
 class ProgressiveRenderer {
 public:
@@ -19,15 +24,23 @@ public:
     void Render();
 	void RenderProgressive();
 
-private:
-    DisplayInterface* m_interface = nullptr;
+	bool Ready = false;
 
+	bool MXAA = true;
+public:
     Scene* m_scene = nullptr;
+    DisplayInterface* m_interface = nullptr;
+	RenderEngine* m_engine = nullptr;
 
-	int m_workerMax = 16;
+	int m_workerMax = 6;
 	std::vector<std::thread*> m_workers;
+	std::vector<bool> m_workerStatus;
+private:
+	std::mutex m_mutex;
 
-	bool m_mxaa = true;
+	char* buf = ""; float f = 0.0f;
 };
+
+void workerThread(ProgressiveRenderer* renderer, int idd, int xStart, int xRange);
 
 #endif
