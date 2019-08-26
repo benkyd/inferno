@@ -41,6 +41,6 @@ private:
 	char* buf = ""; float f = 0.0f;
 };
 
-void workerThread(ProgressiveRenderer* renderer, int idd, int xStart, int xRange);
+void workerThread(ProgressiveRenderer* renderer, int idd, int yStart, int yRange);
 
 #endif

@@ -33,22 +33,18 @@ void ProgressiveRenderer::Input() {
 
 	ImGui::NewFrame();
 	ImGui::Begin("Debug");
-	ImGui::Text("Hello, world %d", 123);
-	if (ImGui::Button("Save")) {}
-	ImGui::InputText("string", buf, IM_ARRAYSIZE(buf));
-	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
 	ImGui::End();
 }
 
-void workerThread(ProgressiveRenderer* renderer, int idd, int xStart, int xRange) {
+void workerThread(ProgressiveRenderer* renderer, int idd, int yStart, int yRange) {
 	while (!renderer->Ready) { 
 		std::chrono::milliseconds dura(10);
 		std::this_thread::sleep_for(dura);
 	}
 
 	while (renderer->Ready) {
-		for (int x = xStart; x < xStart + xRange; x++)
-		for (int y = 0; y < renderer->m_scene->h; y++) {
+		for (int y = yStart; y < yStart + yRange; y++)
+		for (int x = 0; x < renderer->m_scene->w; x++) {
 			Ray ray = renderer->m_scene->camera->CastRay(x, y);
 			glm::vec3 col = renderer->m_engine->GetColour(ray, 0);
 			renderer->m_interface->SetPixelSafe(x, y, col);
@@ -57,20 +53,37 @@ void workerThread(ProgressiveRenderer* renderer, int idd, int xStart, int xRange
 }
 
 void ProgressiveRenderer::Render() {
-    int frames = 0;
-    auto startTime = std::chrono::high_resolution_clock::now();
+
+	/* 
+		New design is needed
+		as follows is pretty
+		good
+
+		class threadpool {
+			vector thread* threads
+			vector bool status
+			vector uint32 buffers
+			void merge()
+		}
+	
+		maybe
+
+		class thread {
+			framebuffer
+		}
+	*/
 
 	// Allocates threads with ranges to render
 	for (int i = 0; i < m_workerMax; i++) {
 		if (i == m_workerMax - 1) {
 			m_workers.push_back(new std::thread(workerThread, this, i, 
-				(m_scene->w / m_workerMax) * i, 
-				-((m_scene->w / m_workerMax) * i - m_scene->w)
+				(m_scene->h / m_workerMax) * i, 
+				-((m_scene->h / m_workerMax) * i - m_scene->h)
 			));
 		} else {
 			m_workers.push_back(new std::thread(workerThread, this, i,
-				(m_scene->w / m_workerMax) * i, 
-				(m_scene->w / m_workerMax) * (i + 1) - (m_scene->w / m_workerMax) * i
+				(m_scene->h / m_workerMax) * i, 
+				(m_scene->h / m_workerMax) * (i + 1) - (m_scene->h / m_workerMax) * i
 			));
 		}
 	}
@@ -90,22 +103,6 @@ void ProgressiveRenderer::Render() {
 	for (auto& thread : m_workers) {
 		thread->join();
 	}
-
-    // auto frameStartTime = std::chrono::high_resolution_clock::now();
-
-    // auto endTime = std::chrono::high_resolution_clock::now();
-
-    // frames++;
-    // std::cout << "Frame: " << frames << std::endl;
-    // std::cout << "Frame Time:     " << std::chrono::duration_cast<std::chrono::seconds>(endTime - frameStartTime).count()
-    //           << ":" << std::chrono::duration_cast<std::chrono::milliseconds>(endTime - frameStartTime).count() << "s" << std::endl;
-    // std::cout << "Avg Frame Time: " << std::chrono::duration_cast<std::chrono::seconds>(endTime - startTime).count() / frames
-    //           << ":" << std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime).count() / frames << "s"
-    //           << std::endl << std::endl;
-
-    // Swap framebuffers
-    // m_interface->Update();
-	// m_interface->ClearFramebuffer();
 }
 
 void ProgressiveRenderer::RenderProgressive() {

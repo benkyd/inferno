@@ -88,7 +88,7 @@ void Display::SetPixel(int x, int y, uint32_t p) {
 }
 
 void Display::SetPixel(int x, int y, glm::vec3 p) {
-	Pixel pixel{ (uint8_t)p.x, (uint8_t)p.y, (uint8_t)p.z };
+	Pixel pixel{ (uint8_t)p.r, (uint8_t)p.g, (uint8_t)p.b };
 	m_framebufferMutex.lock();
 	Framebuffer[y * this->XRes + x] = pixel.rgb();
 	m_framebufferMutex.unlock();
@@ -112,7 +112,7 @@ void Display::SetPixelSafe(int x, int y, uint32_t p) {
 
 void Display::SetPixelSafe(int x, int y, glm::vec3 p) {
 	if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
-		Pixel pixel{ (uint8_t)p.x, (uint8_t)p.y, (uint8_t)p.z };
+		Pixel pixel{ (uint8_t)p.r, (uint8_t)p.g, (uint8_t)p.b };
 		m_framebufferMutex.lock();
 		Framebuffer[y * this->XRes + x] = pixel.rgb();
 		m_framebufferMutex.unlock();
