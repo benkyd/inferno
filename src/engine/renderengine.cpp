@@ -15,7 +15,7 @@ void RenderEngine::SetScene(Scene* scene) {
 }
 
 glm::vec3 RenderEngine::GetColour(Ray ray, int depth) {
-	
+
 	float t; Primative* hit = nullptr;
 	bool didhit = TraceRayScene(ray, m_scene, t, hit);
 	if (!didhit) {
@@ -24,7 +24,12 @@ glm::vec3 RenderEngine::GetColour(Ray ray, int depth) {
 
 	glm::vec3 hitPoint = ray.origin + ray.direction * t;
 
-	glm::vec3 normal = hit->SurfaceNormal(hitPoint);
+	if (Mode == MODE_RENDER_NORMALS) { return GetNormalColour(hit, hitPoint); } else { }
 
+	return { 1.0f, 1.0f, 1.0f };
+}
+
+glm::vec3 RenderEngine::GetNormalColour(Primative* hit, glm::vec3 hitPoint) {
+	glm::vec3 normal = hit->SurfaceNormal(hitPoint);
 	return { (normal.x + 1.0f) * 127.5f, (normal.y + 1.0f) * 127.5f, (normal.z + 1.0f) * 127.5f };
 }

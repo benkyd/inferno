@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "../display/framebuffer.hpp"
 #include "../common.hpp"
 #include "../pixel.hpp"
 
@@ -20,7 +21,7 @@ bool Display::InitVideoDisplay(std::string title, int x, int y) {
 
     m_window = SDL_CreateWindow(
         title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-        this->XRes * this->Scale, this->YRes * this->Scale,
+        this->XRes, this->YRes,
         SDL_WINDOW_ALLOW_HIGHDPI
     );
 
@@ -53,9 +54,8 @@ bool Display::InitVideoDisplay(std::string title, int x, int y) {
         return false;    
     }
 
-    Framebuffer = (uint32_t*)malloc(this->XRes * this->YRes * sizeof(uint32_t));
-    memset((void*)Framebuffer, 0, this->XRes * this->YRes * sizeof(uint32_t));
-    if (!Framebuffer) {
+	Framebuffer = new FrameBuffer(this->XRes, this->YRes);
+	if (!Framebuffer) {
         // Add error
         std::cout << "ERROR: COULD NOT ALLOCATE FRAMEBUFFER" << std::endl;
         return false;    
@@ -75,63 +75,6 @@ bool Display::InitImGui() {
 	return true;
 }
 
-void Display::SetPixel(int x, int y, Pixel p) {
-	m_framebufferMutex.lock();
-    Framebuffer[y * this->XRes + x] = p.rgb();
-	m_framebufferMutex.unlock();
-}
-
-void Display::SetPixel(int x, int y, uint32_t p) {
-	m_framebufferMutex.lock();
-    Framebuffer[y * this->XRes + x] = p;
-	m_framebufferMutex.unlock();
-}
-
-void Display::SetPixel(int x, int y, glm::vec3 p) {
-	Pixel pixel{ (uint8_t)p.r, (uint8_t)p.g, (uint8_t)p.b };
-	m_framebufferMutex.lock();
-	Framebuffer[y * this->XRes + x] = pixel.rgb();
-	m_framebufferMutex.unlock();
-}
-
-void Display::SetPixelSafe(int x, int y, Pixel p) {
-    if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
-		m_framebufferMutex.lock();
-        Framebuffer[y * this->XRes + x] = p.rgb();
-		m_framebufferMutex.unlock();
-	}
-}
-
-void Display::SetPixelSafe(int x, int y, uint32_t p) {
-    if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
-		m_framebufferMutex.lock();
-        Framebuffer[y * this->XRes + x] = p;
-		m_framebufferMutex.unlock();
-	}
-}
-
-void Display::SetPixelSafe(int x, int y, glm::vec3 p) {
-	if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
-		Pixel pixel{ (uint8_t)p.r, (uint8_t)p.g, (uint8_t)p.b };
-		m_framebufferMutex.lock();
-		Framebuffer[y * this->XRes + x] = pixel.rgb();
-		m_framebufferMutex.unlock();
-	}
-}
-
-void Display::SetFramebuffer(uint32_t* fb) {
-	m_framebufferMutex.lock();
-    Framebuffer = nullptr;
-    Framebuffer = fb;
-	m_framebufferMutex.unlock();
-}
-
-void Display::ClearFramebuffer() {
-	m_framebufferMutex.lock();
-	memset((void*)Framebuffer, 0, (XRes * YRes) * sizeof(uint32_t));
-	m_framebufferMutex.unlock();
-}
-
 void Display::Update() {
 	ImGuiIO& io = ImGui::GetIO();
 	int mouseX, mouseY, wheel = 0;
@@ -142,7 +85,7 @@ void Display::Update() {
 	io.MouseDown[1] = buttons & SDL_BUTTON(SDL_BUTTON_RIGHT);
 	io.MouseWheel = static_cast<float>(wheel);
 
-    SDL_UpdateTexture(m_texture, NULL, Framebuffer, this->XRes * sizeof(uint32_t));
+    SDL_UpdateTexture(m_texture, NULL, Framebuffer->Data, this->XRes * sizeof(uint32_t));
     SDL_RenderCopy(m_renderer, m_texture, NULL, NULL);
 
 	ImGui::Render();
@@ -152,7 +95,7 @@ void Display::Update() {
 }
 
 void Display::UpdatePartial() {
-	SDL_UpdateTexture(m_texture, NULL, Framebuffer, this->XRes * sizeof(uint32_t));
+	SDL_UpdateTexture(m_texture, NULL, Framebuffer->Data, this->XRes * sizeof(uint32_t));
 	SDL_RenderCopy(m_renderer, m_texture, NULL, NULL);
 	SDL_RenderPresent(m_renderer);
 }
@@ -173,7 +116,6 @@ void Display::Close() {
     SDL_DestroyRenderer(m_renderer);
     SDL_DestroyWindow(m_window);
     SDL_Quit();
-    free(Framebuffer);
 }
 
 Display::~Display() {

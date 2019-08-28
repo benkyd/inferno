@@ -15,7 +15,7 @@ class Mesh {
 public:
     Mesh(std::vector<Triangle*> triangles);
 
-    void Optimise(AccelerationMode mode = MODE_KD_SLOW);
+    void Optimise(AccelerationMode mode = MODE_ACCELERATION_KD_SLOW);
     bool Intersect(Ray ray, Triangle*& intersect, float& t);
 
     bool Optimised = false;

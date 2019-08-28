@@ -3,8 +3,8 @@ project(Inferno)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} CMakeModules/)
 cmake_policy(SET CMP0037 OLD)
-set(CMAKE_BUILD_TYPE Debug)
-SET(CMAKE_CXX_FLAGS "-g")
+#set(CMAKE_BUILD_TYPE Debug)
+#set(CMAKE_CXX_FLAGS "-g")
 
 set(executable output)
 set(SrcDIR ./src)
@@ -21,9 +21,9 @@ if (UNIX)
 endif(UNIX)
 
 if (WIN32)
-	SET(CMAKE_CXX_FLAGS "-IC:/dev/SDL2/include/ -LC:/dev/SDL2/lib/x64/")
-	#SET(CMAKE_CXX_FLAGS "-IC:/dev/SDL2_image/include/ -LC:/dev/SDL2_image/lib/x64/")
-	SET(CMAKE_CXX_FLAGS "-IC:/dev/glm")
+	set(CMAKE_CXX_FLAGS "-IC:/dev/SDL2/include/ -LC:/dev/SDL2/lib/x64/")
+	#set(CMAKE_CXX_FLAGS "-IC:/dev/SDL2_image/include/ -LC:/dev/SDL2_image/lib/x64/")
+	set(CMAKE_CXX_FLAGS "-IC:/dev/glm")
 
 	include_directories(${executable}
 		"C:/dev/glm"

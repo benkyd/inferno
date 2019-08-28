@@ -21,11 +21,11 @@ Acceleration::Acceleration(AccelerationMode mode) {
 void Acceleration::Construct(std::vector<Triangle*> triangles) {
     switch (m_mode) {
         case MODE_ACCELERATION_DEFAULT:
-        case MODE_NONE:
+        case MODE_ACCELERATION_NONE:
             Constructed = false;
             break;
 
-        case MODE_KD:
+        case MODE_ACCELERATION_KD:
             m_bbox = new BBox;
             m_bbox->MakeEmpty();
 	
@@ -41,7 +41,7 @@ void Acceleration::Construct(std::vector<Triangle*> triangles) {
             Constructed = true;
             break;
 
-        case MODE_KD_SLOW:
+        case MODE_ACCELERATION_KD_SLOW:
             BuildKDTreeSlow(m_kdtreeslow, triangles);
             Constructed = true;
             break;
@@ -56,14 +56,14 @@ bool Acceleration::Intersect(Ray ray, Triangle*& triMin, float& tMin) {
     if (!Constructed) return false;
     switch (m_mode) {
         case MODE_ACCELERATION_DEFAULT:
-        case MODE_NONE:
+        case MODE_ACCELERATION_NONE:
             break;
 
-        case MODE_KD:
+        case MODE_ACCELERATION_KD:
             return KDIntersect(m_kdtree, *m_bbox, ray, triMin, tMin);
             break;
 
-        case MODE_KD_SLOW:
+        case MODE_ACCELERATION_KD_SLOW:
             return KDIntersectSlow(m_kdtreeslow, &ray, triMin, tMin);
             break;
         

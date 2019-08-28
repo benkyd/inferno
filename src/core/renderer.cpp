@@ -33,21 +33,21 @@ void Renderer::InitRender(Scene* scene) {
 
 void Renderer::Render() {
     if (!RendererInitialized) return;
-    if (m_mode == MODE_PROGRESSIVE_GUI || m_mode == MODE_PROGRESSIVE_IMG) {
+    if (m_mode == MODE_OPERATION_PROGRESSIVE_GUI || m_mode == MODE_OPERATION_PROGRESSIVE_IMG) {
         RenderProgressive();
-    } else if (m_mode == MODE_SAMPLES_IMG) {
+    } else if (m_mode == MODE_OPERATION_SAMPLES_IMG) {
         RenderSamples();
     } else {
         // Add an error & return
     }
 }
 
-void Renderer::Render(uint32_t* framebuffer) {
+void Renderer::Render(FrameBuffer* framebuffer) {
     if (!RendererInitialized) return;
     m_framebuffer = framebuffer;
-    if (m_mode == MODE_PROGRESSIVE_GUI || m_mode == MODE_PROGRESSIVE_IMG) {
+    if (m_mode == MODE_OPERATION_PROGRESSIVE_GUI || m_mode == MODE_OPERATION_PROGRESSIVE_IMG) {
         RenderProgressive();
-    } else if (m_mode == MODE_SAMPLES_IMG) {
+    } else if (m_mode == MODE_OPERATION_SAMPLES_IMG) {
         RenderSamples();
     } else {
         // Add an error & return

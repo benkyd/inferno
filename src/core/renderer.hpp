@@ -3,9 +3,9 @@
 
 #include "../common.hpp"
 
-class DisplayInterface;
-
 class ProgressiveRenderer;
+class DisplayInterface;
+class FrameBuffer;
 
 class Scene;
 
@@ -24,14 +24,14 @@ public:
     bool RendererInitialized = false;
 
     void Render();
-    void Render(uint32_t* framebuffer);
+    void Render(FrameBuffer* framebuffer);
 
 private:
     int m_samples = -1;
     OperationMode m_mode = MODE_OPERATION_DEFAULT;
 
     DisplayInterface* m_interface = nullptr;
-    uint32_t* m_framebuffer = nullptr;
+    FrameBuffer* m_framebuffer = nullptr;
 
     Scene* m_scene = nullptr;
 

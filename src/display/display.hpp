@@ -18,16 +18,6 @@ public:
     bool InitVideoDisplay(std::string title, int x, int y);
 	bool InitImGui();
 
-    void SetPixel(int x, int y, Pixel p) override;
-    void SetPixel(int x, int y, uint32_t p) override;
-	void SetPixel(int x, int y, glm::vec3 p) override;
-    void SetPixelSafe(int x, int y, Pixel p) override;
-	void SetPixelSafe(int x, int y, glm::vec3 p) override;
-	void SetPixelSafe(int x, int y, uint32_t p) override;
-
-    void SetFramebuffer(uint32_t* fb) override;
-	void ClearFramebuffer() override;
-
     void Update() override;
 	void UpdatePartial() override;
 	void UpdateTitle(std::string title) override;

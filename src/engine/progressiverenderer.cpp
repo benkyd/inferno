@@ -7,6 +7,7 @@
 #include "../display/displayinterface.hpp"
 
 #include "../util/assetloader.hpp"
+#include "../util/threadpool.hpp"
 
 #include "../definitions/primatives/primative.hpp"
 #include "../definitions/camera.hpp"
@@ -18,7 +19,9 @@ ProgressiveRenderer::ProgressiveRenderer() {
 }
 
 void ProgressiveRenderer::Init(DisplayInterface* interface, Scene* scene) {
+	m_threadPool = new RenderThreadPool();
 	m_engine = new RenderEngine();
+	m_engine->Mode = MODE_RENDER_PATHTRACE;
 	m_engine->SetScene(scene);
     m_interface = interface;
 	m_scene = scene;
@@ -33,76 +36,30 @@ void ProgressiveRenderer::Input() {
 
 	ImGui::NewFrame();
 	ImGui::Begin("Debug");
+	ImGui::Checkbox("Render Normals", &m_normals);
+	if (m_normals) {
+		m_engine->Mode = MODE_RENDER_NORMALS;
+	} else {
+		m_engine->Mode = MODE_RENDER_PATHTRACE;
+	}
 	ImGui::End();
 }
 
-void workerThread(ProgressiveRenderer* renderer, int idd, int yStart, int yRange) {
-	while (!renderer->Ready) { 
-		std::chrono::milliseconds dura(10);
-		std::this_thread::sleep_for(dura);
-	}
-
-	while (renderer->Ready) {
-		for (int y = yStart; y < yStart + yRange; y++)
-		for (int x = 0; x < renderer->m_scene->w; x++) {
-			Ray ray = renderer->m_scene->camera->CastRay(x, y);
-			glm::vec3 col = renderer->m_engine->GetColour(ray, 0);
-			renderer->m_interface->SetPixelSafe(x, y, col);
-		}
-	}
-}
-
 void ProgressiveRenderer::Render() {
+	m_threadPool->SetJobs(this, m_scene->w, m_scene->h);
 
-	/* 
-		New design is needed
-		as follows is pretty
-		good
-
-		class threadpool {
-			vector thread* threads
-			vector bool status
-			vector uint32 buffers
-			void merge()
-		}
-	
-		maybe
-
-		class thread {
-			framebuffer
-		}
-	*/
-
-	// Allocates threads with ranges to render
-	for (int i = 0; i < m_workerMax; i++) {
-		if (i == m_workerMax - 1) {
-			m_workers.push_back(new std::thread(workerThread, this, i, 
-				(m_scene->h / m_workerMax) * i, 
-				-((m_scene->h / m_workerMax) * i - m_scene->h)
-			));
-		} else {
-			m_workers.push_back(new std::thread(workerThread, this, i,
-				(m_scene->h / m_workerMax) * i, 
-				(m_scene->h / m_workerMax) * (i + 1) - (m_scene->h / m_workerMax) * i
-			));
-		}
-	}
-
-	int lastTime = SDL_GetTicks();
 	// Starts render loop
-	while (m_interface->Active) {
-		Ready = true;
-		
-		// TODO: Queue frame jobs properly
-		
+	Ready = true;
+	m_threadPool->Ready = true;
+	while (m_interface->Active) {		
+		if (m_threadPool->CheckAllJobs()) m_threadPool->RunJobsAgain();
+
 		Input();
 		m_interface->Update();
 	}
 
 	Ready = false;
-	for (auto& thread : m_workers) {
-		thread->join();
-	}
+	m_threadPool->Destroy();
 }
 
 void ProgressiveRenderer::RenderProgressive() {

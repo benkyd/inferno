@@ -53,7 +53,7 @@ public:
     virtual ~InfernoEngine();
 private:
 
-    OperationMode m_mode = MODE_PROGRESSIVE_GUI; 
+    OperationMode m_mode = MODE_OPERATION_PROGRESSIVE_GUI; 
 
     // Initialized flag - core engine features can't
     // be changed while this flag is set to true

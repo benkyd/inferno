@@ -7,7 +7,7 @@ static const int height = 600;
 int main(int argc, char** argv) {
     InfernoEngine inferno;
 
-    inferno.SetMode(MODE_PROGRESSIVE_GUI);
+    inferno.SetMode(MODE_OPERATION_PROGRESSIVE_GUI);
 
     bool status = inferno.InitWindow(width, height);
     if (!status) {
