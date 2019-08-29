@@ -9,12 +9,19 @@
 class FrameBuffer;
 class Pixel;
 
-class MapBuffer {
+enum LastOperation {
+	OPERATION_NONE,
+	OPERATION_SET,
+	OPERATION_ADD
+};
+
+class ToneMapFrameBuffer {
 public:
-	MapBuffer(int xres, int yres);
+	ToneMapFrameBuffer(int xres, int yres);
 
 	void SetPixel(int x, int y, glm::vec3 p);
 	void SetPixelSafe(int x, int y, glm::vec3);
+	void AddPixelSafe(int x, int y, glm::vec3);
 
 	void SetFramebuffer(glm::vec3* fb);
 	void ClearFramebuffer();
@@ -24,10 +31,12 @@ public:
 	void MapBasic(FrameBuffer* buffer);
 
 
-	glm::vec3* Data;
+	LastOperation LastOp = OPERATION_NONE;
+	glm::vec3* RenderTo;
+	glm::vec3* ProcData;
 	int XRes, YRes;
 
-	~MapBuffer();
+	~ToneMapFrameBuffer();
 };
 
 #endif

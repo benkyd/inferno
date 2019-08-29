@@ -6,7 +6,7 @@
 
 #include "../display/displayinterface.hpp"
 #include "../display/framebuffer.hpp"
-#include "../display/tonemap.hpp"
+#include "../display/tonemapfb.hpp"
 
 #include "../engine/renderengine.hpp"
 #include "../engine/progressiverenderer.hpp"
@@ -18,7 +18,7 @@ RenderThreadPool::RenderThreadPool() {
 };
 
 void RenderThreadPool::SetJobs(ProgressiveRenderer* renderer, int w, int h) {
-	MappedThreadFrameBuffer = new MapBuffer(w, h);
+	MappedThreadFrameBuffer = new ToneMapFrameBuffer(w, h);
 	ThreadFrameBuffer = new FrameBuffer(w, h);
 	for (int i = 0; i < ThreadCount; i++) {
 		if (i == ThreadCount - 1) {
@@ -26,15 +26,15 @@ void RenderThreadPool::SetJobs(ProgressiveRenderer* renderer, int w, int h) {
 				 (w / ThreadCount) * i,
 			   -((w / ThreadCount) * i - w)
 			));
-			RenderRegions.push_back({ ((w / ThreadCount) * i) * w, 
-									(-((w / ThreadCount) * i  - w)) * w });
+			//RenderRegions.push_back({ ((w / ThreadCount) * i) * w, 
+			//						(-((w / ThreadCount) * i  - w)) * w });
 		} else {
 			Pool.push_back(new std::thread(workerThread, this, renderer, i,
 				(h / ThreadCount) * i,
 				(h / ThreadCount) * (i + 1) - (h / ThreadCount) * i
 			));
-			RenderRegions.push_back({ ((h / ThreadCount) * i) * w, 
-									  ((h / ThreadCount) * (i + 1) - (h / ThreadCount) * i) * w });
+			//RenderRegions.push_back({ ((h / ThreadCount) * i) * w, 
+			//						  ((h / ThreadCount) * (i + 1) - (h / ThreadCount) * i) * w });
 		}
 	}
 }

@@ -7,8 +7,8 @@
 #include <tuple>
 
 class ProgressiveRenderer;
+class ToneMapFrameBuffer;
 class FrameBuffer;
-class MapBuffer;
 
 class ThreadPool {
 public:
@@ -31,8 +31,8 @@ public:
 
 	void MergeBuffers(uint32_t* framebuffer, int w, int h);
 
-	std::vector<std::tuple<int, int>> RenderRegions; // offest, size
-	MapBuffer* MappedThreadFrameBuffer;
+	// std::vector<std::tuple<int, int>> RenderRegions; // offest, size
+	ToneMapFrameBuffer* MappedThreadFrameBuffer;
 	FrameBuffer* ThreadFrameBuffer;
 };
 

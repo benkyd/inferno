@@ -4,9 +4,7 @@
 #include "../common.hpp"
 #include "../maths.hpp"
 
-#include <sstream>
 #include <vector>
-#include <chrono>
 #include <thread>
 #include <mutex>
 
@@ -24,9 +22,11 @@ public:
 
 	void Input();
     void Render();
-	void RenderProgressive();
 
 	bool Ready = false;
+	std::vector<float> FrameTimes = { };
+	std::vector<float> AllFrameTimes = { };
+	float AverageFrameTime = 0.0f;
 
 public:
 	RenderThreadPool* m_threadPool = nullptr;
@@ -37,7 +37,13 @@ public:
 private:
 	std::mutex m_mutex;
 
-	bool m_normals = true;
+	void m_calculateTimes(std::chrono::high_resolution_clock::time_point frameStartTime,
+						  std::chrono::high_resolution_clock::time_point frameEndTime);
+	
+	int m_renderModeSelected = 0;
+	int m_toneMapModeSelected = 1;
+
+	int m_framesRendererd = 0;
 };
 
 #endif
