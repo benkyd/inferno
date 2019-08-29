@@ -2,6 +2,7 @@
 #define INFERNO_PIXEL_H_
 
 #include <algorithm>
+#include "maths.hpp"
 
 struct Pixel {
     uint8_t a;
@@ -31,6 +32,14 @@ struct Pixel {
 
 inline uint8_t Clamp(int n, int upper, int lower) {
     return std::max(lower, std::min(n, upper));
+}
+
+inline glm::vec3 Clamp(glm::vec3 in, float upper, float lower) {
+	glm::vec3 ret;
+	ret.r = std::max(lower, std::min(in.r, upper));
+	ret.g = std::max(lower, std::min(in.g, upper));
+	ret.b = std::max(lower, std::min(in.b, upper));
+	return ret;
 }
 
 inline uint32_t argb8888(uint8_t a, uint8_t r, uint8_t g, uint8_t b) {

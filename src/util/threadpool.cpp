@@ -6,6 +6,7 @@
 
 #include "../display/displayinterface.hpp"
 #include "../display/framebuffer.hpp"
+#include "../display/tonemap.hpp"
 
 #include "../engine/renderengine.hpp"
 #include "../engine/progressiverenderer.hpp"
@@ -16,19 +17,24 @@ RenderThreadPool::RenderThreadPool() {
 	}
 };
 
-void RenderThreadPool::SetJobs(ProgressiveRenderer* renderer, int x, int y) {
+void RenderThreadPool::SetJobs(ProgressiveRenderer* renderer, int w, int h) {
+	MappedThreadFrameBuffer = new MapBuffer(w, h);
+	ThreadFrameBuffer = new FrameBuffer(w, h);
 	for (int i = 0; i < ThreadCount; i++) {
 		if (i == ThreadCount - 1) {
 			Pool.push_back(new std::thread(workerThread, this, renderer, i,
-				 (x / ThreadCount) * i,
-			   -((x / ThreadCount) * i - x)
+				 (w / ThreadCount) * i,
+			   -((w / ThreadCount) * i - w)
 			));
-		}
-		else {
+			RenderRegions.push_back({ ((w / ThreadCount) * i) * w, 
+									(-((w / ThreadCount) * i  - w)) * w });
+		} else {
 			Pool.push_back(new std::thread(workerThread, this, renderer, i,
-				(y / ThreadCount) * i,
-				(y / ThreadCount) * (i + 1) - (y / ThreadCount) * i
+				(h / ThreadCount) * i,
+				(h / ThreadCount) * (i + 1) - (h / ThreadCount) * i
 			));
+			RenderRegions.push_back({ ((h / ThreadCount) * i) * w, 
+									  ((h / ThreadCount) * (i + 1) - (h / ThreadCount) * i) * w });
 		}
 	}
 }
@@ -57,36 +63,10 @@ void RenderThreadPool::RunJobsAgain() {
 	ThreadLock.unlock();
 }
 
-void RenderThreadPool::MergeBuffers(uint32_t* Framebuffer) {
-
+void RenderThreadPool::MergeBuffers(uint32_t* framebuffer, int w, int h) {	
+	memcpy((void*)framebuffer, (void*)ThreadFrameBuffer->Data, (w * h) * sizeof(uint32_t));
 }
 
 void RenderThreadPool::Destroy() {
 
-}
-
-void workerThread(RenderThreadPool* threadpool, ProgressiveRenderer* renderer, int idd, int yStart, int yRange) {
-	while (!renderer->Ready && !threadpool->Ready) {
-		std::chrono::milliseconds dura(10);
-		std::this_thread::sleep_for(dura);
-	}
-
-	while (renderer->Ready && threadpool->Ready) {
-
-		for (int y = yStart; y < yStart + yRange; y++)
-		for (int x = 0; x < renderer->m_scene->w; x++) {
-			Ray ray = renderer->m_scene->camera->CastRay(x, y);
-			glm::vec3 col = renderer->m_engine->GetColour(ray, 0);
-			renderer->m_interface->Framebuffer->SetPixelSafe(x, y, col);
-		}
-
-		threadpool->ThreadLock.lock();
-		threadpool->ThreadStatus[idd] = true;
-		threadpool->ThreadLock.unlock();
-
-		while (threadpool->ThreadStatus[idd]) { 
-			std::chrono::milliseconds dura(1);
-			std::this_thread::sleep_for(dura);
-		}
-	}
 }

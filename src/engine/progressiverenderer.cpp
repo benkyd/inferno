@@ -4,7 +4,10 @@
 
 #include "../common.hpp"
 #include "../pixel.hpp"
+
 #include "../display/displayinterface.hpp"
+#include "../display/framebuffer.hpp"
+#include "../display/tonemap.hpp"
 
 #include "../util/assetloader.hpp"
 #include "../util/threadpool.hpp"
@@ -52,7 +55,11 @@ void ProgressiveRenderer::Render() {
 	Ready = true;
 	m_threadPool->Ready = true;
 	while (m_interface->Active) {		
-		if (m_threadPool->CheckAllJobs()) m_threadPool->RunJobsAgain();
+		if (m_threadPool->CheckAllJobs()) {
+			m_threadPool->MappedThreadFrameBuffer->ClampBasic(m_threadPool->ThreadFrameBuffer);
+			m_threadPool->MergeBuffers(m_interface->Framebuffer->Data, m_scene->w, m_scene->h);
+			m_threadPool->RunJobsAgain();
+		}
 
 		Input();
 		m_interface->Update();
