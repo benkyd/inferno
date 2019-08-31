@@ -1,6 +1,7 @@
 #ifndef INFERNO_DEFINITIONS_PRIMATIVES_PRIMATIVE_H_
 #define INFERNO_DEFINITIONS_PRIMATIVES_PRIMATIVE_H_
 
+#include "../materials/material.hpp"
 #include "../../maths.hpp"
 
 class Ray;
@@ -24,26 +25,30 @@ public:
     glm::vec3 points[3];
     glm::vec3 normals[3];
 
+	Material* material = nullptr;
 
     PrimativeType type = TYPE_NONE;
 
     // Sphere constructor
-    Primative(glm::vec3 center, float radius) 
+    Primative(glm::vec3 center, float radius, Material* mat) 
         : center(center), radius(radius) { 
         type = TYPE_SPHERE;
+		material = mat;
     }
 
     // Plane constructor
-    Primative(glm::vec3 center, glm::vec3 normal) 
+    Primative(glm::vec3 center, glm::vec3 normal, Material* mat)
         : center(center), normal(normal) {
         type = TYPE_PLANE;
+		material = mat;
     }
 
     // Triangle constructor
-    Primative(glm::vec3 p0, glm::vec3 p1, glm::vec3 p2, glm::vec3 n0, glm::vec3 n1, glm::vec3 n2) {
+    Primative(glm::vec3 p0, glm::vec3 p1, glm::vec3 p2, glm::vec3 n0, glm::vec3 n1, glm::vec3 n2, Material* mat) {
 		points[0] = p0; points[1] = p1; points[2] = p2;
         normals[0] = n0; normals[1] = n1; normals[2] = n2;
         type = TYPE_TRI;
+		material = mat;
     }
 
     virtual bool Intersect(Ray& ray, float& t) = 0;

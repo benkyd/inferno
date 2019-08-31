@@ -62,6 +62,7 @@ file(GLOB SourceFiles
     ${SrcDIR}/engine/*
     ${SrcDIR}/display/*
     ${SrcDIR}/definitions/*
+    ${SrcDIR}/definitions/materials/*
     ${SrcDIR}/definitions/primatives/*
 	${SrcDIR}/util/*
 	${SrcDIR}/util/imgui/*

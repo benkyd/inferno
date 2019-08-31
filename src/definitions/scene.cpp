@@ -8,5 +8,5 @@ Scene::Scene(int width, int height) {
 }
 
 glm::vec3 Scene::SampleSky(Ray ray) {
-	return { 10.0f, 10.0f, 10.0f };
+	return { 0.0f, 0.0f, 0.0f };
 }

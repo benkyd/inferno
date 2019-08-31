@@ -23,6 +23,8 @@ public:
 	void ClearFramebuffer();
 	uint32_t* Data;
 	int XRes, YRes;
+	float Gamma = 1.0f / 2.3f;
+
 
 	~FrameBuffer();
 };

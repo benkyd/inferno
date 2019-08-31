@@ -3,6 +3,8 @@
 #define TINYOBJLOADER_IMPLEMENTATION // define this in only *one* .cpp
 #include "tiny_obj_loader.hpp"
 
+#include "../definitions/materials/material.hpp"
+
 #include "../definitions/primatives/primative.hpp"
 #include "../definitions/primatives/triangle.hpp"
 #include "../maths.hpp"
@@ -19,14 +21,14 @@ glm::vec3 getNormal(glm::vec3 p0, glm::vec3 p1, glm::vec3 p2) {
 	return normal;
 }
 
-std::vector<Triangle*> LoadTrianglesBasic(std::string path) {
+std::vector<Triangle*> LoadTrianglesBasic(std::string path, std::string basePath) {
     tinyobj::attrib_t attrib;
     std::vector<tinyobj::shape_t> shapes;
     std::vector<tinyobj::material_t> materials;
 
     std::string warn, err;
 
-	bool canLoad = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, path.c_str());
+	bool canLoad = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, path.c_str(), basePath.c_str());
 
 	if (!err.empty() || !canLoad) {
 		std::cerr << "Cannot load obj: '" << path << "': " << err << std::endl;
@@ -43,28 +45,30 @@ std::vector<Triangle*> LoadTrianglesBasic(std::string path) {
         size_t index_offset = 0;
         for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
             int fv = shapes[s].mesh.num_face_vertices[f];
-                if (fv == 3) {
-                    tinyobj::real_t avx[3];
-                    tinyobj::real_t avy[3];
-                    tinyobj::real_t avz[3];
+			if (fv == 3) {
+				tinyobj::real_t avx[3];
+				tinyobj::real_t avy[3];
+				tinyobj::real_t avz[3];
 
-                    tinyobj::real_t anx[3];
-                    tinyobj::real_t any[3];
-                    tinyobj::real_t anz[3];
+				tinyobj::real_t anx[3];
+				tinyobj::real_t any[3];
+				tinyobj::real_t anz[3];
 
-                    for (size_t v = 0; v < fv; v++) {
-                        tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
+				for (size_t v = 0; v < fv; v++) {
+					tinyobj::index_t idx = shapes[s].mesh.indices[index_offset + v];
 
-                        avx[v] = attrib.vertices[3 * idx.vertex_index + 0];
-                        avy[v] = attrib.vertices[3 * idx.vertex_index + 1];
-                        avz[v] = attrib.vertices[3 * idx.vertex_index + 2];
+					avx[v] = attrib.vertices[3 * idx.vertex_index + 0];
+					avy[v] = attrib.vertices[3 * idx.vertex_index + 1];
+					avz[v] = attrib.vertices[3 * idx.vertex_index + 2];
 
-                        anx[v] = attrib.normals[3 * idx.normal_index + 0];
-                        any[v] = attrib.normals[3 * idx.normal_index + 1];
-                        anz[v] = attrib.normals[3 * idx.normal_index + 2];
-                    }
+					anx[v] = attrib.normals[3 * idx.normal_index + 0];
+					any[v] = attrib.normals[3 * idx.normal_index + 1];
+					anz[v] = attrib.normals[3 * idx.normal_index + 2];
+				}
 
-                    // tinyobj::material_t material = materials[shapes[s].mesh.material_ids[f]];
+				tinyobj::material_t material = materials[shapes[s].mesh.material_ids[f]];
+
+				Material* mat = new Material({ material.diffuse[0], material.diffuse[1], material.diffuse[2] }, material.illum);
 
                     // glm::vec3 normal = getNormal(
                     //     {avx[0], avy[0], avz[0]},
@@ -82,6 +86,8 @@ std::vector<Triangle*> LoadTrianglesBasic(std::string path) {
                         {anx[0], any[0], anz[0]},
                         {anx[1], any[1], anz[1]},
                         {anx[2], any[2], anz[2]},
+
+						mat,
                     };
 
                     triangles.push_back(tmp);

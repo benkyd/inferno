@@ -5,8 +5,8 @@
 
 class Sphere : public Primative {
 public:
-    Sphere(glm::vec3 center, float radius)
-        : Primative(center, radius) { }
+    Sphere(glm::vec3 center, float radius, Material* mat = nullptr)
+        : Primative(center, radius, mat) { }
 
     bool Intersect(Ray& ray, float& t) override;
 	glm::vec3 SurfaceNormal(glm::vec3 hitPoint) override;

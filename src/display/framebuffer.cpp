@@ -17,7 +17,7 @@ void FrameBuffer::SetPixel(int x, int y, uint32_t p) {
 }
 
 void FrameBuffer::SetPixel(int x, int y, glm::vec3 p) {
-	Pixel pixel{ (uint8_t)(p.r * 255.0f), (uint8_t)(p.g * 255.0f), (uint8_t)(p.b * 255.0f) };
+	Pixel pixel{ (uint8_t)(pow(p.r, Gamma) * 255.0f), (uint8_t)(pow(p.g, Gamma) * 255.0f), (uint8_t)(pow(p.b, Gamma) * 255.0f) };
 	Data[y * this->XRes + x] = pixel.rgb();
 }
 
@@ -35,7 +35,7 @@ void FrameBuffer::SetPixelSafe(int x, int y, uint32_t p) {
 
 void FrameBuffer::SetPixelSafe(int x, int y, glm::vec3 p) {
 	if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
-		Pixel pixel{ (uint8_t)(p.r * 255.0f), (uint8_t)(p.g * 255.0f), (uint8_t)(p.b * 255.0f) };
+		Pixel pixel{ (uint8_t)(pow(p.r, Gamma) * 255.0f), (uint8_t)(pow(p.g, Gamma) * 255.0f), (uint8_t)(pow(p.b, Gamma) * 255.0f) };
 		Data[y * this->XRes + x] = pixel.rgb();
 	}
 }

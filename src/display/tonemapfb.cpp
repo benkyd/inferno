@@ -34,6 +34,15 @@ void ToneMapFrameBuffer::AddPixelSafe(int x, int y, glm::vec3 p) {
 	}
 }
 
+void ToneMapFrameBuffer::AddPixelSafeDepth(int x, int y, glm::vec3 p) {
+	if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
+		if (LastOp != OPERATION_ADD_DEPTH) { ClearFramebuffer(); }
+		LastOp = OPERATION_ADD_DEPTH;
+		RenderTo[y * this->XRes + x] += p;
+	}
+}
+
+
 void ToneMapFrameBuffer::SetFramebuffer(glm::vec3* fb) {
 	free(ProcData);
 	RenderTo = fb;

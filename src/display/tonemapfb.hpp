@@ -10,9 +10,10 @@ class FrameBuffer;
 class Pixel;
 
 enum LastOperation {
-	OPERATION_NONE,
 	OPERATION_SET,
-	OPERATION_ADD
+	OPERATION_ADD,
+	OPERATION_ADD_DEPTH,
+	OPERATION_NONE
 };
 
 class ToneMapFrameBuffer {
@@ -20,8 +21,9 @@ public:
 	ToneMapFrameBuffer(int xres, int yres);
 
 	void SetPixel(int x, int y, glm::vec3 p);
-	void SetPixelSafe(int x, int y, glm::vec3);
-	void AddPixelSafe(int x, int y, glm::vec3);
+	void SetPixelSafe(int x, int y, glm::vec3 p);
+	void AddPixelSafe(int x, int y, glm::vec3 p);
+	void AddPixelSafeDepth(int x, int y, glm::vec3 p);
 
 	void SetFramebuffer(glm::vec3* fb);
 	void ClearFramebuffer();

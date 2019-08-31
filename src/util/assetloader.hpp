@@ -8,6 +8,6 @@
 
 class Triangle;
 
-std::vector<Triangle*> LoadTrianglesBasic(std::string path);
+std::vector<Triangle*> LoadTrianglesBasic(std::string path, std::string basePath = "");
 
 #endif

@@ -44,6 +44,8 @@ private:
 	int m_toneMapModeSelected = 1;
 
 	int m_framesRendererd = 0;
+
+	float m_gamma = 2.3f;
 };
 
 #endif

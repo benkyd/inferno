@@ -5,8 +5,8 @@
 
 class Plane : public Primative {
 public:
-    Plane(glm::vec3 center, glm::vec3 normal)
-        : Primative(center, normal) { }
+    Plane(glm::vec3 center, glm::vec3 normal, Material* mat = nullptr)
+        : Primative(center, normal, mat) { }
 
     bool Intersect(Ray& ray, float& t) override;
 	glm::vec3 SurfaceNormal(glm::vec3 hitPoint) override;

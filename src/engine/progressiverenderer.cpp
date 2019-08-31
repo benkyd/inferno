@@ -51,8 +51,12 @@ void ProgressiveRenderer::Input() {
 	ImGui::NewFrame();
 	ImGui::Begin("Debug");
 
-	if (m_engine->Mode != MODE_RENDER_NORMALS) {
+	if (m_engine->Mode != MODE_RENDER_NORMALS && m_engine->Mode != MODE_RENDER_PATHLENGTH) {
 		std::stringstream str; str << "SPP: " << m_engine->SPP;
+		ImGui::Text(str.str().c_str());
+	}
+	else if (m_engine->Mode == MODE_RENDER_PATHLENGTH) {
+		std::stringstream str; str << "Depth SPP: " << m_engine->SPPDepth;
 		ImGui::Text(str.str().c_str());
 	}
 	std::stringstream str0; str0 << "FPS: " << 1.0f / AverageFrameTime;
@@ -71,12 +75,15 @@ void ProgressiveRenderer::Input() {
 	
 	ImGui::BeginChild("Render Settings");
 
-	const char* renderItems[] = { "PathTrace", "Normals" };
+	const char* renderItems[] = { "PathTrace", "Normals", "Path Length" };
 	ImGui::Combo("Render Mode", &m_renderModeSelected, renderItems, IM_ARRAYSIZE(renderItems));
 	m_engine->Mode = (RenderMode)m_renderModeSelected;
 
 	const char* toneMapItems[] = { "Clamp", "Basic Tonemap" };
 	ImGui::Combo("ToneMap Mode", &m_toneMapModeSelected, toneMapItems, IM_ARRAYSIZE(toneMapItems));
+
+	ImGui::SliderFloat("Gamma", &m_gamma, 1.0f, 3.0f);
+	m_interface->Framebuffer->Gamma = 1.0f / m_gamma;
 
 	ImGui::EndChild();
 	ImGui::End();

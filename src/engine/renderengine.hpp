@@ -13,15 +13,17 @@ public:
 	RenderEngine();
 
 	void SetScene(Scene* scene);
-	glm::vec3 GetColour(Ray ray, int depth);
+	glm::vec3 GetColour(Ray ray, int& depth);
 
 	void PostProcess(glm::vec3* src, glm::vec3* dst, int w, int h);
 
-	RenderMode Mode = MODE_RENDER_PATHTRACE;
+	RenderMode Mode = MODE_RENDER_DEFAULT;
 
 	int SPP = 0;
+	int SPPDepth = 0;
 
 private:
+
 	glm::vec3 GetNormalColour(glm::vec3 normal);
 
 	Scene* m_scene = nullptr;
