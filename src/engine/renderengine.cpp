@@ -3,6 +3,9 @@
 #include "../pixel.hpp"
 #include "../util/threadpool.hpp"
 
+#include "../definitions/materials/material.hpp"
+#include "../definitions/materials/random.hpp"
+
 #include "../definitions/primatives/primative.hpp"
 #include "../definitions/camera.hpp"
 #include "../definitions/scene.hpp"
@@ -31,7 +34,14 @@ void workerThread(RenderThreadPool* threadpool, ProgressiveRenderer* renderer, i
 
 		for (int y = yStart; y < yStart + yRange; y++)
 		for (int x = 0; x < renderer->m_scene->w; x++) {
-			Ray ray = renderer->m_scene->camera->CastRay(x, y);
+			
+			Ray ray = {};
+			
+			if (renderer->MXAA) 
+				ray = renderer->m_scene->camera->CastRay(x, y, rand01(), rand01());
+			else
+				ray = renderer->m_scene->camera->CastRay(x, y);
+
 			int depth = 0;
 			glm::vec3 col = renderer->m_engine->GetColour(ray, depth);
 			
@@ -76,15 +86,6 @@ glm::vec3 RenderEngine::GetColour(Ray ray, int& depth) {
 	glm::vec3 colour = hit->material->Colour;
 
 	if (hit->material->Emissive) return (colour * hit->material->Emittance);
-	//if (hit->type == TYPE_PLANE) {
-	//	glm::vec2 uv = hit->TexCoords(hitPoint);
-	//	float angle = fastDegreetoRadian(.0f);
-	//	float s = uv.x * cos(angle) - uv.y * sin(angle);
-	//	float t = uv.y * cos(angle) + uv.x * sin(angle);
-	//	float S = 0.05f; float T = 0.05f;
-	//	float pattern = (modulo(s * S) < 0.5f) ^ (modulo(t * T) < 0.5f);
-	//	colour.r = pattern; colour.g = pattern; colour.b = pattern;
-	//}
 
 	glm::vec3 direction = hit->material->Bounce(ray.direction, normal);
 

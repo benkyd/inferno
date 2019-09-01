@@ -9,6 +9,7 @@
 #include "../common.hpp"
 #include "../pixel.hpp"
 
+
 #include "../display/displayinterface.hpp"
 #include "../display/framebuffer.hpp"
 #include "../display/tonemapfb.hpp"
@@ -73,11 +74,9 @@ void ProgressiveRenderer::Input() {
 	}
 	ImGui::PlotLines("FrameTimes", FrameTimes.data(), FrameTimes.size(), 0, NULL, lower, upper, ImVec2(0, 40));
 	
-	ImGui::BeginChild("Render Settings");
-
 	const char* renderItems[] = { "PathTrace", "Normals", "Path Length" };
 	ImGui::Combo("Render Mode", &m_renderModeSelected, renderItems, IM_ARRAYSIZE(renderItems));
-	m_engine->Mode = (RenderMode)m_renderModeSelected;
+	m_mode = (RenderMode)m_renderModeSelected;
 
 	const char* toneMapItems[] = { "Clamp", "Basic Tonemap" };
 	ImGui::Combo("ToneMap Mode", &m_toneMapModeSelected, toneMapItems, IM_ARRAYSIZE(toneMapItems));
@@ -85,12 +84,17 @@ void ProgressiveRenderer::Input() {
 	ImGui::SliderFloat("Gamma", &m_gamma, 1.0f, 3.0f);
 	m_interface->Framebuffer->Gamma = 1.0f / m_gamma;
 
-	ImGui::EndChild();
+	if (ImGui::Button("Save Image")) {
+		m_interface->Framebuffer->DumpToFile(m_imageSavePath);
+		std::cout << "Saved: " << m_imageSavePath << std::endl;
+	}
+	
 	ImGui::End();
 }
 
 void ProgressiveRenderer::Render() {
 	m_threadPool->SetJobs(this, m_scene->w, m_scene->h);
+	m_engine->Mode = m_mode;
 
 	std::chrono::high_resolution_clock::time_point frameStartTime = std::chrono::high_resolution_clock::now();
 	std::chrono::high_resolution_clock::time_point frameEndTime;
@@ -99,6 +103,7 @@ void ProgressiveRenderer::Render() {
 	m_threadPool->Ready = true;
 	while (m_interface->Active) {		
 		if (m_threadPool->CheckAllJobs()) {
+			m_engine->Mode = m_mode;
 			m_engine->PostProcess(m_threadPool->MappedThreadFrameBuffer->RenderTo, m_threadPool->MappedThreadFrameBuffer->ProcData, m_scene->w, m_scene->h);
 
 			if (m_engine->Mode != MODE_RENDER_NORMALS) {
@@ -108,7 +113,7 @@ void ProgressiveRenderer::Render() {
 			} else {
 				m_threadPool->MappedThreadFrameBuffer->ClampBasic(m_threadPool->ThreadFrameBuffer);
 			}
-			
+
 			m_threadPool->MergeBuffers(m_interface->Framebuffer->Data, m_scene->w, m_scene->h);
 			m_threadPool->RunJobsAgain();
 

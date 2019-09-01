@@ -12,12 +12,9 @@ class FrameBuffer {
 public:
 	FrameBuffer(int xres, int yres);
 
-	void SetPixel(int x, int y, Pixel p);
-	void SetPixel(int x, int y, uint32_t p);
 	void SetPixel(int x, int y, glm::vec3 p);
-	void SetPixelSafe(int x, int y, Pixel p);
 	void SetPixelSafe(int x, int y, glm::vec3);
-	void SetPixelSafe(int x, int y, uint32_t p);
+	void DumpToFile(std::string path);
 
 	void SetFramebuffer(uint32_t* fb);
 	void ClearFramebuffer();

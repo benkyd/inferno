@@ -28,6 +28,8 @@ public:
 	std::vector<float> AllFrameTimes = { };
 	float AverageFrameTime = 0.0f;
 
+	bool MXAA = true;
+
 public:
 	RenderThreadPool* m_threadPool = nullptr;
     DisplayInterface* m_interface = nullptr;
@@ -41,11 +43,15 @@ private:
 						  std::chrono::high_resolution_clock::time_point frameEndTime);
 	
 	int m_renderModeSelected = 0;
-	int m_toneMapModeSelected = 1;
+	int m_toneMapModeSelected = 0;
 
 	int m_framesRendererd = 0;
 
 	float m_gamma = 2.3f;
+
+	std::string m_imageSavePath = "image.png";
+
+	RenderMode m_mode = (RenderMode)m_renderModeSelected;
 };
 
 #endif

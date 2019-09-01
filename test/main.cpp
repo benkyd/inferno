@@ -27,17 +27,19 @@ int main(int argc, char** argv) {
     //for (const auto& object : tris)
   	//    object->Translate({ 0.0f, -5.0f, -20.0f });
 
-	//std::vector<Triangle*> tris = LoadTrianglesBasic("E://Projects//Inferno//resources//lucy-normals.obj", "E://Projects//Inferno//resources");
-    //for (const auto& object : tris)
-	//    object->Translate({ 0.0f, -3.9f, -10.6f });
+	std::vector<Triangle*> tris = LoadTrianglesBasic("E://Projects//Inferno//resources//lucy-normals.obj", "E://Projects//Inferno//resources");
 
-	std::vector<Triangle*> tris = LoadTrianglesBasic("E://Projects//Inferno//resources//cornell.obj", "E://Projects//Inferno//resources");
-    for (const auto& object : tris)
-		object->Translate({ 0.0f, -0.9f, -3.0f });
+	Mesh* mesh = new Mesh(tris);
+	mesh->Translate({ 0.0f, -1.01f, -3.0f });
+	mesh->Optimise();
+	scene->meshs.push_back(mesh);
 
-    Mesh* mesh = new Mesh(tris);
-    mesh->Optimise();
-    scene->meshs.push_back(mesh);
+	tris = LoadTrianglesBasic("E://Projects//Inferno//resources//cornell-box.obj", "E://Projects//Inferno//resources");
+
+    Mesh* mesh1 = new Mesh(tris);
+	mesh1->Translate({ 0.0f, -1.0f, -3.0f });
+    mesh1->Optimise();
+    scene->meshs.push_back(mesh1);
 
 	inferno.SetScene(scene);
 

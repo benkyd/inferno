@@ -17,6 +17,10 @@ struct Pixel {
         return a << 24 | r << 16 | g << 8 | b;
     }
 
+	inline uint32_t rgba() {
+		return r << 24 | g << 16 | b << 8 | a;
+	}
+
     inline uint32_t rgb() {
         return 0xFF000000 | r << 16 | g << 8 | b;
     }
