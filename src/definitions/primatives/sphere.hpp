@@ -5,7 +5,7 @@
 
 class Sphere : public Primative {
 public:
-    Sphere(glm::vec3 center, float radius, Material* mat = nullptr)
+    Sphere(glm::vec3 center, float radius, Material* mat = new Material())
         : Primative(center, radius, mat) { }
 
     bool Intersect(Ray& ray, float& t) override;

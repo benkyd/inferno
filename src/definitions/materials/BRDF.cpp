@@ -1,13 +1,6 @@
 #include "BRDF.hpp"
 
-#include <random>
-
-std::default_random_engine generator;
-
-float rand01() {
-	std::uniform_real_distribution<float> distribution(0, 1);
-	return distribution(generator);
-}
+#include "random.hpp"
 
 glm::vec3 CosineBRDF(glm::vec3 normal) {
 	const float TWO_PI = 2.0f * PI;

@@ -5,7 +5,7 @@
 
 class Triangle : public Primative {
 public:
-	Triangle(glm::vec3 p0, glm::vec3 p1, glm::vec3 p2, glm::vec3 n0, glm::vec3 n1, glm::vec3 n2, Material* mat = nullptr)
+	Triangle(glm::vec3 p0, glm::vec3 p1, glm::vec3 p2, glm::vec3 n0, glm::vec3 n1, glm::vec3 n2, Material* mat = new Material())
 		: Primative(p0, p1, p2, n0, n1, n2, mat) { }
 
     bool Intersect(Ray& ray, float& t) override;

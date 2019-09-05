@@ -45,9 +45,9 @@ void workerThread(RenderThreadPool* threadpool, ProgressiveRenderer* renderer, i
 			int depth = 0;
 			glm::vec3 col = renderer->m_engine->GetColour(ray, depth);
 			
-			if (renderer->m_engine->Mode == MODE_RENDER_NORMALS) {
+			if (renderer->m_engine->Mode == MODE_RENDER_NORMALS || renderer->m_engine->Mode == MODE_RENDER_PATH_LENGTH) {
 				threadpool->MappedThreadFrameBuffer->SetPixelSafe(x, y, col);
-			} else if (renderer->m_engine->Mode == MODE_RENDER_PATHLENGTH) {
+			} else if (renderer->m_engine->Mode == MODE_RENDER_PATH_BOUNCES) {
 				col.r = depth; col.g = depth / 3.0f; col.b = depth / 3.0f;
 				threadpool->MappedThreadFrameBuffer->AddPixelSafeDepth(x, y, col);
 			} else {
@@ -75,15 +75,25 @@ void RenderEngine::SetScene(Scene* scene) {
 glm::vec3 RenderEngine::GetColour(Ray ray, int& depth) {
 	if (depth > 5) return { 0.0f, 0.0f, 0.0f };
 
-	float t; Primative* hit = nullptr;
+	float t = INFINITY; Primative* hit = nullptr;
 	bool didhit = TraceRayScene(ray, m_scene, t, hit);
 	if (!didhit) return	m_scene->SampleSky(ray);
 
 	glm::vec3 hitPoint = ray.origin + ray.direction * t;
 	glm::vec3 normal = hit->SurfaceNormal(hitPoint);
 	if (Mode == MODE_RENDER_NORMALS) { return GetNormalColour(normal); }
+	if (Mode == MODE_RENDER_PATH_LENGTH) { if (t > 1000.0f) t = 1000.0f; return { (float)t, (float)t, (float)t }; }
 
 	glm::vec3 colour = hit->material->Colour;
+	//if (hit->type == TYPE_PLANE) {
+	//	glm::vec2 uv = hit->TexCoords(hitPoint);
+	//	float angle = fastDegreetoRadian(.0f);
+	//	float s = uv.x * cos(angle) - uv.y * sin(angle);
+	//	float t = uv.y * cos(angle) + uv.x * sin(angle);
+	//	float S = 0.5f; float T = 0.5f;
+	//	float pattern = (modulo(s * S) < 0.5f) ^ (modulo(t * T) < 0.5f);
+	//	colour.r = pattern; colour.g = pattern; colour.b = pattern;
+	//}
 
 	if (hit->material->Emissive) return (colour * hit->material->Emittance);
 
@@ -94,8 +104,7 @@ glm::vec3 RenderEngine::GetColour(Ray ray, int& depth) {
 	// Prevent acne
 	if (glm::dot(newRay.direction, normal) < 0.0f) {
 		newRay.origin = ray.origin + ray.direction * t - normal * EPSILON;
-	}
-	else {
+	} else {
 		newRay.origin = ray.origin + ray.direction * t + normal * EPSILON;
 	}
 
@@ -104,7 +113,7 @@ glm::vec3 RenderEngine::GetColour(Ray ray, int& depth) {
 }
 
 void RenderEngine::PostProcess(glm::vec3* src, glm::vec3* dst, int w, int h) {
-	if (Mode == MODE_RENDER_NORMALS) { 
+	if (Mode == MODE_RENDER_NORMALS || Mode == MODE_RENDER_PATH_LENGTH) { 
 		SPP = 0;
 		for (int y = 0; y < h; y++)
 		for (int x = 0; x < w; x++) {
@@ -113,7 +122,7 @@ void RenderEngine::PostProcess(glm::vec3* src, glm::vec3* dst, int w, int h) {
 		return; 
 	}
 
-	if (Mode == MODE_RENDER_PATHLENGTH) {
+	if (Mode == MODE_RENDER_PATH_BOUNCES) {
 		SPP = 0;
 		SPPDepth++;
 		for (int y = 0; y < h; y++)

@@ -2,7 +2,6 @@
 #include "../ray.hpp"
 
 bool Plane::Intersect(Ray& ray, float& t) {
-	t = INFINITY;
 	float dNormal = glm::dot(normal, ray.direction);
 	if (dNormal > 1e-6) {
 		glm::vec3 v = center - ray.origin;

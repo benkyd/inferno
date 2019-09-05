@@ -40,7 +40,7 @@ void ProgressiveRenderer::Input() {
 	while (SDL_PollEvent(&e))
 		if (e.type == SDL_QUIT) m_interface->Close();
 	
-	//const Uint8* state = SDL_GetKeyboardState(NULL);
+	const Uint8* state = SDL_GetKeyboardState(NULL);
 
 	//if (state[SDL_SCANCODE_W]) m_scene->objects[0]->center.y += 0.01f;
 	//if (state[SDL_SCANCODE_S]) m_scene->objects[0]->center.y -= 0.01f;
@@ -52,11 +52,10 @@ void ProgressiveRenderer::Input() {
 	ImGui::NewFrame();
 	ImGui::Begin("Debug");
 
-	if (m_engine->Mode != MODE_RENDER_NORMALS && m_engine->Mode != MODE_RENDER_PATHLENGTH) {
+	if (m_engine->Mode == MODE_RENDER_PATHTRACE) {
 		std::stringstream str; str << "SPP: " << m_engine->SPP;
 		ImGui::Text(str.str().c_str());
-	}
-	else if (m_engine->Mode == MODE_RENDER_PATHLENGTH) {
+	} else if (m_engine->Mode == MODE_RENDER_PATH_BOUNCES) {
 		std::stringstream str; str << "Depth SPP: " << m_engine->SPPDepth;
 		ImGui::Text(str.str().c_str());
 	}
@@ -74,7 +73,7 @@ void ProgressiveRenderer::Input() {
 	}
 	ImGui::PlotLines("FrameTimes", FrameTimes.data(), FrameTimes.size(), 0, NULL, lower, upper, ImVec2(0, 40));
 	
-	const char* renderItems[] = { "PathTrace", "Normals", "Path Length" };
+	const char* renderItems[] = { "PathTrace", "Normals", "Path Bounces", "Path Length" };
 	ImGui::Combo("Render Mode", &m_renderModeSelected, renderItems, IM_ARRAYSIZE(renderItems));
 	m_mode = (RenderMode)m_renderModeSelected;
 
