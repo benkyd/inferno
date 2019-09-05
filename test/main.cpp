@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
     Scene* scene = new Scene(width, height);
     scene->camera = new Camera(width, height);
     
-	scene->objects.push_back(new Sphere({ 0.6f, 0.0f, -3.5f }, 0.5f, new Material({ 1.0f, .5f, .5f }, 0.3f)));
+	scene->objects.push_back(new Sphere({ 0.6f, 0.0f, -3.5f }, 0.5f, new Material({ 0.5f, 1.0f, 0.5f }, 0.4f)));
 	//scene->objects.push_back(new Sphere({  0.0f, 0.0f, -8.0f }, 1.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.7f)));
 	//scene->objects.push_back(new Sphere({  2.0f, 0.0f, -6.0f }, 1.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.0f)));
 	//scene->objects.push_back(new Sphere({ -2.0f, 0.0f, -9.0f }, 1.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.0f)));
