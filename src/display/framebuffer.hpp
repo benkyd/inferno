@@ -13,7 +13,8 @@ public:
 	FrameBuffer(int xres, int yres);
 
 	void SetPixel(int x, int y, glm::vec3 p);
-	void SetPixelSafe(int x, int y, glm::vec3);
+	void SetPixelSafe(int x, int y, glm::vec3 p);
+
 	void DumpToFile(std::string path);
 
 	void SetFramebuffer(uint32_t* fb);
