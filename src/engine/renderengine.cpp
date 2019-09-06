@@ -90,10 +90,11 @@ glm::vec3 RenderEngine::GetColour(Ray ray, int& depth) {
 	//	float angle = fastDegreetoRadian(.0f);
 	//	float s = uv.x * cos(angle) - uv.y * sin(angle);
 	//	float t = uv.y * cos(angle) + uv.x * sin(angle);
-	//	float S = 0.5f; float T = 0.5f;
+	//	float S = 0.4f; float T = 0.4f;
 	//	float pattern = (modulo(s * S) < 0.5f) ^ (modulo(t * T) < 0.5f);
 	//	colour.r = pattern; colour.g = pattern; colour.b = pattern;
 	//}
+
 
 	if (hit->material->Emissive) return (colour * hit->material->Emittance);
 

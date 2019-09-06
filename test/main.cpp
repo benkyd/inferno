@@ -2,8 +2,8 @@
 
 #include "../src/inferno.hpp"
 
-static const int width = 700;
-static const int height = 700;
+static const int width = 1000;
+static const int height = 1000;
 
 int main(int argc, char** argv) {
     InfernoEngine inferno;
@@ -21,17 +21,15 @@ int main(int argc, char** argv) {
 	// scene->objects.push_back(new Sphere({  0.0f, 0.0f, -8.0f }, 1.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.7f)));
 	// scene->objects.push_back(new Sphere({  2.0f, 0.0f, -6.0f }, 1.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.0f)));
 	// scene->objects.push_back(new Sphere({ -2.0f, 0.0f, -9.0f }, 1.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.0f)));
-	scene->objects.push_back(new Sphere({ 5.0f, 6.0f, 9.0f }, 5.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.0f, 5.0f)));
-	scene->objects.push_back(new Plane( { 0.0f,-1.0f, 0.0f }, { 0.0f, -1.0f, 0.0f }, new Material({ 1.0f, 0.9f, 0.9f }, 0.1f)));
+	scene->objects.push_back(new Sphere({ 25.0f, 26.0f, 25.0f }, 15.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.0f, 5.0f)));
+	scene->objects.push_back(new Plane( { 0.0f,-1.0f, 0.0f }, { 0.0f, -1.0f, 0.0f }, new Material({ 0.847f, 0.792f, 0.658f }, 0.3f)));
 	// scene->objects.push_back(new Plane( { 0.0f, 10.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, new Material({ 1.0f, 0.9f, 0.9f }, 0.0f, 1.0f)));
 
-	//std::vector<Triangle*> tris = LoadTrianglesBasic("E://Projects//Inferno//resources//dragon-normals.obj", "E://Projects//Inferno//resources");
+	std::vector<Triangle*> tris = LoadTrianglesBasic("E://Projects//Inferno//resources//dragon-normals.obj", "E://Projects//Inferno//resources");
 	// std::vector<Triangle*> tris = LoadTrianglesBasic("//home//ben//programming//inferno//resources//dragon-normals.obj", "//home//ben//programming//inferno//resources//resources");
-    // for (const auto& object : tris)
-  	//    object->Translate({ 0.0f, -5.0f, -20.0f });
 
-	//std::vector<Triangle*> tris = LoadTrianglesBasic("E://Projects//Inferno//resources//lucy-normals.obj", "E://Projects//Inferno//resources");
-	std::vector<Triangle*> tris = LoadTrianglesBasic("//home//ben//programming//inferno//resources//lucy-normals.obj", "//home//ben//programming//inferno//resources//resources");
+	//std::vector<Triangle*> tris = LoadTrianglesBasic("E://Projects//Inferno//resources//lucy-normals-larger.obj", "E://Projects//Inferno//resources");
+	//std::vector<Triangle*> tris = LoadTrianglesBasic("//home//ben//programming//inferno//resources//lucy-normals.obj", "//home//ben//programming//inferno//resources//resources");
 
 	//Mesh* mesh = new Mesh(tris);
 	//mesh->Translate({ 0.0f, -1.01f, -3.0f });
@@ -42,7 +40,7 @@ int main(int argc, char** argv) {
 	// std::vector<Triangle*> tris = LoadTrianglesBasic("//home//ben//programming//inferno//resources//cornell.obj", "//home//ben//programming//inferno//resources//resources");
 
     Mesh* mesh1 = new Mesh(tris);
-	mesh1->Translate({ 0.0f, -1.0f, -3.0f });
+	mesh1->Translate({ 0.0f, -1.0f, -3.8f });
     mesh1->Optimise();
     scene->meshs.push_back(mesh1);
 

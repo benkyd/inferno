@@ -69,7 +69,7 @@ std::vector<Triangle*> LoadTrianglesBasic(std::string path, std::string basePath
 				// tinyobj::material_t material = materials[shapes[s].mesh.material_ids[f]];
 
 				// Material* mat = new Material({ material.diffuse[0], material.diffuse[1], material.diffuse[2] }, 0.6f, material.illum);
-				Material* mat = new Material({ 1.0f, 1.0f, 1.0f }, 0.4f);
+				Material* mat = new Material({ 0.717f, 0.792f, 0.474 }, 0.5f);
 
                     // glm::vec3 normal = getNormal(
                     //     {avx[0], avy[0], avz[0]},
