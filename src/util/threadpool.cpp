@@ -18,7 +18,6 @@ RenderThreadPool::RenderThreadPool() {
 };
 
 void RenderThreadPool::SetJobs(ProgressiveRenderer* renderer, int w, int h) {
-	MappedThreadFrameBuffer = new ToneMapFrameBuffer(w, h);
 	ThreadFrameBuffer = new FrameBuffer(w, h);
 	for (int i = 0; i < ThreadCount; i++) {
 		if (i == ThreadCount - 1) {

@@ -12,19 +12,54 @@ class FrameBuffer {
 public:
 	FrameBuffer(int xres, int yres);
 
-	void SetPixel(int x, int y, glm::vec3 p);
-	void SetPixelSafe(int x, int y, glm::vec3 p);
+	// Normals are expected to be mapped as -1 to 1 on the RGB
+	// channels, 0 to 1 is not acceptable. For maximum detail
+	// the accumilation of normal maps should be preserved
+	void SetPixelSafeNormal(int x, int y, glm::vec3 p);
 
+	// Albedo values are expected to be the basic colour of the
+	// first hit surface. Mapped between 0 and 1 for intensity on
+	// the RGB channels
+	void SetPixelSafeAlbedo(int x, int y, glm::vec3 p);
+
+	// Sets main targeted render. Usually copied to from the thread
+	// pools internal buffers 
+	void SetPixelSafe(int x, int y, glm::vec3 p, int mode = 0);
+	
+	// Add to the render target
+	void AddPixelSafe(int x, int y, glm::vec3 p, int mode = 0);
+
+	// PostProcesses based on previous input, the tonemap mode and 
+	// the sample count for additive frames to average
+	void PostProcess(int spp, ToneMapMode mode = MODE_TONEMAP_CLAMP);
+
+	// Saves the RenderData to a file, data must first be processed
+	// by the render engine / the engine manager based on mode
 	void DumpToFile(std::string path);
 
-	void SetFramebuffer(uint32_t* fb);
+	// Copys the active render data to the target framebuffer,
+	// relies on the framebuffers to be of equal size and not
+	// not that
+	void CopyData(uint32_t* dest);
+
+	// Clears the RenderTarget, Post Processed target
+	// and the RenderData
 	void ClearFramebuffer();
-	uint32_t* Data;
+
+	// Render targets
+	glm::vec3* RenderNormalsTarget;
+	glm::vec3* RenderAlbedoTarget;
+	glm::vec3* RenderTarget;
+	glm::vec3* RenderPostProcess;
+	
+	uint32_t* RenderData;
 	int XRes, YRes;
 	float Gamma = 1.0f / 2.3f;
-
-
+	
 	~FrameBuffer();
+
+private:
+	int m_lastActiveFrameBufferMode;
 };
 
 #endif

@@ -32,7 +32,6 @@ public:
 	void MergeBuffers(uint32_t* framebuffer, int w, int h);
 
 	// std::vector<std::tuple<int, int>> RenderRegions; // offest, size
-	ToneMapFrameBuffer* MappedThreadFrameBuffer;
 	FrameBuffer* ThreadFrameBuffer;
 };
 

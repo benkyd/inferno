@@ -17,13 +17,10 @@ int main(int argc, char** argv) {
 
     Scene* scene = new Scene(width, height);
     scene->camera = new Camera(width, height);
-    
-	// scene->objects.push_back(new Sphere({  0.0f, 0.0f, -8.0f }, 1.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.7f)));
-	// scene->objects.push_back(new Sphere({  2.0f, 0.0f, -6.0f }, 1.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.0f)));
-	// scene->objects.push_back(new Sphere({ -2.0f, 0.0f, -9.0f }, 1.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.0f)));
-	scene->objects.push_back(new Sphere({ 25.0f, 26.0f, 25.0f }, 15.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.0f, 5.0f)));
-	scene->objects.push_back(new Plane( { 0.0f,-1.0f, 0.0f }, { 0.0f, -1.0f, 0.0f }, new Material({ 0.847f, 0.792f, 0.658f }, 0.3f)));
-	// scene->objects.push_back(new Plane( { 0.0f, 10.0f, 0.0f }, { 1.0f, 1.0f, 1.0f }, new Material({ 1.0f, 0.9f, 0.9f }, 0.0f, 1.0f)));
+
+	scene->objects.push_back(new Sphere({ 35.0f, 26.0f, 25.0f }, 15.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.0f, 5.0f)));
+	scene->objects.push_back(new Sphere({-0.457001f, 0.19f, -3.53899f}, 0.02f,  new Material({ 1.0f, 0.9f, 0.8f }, 0.0f, 500.0f)));
+	scene->objects.push_back(new Plane( { 0.0f, -1.0f, 0.0f }, { 0.0f, -1.0f, 0.0f }, new Material({ 0.847f, 0.792f, 0.658f }, 0.2f)));
 
 	std::vector<Triangle*> tris = LoadTrianglesBasic("E://Projects//Inferno//resources//dragon-normals.obj", "E://Projects//Inferno//resources");
 	// std::vector<Triangle*> tris = LoadTrianglesBasic("//home//ben//programming//inferno//resources//dragon-normals.obj", "//home//ben//programming//inferno//resources//resources");
@@ -36,11 +33,11 @@ int main(int argc, char** argv) {
 	//mesh->Optimise();
 	//scene->meshs.push_back(mesh);
 
-	//std::vector<Triangle*> tris = LoadTrianglesBasic("E://Projects//Inferno//resources//cornell-box.obj", "E://Projects//Inferno//resources");
-	// std::vector<Triangle*> tris = LoadTrianglesBasic("//home//ben//programming//inferno//resources//cornell.obj", "//home//ben//programming//inferno//resources//resources");
+	//std::vector<Triangle*> tris = LoadTrianglesBasic("E://Projects//Inferno//resources//box.obj", "E://Projects//Inferno//resources");
+	//std::vector<Triangle*> tris = LoadTrianglesBasic("//home//ben//programming//inferno//resources//cornell.obj", "//home//ben//programming//inferno//resources//resources");
 
     Mesh* mesh1 = new Mesh(tris);
-	mesh1->Translate({ 0.0f, -1.0f, -3.8f });
+	mesh1->Translate({ 0.2f, -1.04, -3.8f });
     mesh1->Optimise();
     scene->meshs.push_back(mesh1);
 
