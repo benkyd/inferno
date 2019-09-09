@@ -82,7 +82,6 @@ if (UNIX)
 		#SDL2_image
 		#PNG::PNG
 		#JPEG::JPEG
-		OpenGL::OpenGL
 		Threads::Threads
 	)
 endif (UNIX)
