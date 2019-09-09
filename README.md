@@ -68,6 +68,11 @@ int main(int argc, char** argv) {
 ```
 ![Example Render](https://imgur.com/ueTC3OS.png)
 
+### References
+
+While programming this I found a few resources especially useful. Below is some listed.
+
+* [Scratch A Pixel - Global Illumination](https://www.scratchapixel.com)
 
 ### Samples
 
