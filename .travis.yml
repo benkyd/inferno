@@ -1,3 +1,13 @@
 language: cpp
-install: sudo apt-get install libsdl2-dev
-script: mkdir build && cd build && cmake .. && make && ./output
+
+compiler:
+  - gcc
+  - clang
+
+before_script:
+  - sudo apt-get install libsdl2-dev
+  - mkdir build
+  - cd build
+  - cmake ..
+
+script: make
