@@ -16,7 +16,7 @@ addons:
     - libxcursor-dev
     - x11proto-kb-dev
     - libsdl2-dev
-	- libglm-dev
+    - libglm-dev
 
 compiler:
   - gcc
