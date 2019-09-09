@@ -4,7 +4,6 @@ addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
-    - george-edison55-precise-backports
     packages:
     - cmake
     - cmake-data
@@ -17,6 +16,7 @@ addons:
     - libxcursor-dev
     - x11proto-kb-dev
     - libsdl2-dev
+	- libglm-dev
 
 compiler:
   - gcc
