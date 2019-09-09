@@ -25,7 +25,7 @@ make
 
 ### Examples
 
-There are many example scenes i have made already !. Just change the CurrentTest variable inside the CMakeList to the name of the file you wish to demo.
+There are many example scenes that I have made already. Just change the CurrentTest variable inside the CMakeList to the name of the file you wish to demo.
 
 ### Basic Scene
 
