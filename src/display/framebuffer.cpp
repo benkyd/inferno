@@ -5,46 +5,6 @@
 
 #include "../pixel.hpp"
 
-
-void FrameBuffer::SetPixel(int x, int y, glm::vec3 p) {
-	Pixel pixel{ (uint8_t)(pow(p.r, Gamma) * 255.0f), (uint8_t)(pow(p.g, Gamma) * 255.0f), (uint8_t)(pow(p.b, Gamma) * 255.0f) };
-	Data[y * this->XRes + x] = pixel.rgb();
-}
-
-void FrameBuffer::SetPixelSafe(int x, int y, glm::vec3 p) {
-	if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
-		Pixel pixel{ (uint8_t)(pow(p.r, Gamma) * 255.0f), (uint8_t)(pow(p.g, Gamma) * 255.0f), (uint8_t)(pow(p.b, Gamma) * 255.0f) };
-		Data[y * this->XRes + x] = pixel.rgb();
-	}
-}
-
-void FrameBuffer::SetPixelSafe(int x, int y, glm::vec3 p) {
-	if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
-		Pixel pixel{ (uint8_t)(pow(p.r, Gamma) * 255.0f), (uint8_t)(pow(p.g, Gamma) * 255.0f), (uint8_t)(pow(p.b, Gamma) * 255.0f) };
-		Data[y * this->XRes + x] = pixel.rgb();
-	}
-}
-
-void FrameBuffer::DumpToFile(std::string path) {
-	// int stbi_write_png(char const* filename, int w, int h, int comp, const void* data, int stride_in_bytes);
-	stbi_write_png(path.c_str(), this->XRes, this->YRes, sizeof(uint32_t), this->Data, sizeof(uint32_t) * this->XRes);
-}
-
-void FrameBuffer::SetFramebuffer(uint32_t* fb) {
-	free(Data);
-	Data = fb;
-}
-
-void FrameBuffer::ClearFramebuffer() {
-	memset((void*)Data, 0, (XRes * YRes) * sizeof(uint32_t));
-}
-
-FrameBuffer::~FrameBuffer() {
-	free(Data);
-}
-
-
-
 FrameBuffer::FrameBuffer(int xres, int yres) {
 	XRes = xres; YRes = yres;
 	RenderData = (uint32_t*)malloc((xres * yres) * sizeof(uint32_t));
@@ -91,21 +51,53 @@ void FrameBuffer::AddPixelSafe(int x, int y, glm::vec3 p, int mode = 0) {
 	}
 }
 
-// PostProcesses based on previous input, the tonemap mode and 
-// the sample count for additive frames to average
-void PostProcess(int spp, ToneMapMode mode = MODE_TONEMAP_CLAMP);
+void FrameBuffer::PostProcess(int& spp, ToneMapMode mode, RenderMode rendermode) {
+	if (rendermode == MODE_RENDER_NORMALS || rendermode == MODE_RENDER_PATH_LENGTH) { 
+		spp = 0;
+		for (int y = 0; y < h; y++)
+		for (int x = 0; x < w; x++) {
+			RenderPostProcess[y * w + x] = src[y * w + x];
+		}
+		return;
+	}
 
-// Saves the RenderData to a file, data must first be processed
-// by the render engine / the engine manager based on mode
-void DumpToFile(std::string path);
+	if (rendermode == MODE_RENDER_PATH_BOUNCES) {
+		spp++;
+		for (int y = 0; y < h; y++)
+			for (int x = 0; x < w; x++) {
+				dst[y * w + x] = src[y * w + x] / (float)spp;
+			}
+		return;
+	}
 
-// Copys the active render data to the target framebuffer,
-// relies on the framebuffers to be of equal size and not
-// not that
-void CopyData(uint32_t* dest);
+	SPP++;
+	for (int y = 0; y < h; y++)
+	for (int x = 0; x < w; x++) {
+		dst[y * w + x] = src[y * w + x] / (float)SPP;
+	}
+}
 
-// Clears the RenderTarget and the RenderData
-void ClearFramebuffer();
+void FrameBuffer::DumpToFile(std::string path) {
+	// int stbi_write_png(char const* filename, int w, int h, int comp, const void* data, int stride_in_bytes);
+	// Red and Blue channels need to be swapped
+	stbi_write_png(path.c_str(), this->XRes, this->YRes, sizeof(uint32_t), this->RenderData, sizeof(uint32_t) * this->XRes);
+}
 
-~FrameBuffer();
+void FrameBuffer::CopyData(uint32_t* dest) {
+	memcpy((void*)dest, (void*)RenderData, (this->XRes * this->YRes) * sizeof(uint32_t));
+}
+
+void FrameBuffer::ClearFramebuffer() {
+	memset((void*)RenderTarget, 0, (this->XRes * this->YRes) * sizeof(glm::vec3));
+	memset((void*)RenderPostProcess, 0, (this->XRes * this->YRes) * sizeof(glm::vec3));
+	memset((void*)RenderData, 0, (this->XRes * this->YRes) * sizeof(uint32_t));
+}
+
+FrameBuffer::~FrameBuffer() {
+	free(RenderNormalsTarget);
+	free(RenderAlbedoTarget);
+	free(RenderTarget);
+	free(RenderPostProcess);
+	free(RenderData);
+}
 

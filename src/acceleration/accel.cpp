@@ -6,21 +6,12 @@
 #include "../definitions/ray.hpp"
 #include "../definitions/primatives/triangle.hpp"
 
-// enum AccelerationMode {
-//     MODE_ACCELERATION_DEFAULT,
-//     MODE_NONE,
-//     MODE_KD,
-//     MODE_KD_SLOW,
-//     MODE_BVH
-// };
-
 Acceleration::Acceleration(AccelerationMode mode) {
     m_mode = mode;
 }
 
 void Acceleration::Construct(std::vector<Triangle*> triangles) {
     switch (m_mode) {
-        case MODE_ACCELERATION_DEFAULT:
         case MODE_ACCELERATION_NONE:
             Constructed = false;
             break;
@@ -55,7 +46,6 @@ void Acceleration::Construct(std::vector<Triangle*> triangles) {
 bool Acceleration::Intersect(Ray ray, Triangle*& triMin, float& tMin) {
     if (!Constructed) return false;
     switch (m_mode) {
-        case MODE_ACCELERATION_DEFAULT:
         case MODE_ACCELERATION_NONE:
             break;
 

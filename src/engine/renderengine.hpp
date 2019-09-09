@@ -17,7 +17,7 @@ public:
 
 	void PostProcess(glm::vec3* src, glm::vec3* dst, int w, int h);
 
-	RenderMode Mode = MODE_RENDER_DEFAULT;
+	RenderMode Mode = MODE_RENDER_PATHTRACE;
 
 	int SPP = 0;
 	int SPPDepth = 0;

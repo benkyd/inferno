@@ -29,9 +29,14 @@ public:
 	// Add to the render target
 	void AddPixelSafe(int x, int y, glm::vec3 p, int mode = 0);
 
+	// Sets a pixel on the RenderData framebuffer, ready for rendering
+	// by the display or whatever mode the engine is in. the framebuffer
+	// doesnt care.
+	void RenderSetPixelSafe(int x, int y, uint32_t p);
+
 	// PostProcesses based on previous input, the tonemap mode and 
 	// the sample count for additive frames to average
-	void PostProcess(int spp, ToneMapMode mode = MODE_TONEMAP_CLAMP);
+	void PostProcess(int& spp, ToneMapMode mode = MODE_TONEMAP_CLAMP, RenderMode rendermode = MODE_RENDER_PATHTRACE);
 
 	// Saves the RenderData to a file, data must first be processed
 	// by the render engine / the engine manager based on mode

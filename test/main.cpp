@@ -2,8 +2,8 @@
 
 #include "../src/inferno.hpp"
 
-static const int width = 1000;
-static const int height = 1000;
+static const int width = 300;
+static const int height = 300;
 
 int main(int argc, char** argv) {
     InfernoEngine inferno;
@@ -18,8 +18,8 @@ int main(int argc, char** argv) {
     Scene* scene = new Scene(width, height);
     scene->camera = new Camera(width, height);
 
+	scene->objects.push_back(new Sphere({ 0.0f, 0.0f, -4.0f }, 1.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.0f, 5.0f)));
 	scene->objects.push_back(new Sphere({ 35.0f, 26.0f, 25.0f }, 15.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.0f, 5.0f)));
-	scene->objects.push_back(new Sphere({-0.457001f, 0.19f, -3.53899f}, 0.02f,  new Material({ 1.0f, 0.9f, 0.8f }, 0.0f, 500.0f)));
 	scene->objects.push_back(new Plane( { 0.0f, -1.0f, 0.0f }, { 0.0f, -1.0f, 0.0f }, new Material({ 0.847f, 0.792f, 0.658f }, 0.2f)));
 
 	std::vector<Triangle*> tris = LoadTrianglesBasic("E://Projects//Inferno//resources//dragon-normals.obj", "E://Projects//Inferno//resources");

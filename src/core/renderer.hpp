@@ -28,7 +28,7 @@ public:
 
 private:
     int m_samples = -1;
-    OperationMode m_mode = MODE_OPERATION_DEFAULT;
+    OperationMode m_mode = MODE_OPERATION_PROGRESSIVE_GUI;
 
     DisplayInterface* m_interface = nullptr;
     FrameBuffer* m_framebuffer = nullptr;
