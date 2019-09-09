@@ -19,6 +19,7 @@ Inferno is a CPU Only, progressive unidirectional pathtracing engine written in 
 git clone https://github.com/plane000/inferno
 cd inferno
 mkdir build
+cd build
 cmake ..
 make
 ```
