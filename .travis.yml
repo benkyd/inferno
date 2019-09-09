@@ -1,11 +1,59 @@
 language: cpp
 
+addons:
+  apt:
+    sources: &1
+    - ubuntu-toolchain-r-test
+    - george-edison55-precise-backports
+    packages: &2
+    - cmake
+    - cmake-data
+matrix:
+  include:
+  - env: ACTUAL_CC=gcc-6 ACTUAL_CXX=g++-6 CONFIGURATION=Release
+    addons:
+      apt:
+        sources:
+        - *1
+        packages:
+        - *2
+        - gcc-6
+        - g++-6
+        - libx11-dev
+        - libxrandr-dev
+        - libxinerama-dev
+        - libxxf86vm-dev
+        - libxcursor-dev
+        - x11proto-kb-dev
+		- libsdl2-dev
+  - env: ACTUAL_CC="gcc-6 -m32" ACTUAL_CXX="g++-6 -m32" CONFIGURATION=Release
+    addons:
+      apt:
+        sources:
+        - *1
+        packages:
+        - *2
+        - gcc-6-multilib
+        - g++-6-multilib
+        - libc6-dev:i386
+        - libglapi-mesa:i386
+        - libgl1-mesa-glx:i386
+        - libgl1-mesa-dev:i386
+        - libx11-dev:i386
+        - libxext-dev:i386
+        - libxfixes-dev:i386
+        - libxrandr-dev:i386
+        - libxinerama-dev:i386
+        - libxxf86vm-dev:i386
+        - libxcursor-dev:i386
+        - x11proto-kb-dev:i386
+		- libsdl2-dev
+
 compiler:
   - gcc
   - clang
 
 before_script:
-  - sudo apt-get install libsdl2-dev
   - mkdir build
   - cd build
   - cmake ..
