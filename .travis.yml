@@ -1,0 +1,3 @@
+language: cpp
+install: make get-deps
+script: mkdir build && cd build && cmake .. && make && ./output
