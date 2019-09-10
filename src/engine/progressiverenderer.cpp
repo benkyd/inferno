@@ -41,13 +41,13 @@ void ProgressiveRenderer::Input() {
 	
 	const Uint8* state = SDL_GetKeyboardState(NULL);
 
-	//if (state[SDL_SCANCODE_W]) m_scene->objects[1]->center.y += 0.001f;
-	//if (state[SDL_SCANCODE_S]) m_scene->objects[1]->center.y -= 0.001f;
-	//if (state[SDL_SCANCODE_D]) m_scene->objects[1]->center.x += 0.001f;
-	//if (state[SDL_SCANCODE_A]) m_scene->objects[1]->center.x -= 0.001f;
-	//if (state[SDL_SCANCODE_R]) m_scene->objects[1]->center.z += 0.001f;
-	//if (state[SDL_SCANCODE_F]) m_scene->objects[1]->center.z -= 0.001f;
-	//std::cout << m_scene->objects[1]->center.x << " " << m_scene->objects[1]->center.y << " " << m_scene->objects[1]->center.z << std::endl;
+	// if (state[SDL_SCANCODE_W]) m_scene->objects[0]->center.y += 0.001f;
+	// if (state[SDL_SCANCODE_S]) m_scene->objects[0]->center.y -= 0.001f;
+	// if (state[SDL_SCANCODE_D]) m_scene->objects[0]->center.x += 0.001f;
+	// if (state[SDL_SCANCODE_A]) m_scene->objects[0]->center.x -= 0.001f;
+	// if (state[SDL_SCANCODE_R]) m_scene->objects[0]->center.z += 0.001f;
+	// if (state[SDL_SCANCODE_F]) m_scene->objects[0]->center.z -= 0.001f;
+	// std::cout << m_scene->objects[0]->center.x << " " << m_scene->objects[0]->center.y << " " << m_scene->objects[0]->center.z << std::endl;
 
 	if (!m_interface->ImGui) return;
 
@@ -82,7 +82,7 @@ void ProgressiveRenderer::Input() {
 	const char* toneMapItems[] = { "Clamp", "Basic Tonemap" };
 	ImGui::Combo("ToneMap Mode", &m_toneMapModeSelected, toneMapItems, IM_ARRAYSIZE(toneMapItems));
 
-	ImGui::SliderFloat("Gamma", &m_gamma, 1.0f, 3.0f);
+	ImGui::SliderFloat("Gamma", &m_gamma, 1.0f, 4.0f);
 	m_interface->Framebuffer->Gamma = 1.0f / m_gamma;
 
 	if (ImGui::Button("Save Image")) {

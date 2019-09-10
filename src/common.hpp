@@ -34,8 +34,8 @@ enum RenderMode {
 };
 
 enum ToneMapMode {
-	MODE_TONEMAP_BASIC,
-	MODE_TONEMAP_CLAMP
+	MODE_TONEMAP_CLAMP,
+	MODE_TONEMAP_BASIC
 };
 
 

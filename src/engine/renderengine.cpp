@@ -81,7 +81,7 @@ glm::vec3 RenderEngine::GetColour(Ray ray, int& depth) {
 	glm::vec3 hitPoint = ray.origin + ray.direction * t;
 	glm::vec3 normal = hit->SurfaceNormal(hitPoint);
 	if (Mode == MODE_RENDER_NORMALS) { return GetNormalColour(normal); }
-	if (Mode == MODE_RENDER_PATH_LENGTH) { if (t > 1000.0f) t = 1000.0f; return { (float)t, (float)t, (float)t }; }
+	if (Mode == MODE_RENDER_PATH_LENGTH) { if (t > 255.0f) t = 255.0f; return { (float)t, (float)t, (float)t }; }
 
 	glm::vec3 colour = hit->material->Colour;
 	//if (hit->type == TYPE_PLANE) {
