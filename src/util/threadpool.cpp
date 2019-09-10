@@ -6,7 +6,6 @@
 
 #include "../display/displayinterface.hpp"
 #include "../display/framebuffer.hpp"
-#include "../display/tonemapfb.hpp"
 
 #include "../engine/renderengine.hpp"
 #include "../engine/progressiverenderer.hpp"
@@ -63,7 +62,7 @@ void RenderThreadPool::RunJobsAgain() {
 }
 
 void RenderThreadPool::MergeBuffers(uint32_t* framebuffer, int w, int h) {	
-	memcpy((void*)framebuffer, (void*)ThreadFrameBuffer->Data, (w * h) * sizeof(uint32_t));
+	memcpy((void*)framebuffer, (void*)ThreadFrameBuffer->RenderData, (w * h) * sizeof(uint32_t));
 }
 
 void RenderThreadPool::Destroy() {

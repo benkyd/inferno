@@ -85,7 +85,7 @@ void Display::Update() {
 	io.MouseDown[1] = buttons & SDL_BUTTON(SDL_BUTTON_RIGHT);
 	io.MouseWheel = static_cast<float>(wheel);
 
-    SDL_UpdateTexture(m_texture, NULL, Framebuffer->Data, this->XRes * sizeof(uint32_t));
+    SDL_UpdateTexture(m_texture, NULL, Framebuffer->RenderData, this->XRes * sizeof(uint32_t));
     SDL_RenderCopy(m_renderer, m_texture, NULL, NULL);
 
 	ImGui::Render();
@@ -95,7 +95,7 @@ void Display::Update() {
 }
 
 void Display::UpdatePartial() {
-	SDL_UpdateTexture(m_texture, NULL, Framebuffer->Data, this->XRes * sizeof(uint32_t));
+	SDL_UpdateTexture(m_texture, NULL, Framebuffer->RenderData, this->XRes * sizeof(uint32_t));
 	SDL_RenderCopy(m_renderer, m_texture, NULL, NULL);
 	SDL_RenderPresent(m_renderer);
 }

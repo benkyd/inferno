@@ -12,7 +12,6 @@
 
 #include "../display/displayinterface.hpp"
 #include "../display/framebuffer.hpp"
-#include "../display/tonemapfb.hpp"
 
 #include "../util/assetloader.hpp"
 #include "../util/threadpool.hpp"
@@ -106,17 +105,11 @@ void ProgressiveRenderer::Render() {
 	while (m_interface->Active) {		
 		if (m_threadPool->CheckAllJobs()) {
 			m_engine->Mode = m_mode;
-			m_engine->PostProcess(m_threadPool->MappedThreadFrameBuffer->RenderTo, m_threadPool->MappedThreadFrameBuffer->ProcData, m_scene->w, m_scene->h);
+			m_engine->PostProcess(m_threadPool->ThreadFrameBuffer->RenderTarget, m_threadPool->ThreadFrameBuffer->RenderPostProcess, m_scene->w, m_scene->h);
 
-			if (m_engine->Mode != MODE_RENDER_NORMALS) {
-				if (m_toneMapModeSelected == 0) m_threadPool->MappedThreadFrameBuffer->ClampBasic(m_threadPool->ThreadFrameBuffer);
-			
-				if (m_toneMapModeSelected == 1) m_threadPool->MappedThreadFrameBuffer->MapBasic(m_threadPool->ThreadFrameBuffer);
-			} else {
-				m_threadPool->MappedThreadFrameBuffer->ClampBasic(m_threadPool->ThreadFrameBuffer);
-			}
+			m_threadPool->ThreadFrameBuffer->PostProcess((ToneMapMode)m_toneMapModeSelected);
 
-			m_threadPool->MergeBuffers(m_interface->Framebuffer->Data, m_scene->w, m_scene->h);
+			m_threadPool->MergeBuffers(m_interface->Framebuffer->RenderData, m_scene->w, m_scene->h);
 			m_threadPool->RunJobsAgain();
 
 			frameEndTime = std::chrono::high_resolution_clock::now();
@@ -144,5 +137,5 @@ void ProgressiveRenderer::m_calculateTimes(std::chrono::high_resolution_clock::t
 	AllFrameTimes.push_back(frameTime);
 	if (FrameTimes.size() > 11) FrameTimes.erase(FrameTimes.begin());
 
-	AverageFrameTime = std::accumulate(AllFrameTimes.begin(), AllFrameTimes.end(), 0.0) / AllFrameTimes.size();
+	AverageFrameTime = std::accumulate(FrameTimes.begin(), FrameTimes.end(), 0.0) / FrameTimes.size();
 }

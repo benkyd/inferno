@@ -21,6 +21,10 @@ FrameBuffer::FrameBuffer(int xres, int yres) {
 
 	RenderPostProcess = (glm::vec3*)malloc((xres * yres) * sizeof(glm::vec3));
 	memset((void*)RenderPostProcess, 0, (xres * yres) * sizeof(glm::vec3));
+
+
+	m_swapBuffer = (glm::vec3*)malloc((XRes * YRes) * sizeof(glm::vec3));
+	memset((void*)m_swapBuffer, 0, (XRes * YRes) * sizeof(glm::vec3));
 }
 
 void FrameBuffer::SetPixelSafeNormal(int x, int y, glm::vec3 p) {
@@ -35,7 +39,7 @@ void FrameBuffer::SetPixelSafeAlbedo(int x, int y, glm::vec3 p) {
 	}
 }
 
-void FrameBuffer::SetPixelSafe(int x, int y, glm::vec3 p, int mode = 0) {
+void FrameBuffer::SetPixelSafe(int x, int y, glm::vec3 p, int mode) {
 	if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
 		if (m_lastActiveFrameBufferMode != mode) { ClearFramebuffer(); }
 		m_lastActiveFrameBufferMode = mode;
@@ -43,7 +47,7 @@ void FrameBuffer::SetPixelSafe(int x, int y, glm::vec3 p, int mode = 0) {
 	}
 }
 
-void FrameBuffer::AddPixelSafe(int x, int y, glm::vec3 p, int mode = 0) {
+void FrameBuffer::AddPixelSafe(int x, int y, glm::vec3 p, int mode) {
 	if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
 		if (m_lastActiveFrameBufferMode != mode) { ClearFramebuffer(); }
 		m_lastActiveFrameBufferMode = mode;
@@ -51,35 +55,64 @@ void FrameBuffer::AddPixelSafe(int x, int y, glm::vec3 p, int mode = 0) {
 	}
 }
 
-void FrameBuffer::PostProcess(int& spp, ToneMapMode mode, RenderMode rendermode) {
-	if (rendermode == MODE_RENDER_NORMALS || rendermode == MODE_RENDER_PATH_LENGTH) { 
-		spp = 0;
-		for (int y = 0; y < h; y++)
-		for (int x = 0; x < w; x++) {
-			RenderPostProcess[y * w + x] = src[y * w + x];
-		}
-		return;
-	}
-
-	if (rendermode == MODE_RENDER_PATH_BOUNCES) {
-		spp++;
-		for (int y = 0; y < h; y++)
-			for (int x = 0; x < w; x++) {
-				dst[y * w + x] = src[y * w + x] / (float)spp;
-			}
-		return;
-	}
-
-	SPP++;
-	for (int y = 0; y < h; y++)
-	for (int x = 0; x < w; x++) {
-		dst[y * w + x] = src[y * w + x] / (float)SPP;
+void FrameBuffer::RenderPostProcessSafe(int x, int y, glm::vec3 p) {
+	if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
+		RenderPostProcess[y * this->XRes + x] = p;
 	}
 }
 
+uint32_t FrameBuffer::FinalProcess(glm::vec3 p) {
+	Pixel pixel {
+		(uint8_t)(pow(p.r, Gamma) * 255.0f),
+		(uint8_t)(pow(p.g, Gamma) * 255.0f),
+		(uint8_t)(pow(p.b, Gamma) * 255.0f)
+	};
+	return pixel.rgb();
+}
+
+void FrameBuffer::RenderSetPixelSafe(int x, int y, uint32_t p) {
+	if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
+		RenderData[y * this->XRes + x] = p;
+	}
+}
+
+void FrameBuffer::PostProcess(int& spp, ToneMapMode mode, RenderMode rendermode) {
+
+}
+
+void FrameBuffer::PostProcess(ToneMapMode mode) {
+	memset((void*)m_swapBuffer, 0, (XRes * YRes) * sizeof(glm::vec3));
+	
+	if (mode == MODE_TONEMAP_BASIC) {
+	
+		float max = 0.0f;
+
+		for (int x = 0; x < XRes; x++)
+		for (int y = 0; y < YRes; y++) {
+			if (RenderPostProcess[y * this->XRes + x].r > max) max = RenderPostProcess[y * this->XRes + x].r;
+			if (RenderPostProcess[y * this->XRes + x].g > max) max = RenderPostProcess[y * this->XRes + x].g;
+			if (RenderPostProcess[y * this->XRes + x].b > max) max = RenderPostProcess[y * this->XRes + x].b;
+		}
+
+		for (int x = 0; x < XRes; x++)
+		for (int y = 0; y < YRes; y++) {
+			m_swapBuffer[y * this->XRes + x] = RenderPostProcess[y * this->XRes + x] / max;
+		}
+	
+	} else if (mode == MODE_TONEMAP_CLAMP) {
+
+		for (int x = 0; x < XRes; x++)
+		for (int y = 0; y < YRes; y++) {
+			m_swapBuffer[y * this->XRes + x] = Clamp(RenderPostProcess[y * this->XRes + x], 1.0f, 0.0f);
+		}
+	
+	}
+}
+
+
 void FrameBuffer::DumpToFile(std::string path) {
 	// int stbi_write_png(char const* filename, int w, int h, int comp, const void* data, int stride_in_bytes);
-	// Red and Blue channels need to be swapped
+	// TODO: Red and Blue channels need to be swapped
 	stbi_write_png(path.c_str(), this->XRes, this->YRes, sizeof(uint32_t), this->RenderData, sizeof(uint32_t) * this->XRes);
 }
 
@@ -99,5 +132,6 @@ FrameBuffer::~FrameBuffer() {
 	free(RenderTarget);
 	free(RenderPostProcess);
 	free(RenderData);
+	free(m_swapBuffer);
 }
 

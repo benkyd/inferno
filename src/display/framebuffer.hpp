@@ -29,6 +29,14 @@ public:
 	// Add to the render target
 	void AddPixelSafe(int x, int y, glm::vec3 p, int mode = 0);
 
+	// Set a pixel in the post processed framebuffer, ready to be corrected
+	// for display gamma and to be transposed over to the data buffer
+	void RenderPostProcessSafe(int x, int y, glm::vec3 p);
+
+	// Finally, the pixel is ready to be rendered to the data buffer,
+	// this method adjusts for gamma and scales back to do the last set
+	uint32_t FinalProcess(glm::vec3 p);
+
 	// Sets a pixel on the RenderData framebuffer, ready for rendering
 	// by the display or whatever mode the engine is in. the framebuffer
 	// doesnt care.
@@ -37,6 +45,11 @@ public:
 	// PostProcesses based on previous input, the tonemap mode and 
 	// the sample count for additive frames to average
 	void PostProcess(int& spp, ToneMapMode mode = MODE_TONEMAP_CLAMP, RenderMode rendermode = MODE_RENDER_PATHTRACE);
+
+	// Just tonemap ONLY the postprocessed framebuffer
+	// memory usage warning, it will create the swap buffer
+	// if it doesnt exist already
+	void PostProcess(ToneMapMode mode = MODE_TONEMAP_CLAMP);
 
 	// Saves the RenderData to a file, data must first be processed
 	// by the render engine / the engine manager based on mode
@@ -64,6 +77,8 @@ public:
 	~FrameBuffer();
 
 private:
+	glm::vec3* m_swapBuffer;
+
 	int m_lastActiveFrameBufferMode;
 };
 

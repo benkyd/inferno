@@ -13,7 +13,6 @@
 
 #include "../display/displayinterface.hpp"
 #include "../display/framebuffer.hpp"
-#include "../display/tonemapfb.hpp"
 
 #include "../engine/renderengine.hpp"
 #include "../engine/progressiverenderer.hpp"
@@ -26,7 +25,7 @@ static glm::vec3 Blue { 0.2f, 0.2f, 1.0f };
 
 void workerThread(RenderThreadPool* threadpool, ProgressiveRenderer* renderer, int idd, int yStart, int yRange) {
 	while (!renderer->Ready && !threadpool->Ready) {
-		std::chrono::milliseconds dura(10);
+		static std::chrono::milliseconds dura(10);
 		std::this_thread::sleep_for(dura);
 	}
 
@@ -46,19 +45,19 @@ void workerThread(RenderThreadPool* threadpool, ProgressiveRenderer* renderer, i
 			glm::vec3 col = renderer->m_engine->GetColour(ray, depth);
 			
 			if (renderer->m_engine->Mode == MODE_RENDER_NORMALS || renderer->m_engine->Mode == MODE_RENDER_PATH_LENGTH) {
-				threadpool->MappedThreadFrameBuffer->SetPixelSafe(x, y, col);
+				threadpool->ThreadFrameBuffer->SetPixelSafe(x, y, col);
 			} else if (renderer->m_engine->Mode == MODE_RENDER_PATH_BOUNCES) {
 				col.r = depth; col.g = depth / 3.0f; col.b = depth / 3.0f;
-				threadpool->MappedThreadFrameBuffer->AddPixelSafeDepth(x, y, col);
+				threadpool->ThreadFrameBuffer->AddPixelSafe(x, y, col, (int)renderer->m_engine->Mode);
 			} else {
-				threadpool->MappedThreadFrameBuffer->AddPixelSafe(x, y, col);
+				threadpool->ThreadFrameBuffer->AddPixelSafe(x, y, col, (int)renderer->m_engine->Mode);
 			}
 		}
 		
 		threadpool->ThreadStatus[idd] = true;
 
 		while (threadpool->ThreadStatus[idd]) {
-			std::chrono::nanoseconds dura(1);
+			static std::chrono::nanoseconds dura(1);
 			std::this_thread::sleep_for(dura);
 		}
 	}
