@@ -45,7 +45,7 @@ void workerThread(RenderThreadPool* threadpool, ProgressiveRenderer* renderer, i
 			glm::vec3 col = renderer->m_engine->GetColour(ray, depth);
 			
 			if (renderer->m_engine->Mode == MODE_RENDER_NORMALS || renderer->m_engine->Mode == MODE_RENDER_PATH_LENGTH) {
-				threadpool->ThreadFrameBuffer->SetPixelSafe(x, y, col);
+				threadpool->ThreadFrameBuffer->SetPixelSafe(x, y, col, (int)renderer->m_engine->Mode);
 			} else if (renderer->m_engine->Mode == MODE_RENDER_PATH_BOUNCES) {
 				col.r = depth; col.g = depth / 3.0f; col.b = depth / 3.0f;
 				threadpool->ThreadFrameBuffer->AddPixelSafe(x, y, col, (int)renderer->m_engine->Mode);

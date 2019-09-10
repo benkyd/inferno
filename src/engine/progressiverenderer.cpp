@@ -109,7 +109,9 @@ void ProgressiveRenderer::Render() {
 
 			m_threadPool->ThreadFrameBuffer->PostProcess((ToneMapMode)m_toneMapModeSelected);
 
-			m_threadPool->MergeBuffers(m_interface->Framebuffer->RenderData, m_scene->w, m_scene->h);
+			m_threadPool->MergeBuffers(m_interface->Framebuffer);
+			m_interface->Framebuffer->Ready();
+
 			m_threadPool->RunJobsAgain();
 
 			frameEndTime = std::chrono::high_resolution_clock::now();

@@ -61,15 +61,6 @@ void FrameBuffer::RenderPostProcessSafe(int x, int y, glm::vec3 p) {
 	}
 }
 
-uint32_t FrameBuffer::FinalProcess(glm::vec3 p) {
-	Pixel pixel {
-		(uint8_t)(pow(p.r, Gamma) * 255.0f),
-		(uint8_t)(pow(p.g, Gamma) * 255.0f),
-		(uint8_t)(pow(p.b, Gamma) * 255.0f)
-	};
-	return pixel.rgb();
-}
-
 void FrameBuffer::RenderSetPixelSafe(int x, int y, uint32_t p) {
 	if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
 		RenderData[y * this->XRes + x] = p;
@@ -106,9 +97,35 @@ void FrameBuffer::PostProcess(ToneMapMode mode) {
 			m_swapBuffer[y * this->XRes + x] = Clamp(RenderPostProcess[y * this->XRes + x], 1.0f, 0.0f);
 		}
 	
+	} else {
+		for (int x = 0; x < XRes; x++)
+		for (int y = 0; y < YRes; y++) {
+			m_swapBuffer[y * this->XRes + x] = Clamp(RenderPostProcess[y * this->XRes + x], 1.0f, 0.0f);
+		}
+	}
+	
+	for (int x = 0; x < XRes; x++)
+	for (int y = 0; y < YRes; y++) {
+		RenderPostProcess[y * this->XRes + x] = m_swapBuffer[y * this->XRes + x];
 	}
 }
 
+uint32_t FrameBuffer::FinalProcess(glm::vec3 p) {
+	Pixel pixel {
+		(uint8_t)(pow(p.r, Gamma) * 255.0f),
+		(uint8_t)(pow(p.g, Gamma) * 255.0f),
+		(uint8_t)(pow(p.b, Gamma) * 255.0f)
+	};
+	return pixel.rgb();
+}
+
+void FrameBuffer::Ready() {
+	for (int x = 0; x < XRes; x++)
+	for (int y = 0; y < YRes; y++) {
+		uint32_t p = FinalProcess(RenderPostProcess[y * this->XRes + x]);
+		RenderSetPixelSafe(x, y, p);
+	}
+}
 
 void FrameBuffer::DumpToFile(std::string path) {
 	// int stbi_write_png(char const* filename, int w, int h, int comp, const void* data, int stride_in_bytes);

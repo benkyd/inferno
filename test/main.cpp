@@ -2,8 +2,8 @@
 
 #include "../src/inferno.hpp"
 
-static const int width = 300;
-static const int height = 300;
+static const int width = 500;
+static const int height = 500;
 
 int main(int argc, char** argv) {
     InfernoEngine inferno;
@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
     Scene* scene = new Scene(width, height);
     scene->camera = new Camera(width, height);
 
-	scene->objects.push_back(new Sphere({ 0.0f, 0.0f, -4.0f }, 1.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.0f, 5.0f)));
+	scene->objects.push_back(new Sphere({ 0.0f, 0.0f, -4.0f }, 1.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.0f)));
 	scene->objects.push_back(new Sphere({ 35.0f, 26.0f, 25.0f }, 15.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.0f, 5.0f)));
 	scene->objects.push_back(new Plane( { 0.0f, -1.0f, 0.0f }, { 0.0f, -1.0f, 0.0f }, new Material({ 0.847f, 0.792f, 0.658f }, 0.2f)));
 

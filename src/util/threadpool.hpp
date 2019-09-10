@@ -29,7 +29,10 @@ public:
 	void RunJobsAgain();
 	void Destroy();
 
-	void MergeBuffers(uint32_t* framebuffer, int w, int h);
+	// Merges threadpools active framebuffer with argument 0
+	// sets the data from local to that one. not exaclty merging
+	// but whatever
+	void MergeBuffers(FrameBuffer* framebuffer);
 
 	// std::vector<std::tuple<int, int>> RenderRegions; // offest, size
 	FrameBuffer* ThreadFrameBuffer;

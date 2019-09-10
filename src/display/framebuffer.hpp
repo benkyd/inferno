@@ -33,10 +33,6 @@ public:
 	// for display gamma and to be transposed over to the data buffer
 	void RenderPostProcessSafe(int x, int y, glm::vec3 p);
 
-	// Finally, the pixel is ready to be rendered to the data buffer,
-	// this method adjusts for gamma and scales back to do the last set
-	uint32_t FinalProcess(glm::vec3 p);
-
 	// Sets a pixel on the RenderData framebuffer, ready for rendering
 	// by the display or whatever mode the engine is in. the framebuffer
 	// doesnt care.
@@ -50,6 +46,14 @@ public:
 	// memory usage warning, it will create the swap buffer
 	// if it doesnt exist already
 	void PostProcess(ToneMapMode mode = MODE_TONEMAP_CLAMP);
+
+	// Finally, the pixel is ready to be rendered to the data buffer,
+	// this method adjusts for gamma and scales back to do the last set
+	uint32_t FinalProcess(glm::vec3 p);
+
+	// Converts the PostProcessed Framebuffer back into a uint32_t
+	// buffer and processes each pixel, scaling it by gamma
+	void Ready();
 
 	// Saves the RenderData to a file, data must first be processed
 	// by the render engine / the engine manager based on mode

@@ -61,8 +61,12 @@ void RenderThreadPool::RunJobsAgain() {
 	ThreadLock.unlock();
 }
 
-void RenderThreadPool::MergeBuffers(uint32_t* framebuffer, int w, int h) {	
-	memcpy((void*)framebuffer, (void*)ThreadFrameBuffer->RenderData, (w * h) * sizeof(uint32_t));
+void RenderThreadPool::MergeBuffers(FrameBuffer* framebuffer) {	
+	memcpy((void*)framebuffer->RenderNormalsTarget, (void*)ThreadFrameBuffer->RenderNormalsTarget, (framebuffer->XRes * framebuffer->YRes) * sizeof(glm::vec3));
+	memcpy((void*)framebuffer->RenderAlbedoTarget,  (void*)ThreadFrameBuffer->RenderAlbedoTarget,  (framebuffer->XRes * framebuffer->YRes) * sizeof(glm::vec3));
+	memcpy((void*)framebuffer->RenderTarget,        (void*)ThreadFrameBuffer->RenderTarget, 	   (framebuffer->XRes * framebuffer->YRes) * sizeof(glm::vec3));
+	memcpy((void*)framebuffer->RenderPostProcess,   (void*)ThreadFrameBuffer->RenderPostProcess,   (framebuffer->XRes * framebuffer->YRes) * sizeof(glm::vec3));
+	memcpy((void*)framebuffer->RenderData,		    (void*)ThreadFrameBuffer->RenderData, 		   (framebuffer->XRes * framebuffer->YRes) * sizeof(uint32_t));
 }
 
 void RenderThreadPool::Destroy() {
