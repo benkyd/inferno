@@ -9,7 +9,6 @@
 #include "../common.hpp"
 #include "../pixel.hpp"
 
-
 #include "../display/displayinterface.hpp"
 #include "../display/framebuffer.hpp"
 
@@ -41,13 +40,19 @@ void ProgressiveRenderer::Input() {
 	
 	const Uint8* state = SDL_GetKeyboardState(NULL);
 
-	// if (state[SDL_SCANCODE_W]) m_scene->objects[0]->center.y += 0.001f;
-	// if (state[SDL_SCANCODE_S]) m_scene->objects[0]->center.y -= 0.001f;
-	// if (state[SDL_SCANCODE_D]) m_scene->objects[0]->center.x += 0.001f;
-	// if (state[SDL_SCANCODE_A]) m_scene->objects[0]->center.x -= 0.001f;
-	// if (state[SDL_SCANCODE_R]) m_scene->objects[0]->center.z += 0.001f;
-	// if (state[SDL_SCANCODE_F]) m_scene->objects[0]->center.z -= 0.001f;
-	// std::cout << m_scene->objects[0]->center.x << " " << m_scene->objects[0]->center.y << " " << m_scene->objects[0]->center.z << std::endl;
+	//glm::vec3 pos = m_scene->objects[0]->center;
+	//if (state[SDL_SCANCODE_W]) m_scene->objects[0]->center.y += 0.01f;
+	//if (state[SDL_SCANCODE_S]) m_scene->objects[0]->center.y -= 0.01f;
+	//if (state[SDL_SCANCODE_D]) m_scene->objects[0]->center.x += 0.01f;
+	//if (state[SDL_SCANCODE_A]) m_scene->objects[0]->center.x -= 0.01f;
+	//if (state[SDL_SCANCODE_R]) m_scene->objects[0]->center.z += 0.01f;
+	//if (state[SDL_SCANCODE_F]) m_scene->objects[0]->center.z -= 0.01f;
+	//glm::vec3 newpos = m_scene->objects[0]->center;
+	
+	//if (newpos.x != pos.x || newpos.y != pos.y || newpos.z != pos.z) {
+	//	m_threadPool->ThreadFrameBuffer->ClearFramebuffer();
+	//	m_engine->SPP = 0; m_engine->SPPDepth = 0;
+	//}
 
 	if (!m_interface->ImGui) return;
 
@@ -85,6 +90,11 @@ void ProgressiveRenderer::Input() {
 	ImGui::SliderFloat("Gamma", &m_gamma, 1.0f, 4.0f);
 	m_interface->Framebuffer->Gamma = 1.0f / m_gamma;
 
+	if (ImGui::Button("Reset")) {
+		m_threadPool->ThreadFrameBuffer->ClearFramebuffer();
+		m_engine->SPP = 0; m_engine->SPPDepth = 0;
+	}
+
 	if (ImGui::Button("Save Image")) {
 		m_interface->Framebuffer->DumpToFile(m_imageSavePath);
 		std::cout << "Saved: " << m_imageSavePath << std::endl;
@@ -106,6 +116,8 @@ void ProgressiveRenderer::Render() {
 		if (m_threadPool->CheckAllJobs()) {
 			m_engine->Mode = m_mode;
 			m_engine->PostProcess(m_threadPool->ThreadFrameBuffer->RenderTarget, m_threadPool->ThreadFrameBuffer->RenderPostProcess, m_scene->w, m_scene->h);
+
+			// Denoise
 
 			m_threadPool->ThreadFrameBuffer->PostProcess((ToneMapMode)m_toneMapModeSelected);
 

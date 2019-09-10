@@ -11,6 +11,7 @@
 class RenderThreadPool;
 class DisplayInterface;
 class RenderEngine;
+class Denoiser;
 class Scene;
 class Ray;
 
@@ -34,6 +35,7 @@ public:
 	RenderThreadPool* m_threadPool = nullptr;
     DisplayInterface* m_interface = nullptr;
 	RenderEngine* m_engine = nullptr;
+	Denoiser* m_denoiser = nullptr;
     Scene* m_scene = nullptr;
 
 private:

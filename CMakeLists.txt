@@ -22,13 +22,10 @@ if (UNIX)
 endif(UNIX)
 
 if (WIN32)
-	set(CMAKE_CXX_FLAGS "-IC:/dev/SDL2/include/ -LC:/dev/SDL2/lib/x64/")
-	#set(CMAKE_CXX_FLAGS "-IC:/dev/SDL2_image/include/ -LC:/dev/SDL2_image/lib/x64/")
-	set(CMAKE_CXX_FLAGS "-IC:/dev/glm")
-
 	include_directories(${executable}
 		"C:/dev/glm"
 		"C:/dev/SDL2/include/"
+		"C:/dev/oidn/include" 
 		#"C:/dev/SDL2_image/include/"
 	)
 endif (WIN32)
@@ -65,6 +62,7 @@ file(GLOB SourceFiles
     ${SrcDIR}/definitions/*
     ${SrcDIR}/definitions/materials/*
     ${SrcDIR}/definitions/primatives/*
+    ${SrcDIR}/denoise/*
 	${SrcDIR}/util/*
 	${SrcDIR}/util/imgui/*
     ${TestDIR}/${CurrentTest}
@@ -93,6 +91,9 @@ if (WIN32)
 		"C:/dev/SDL2/lib/x64/SDL2main.lib"
 		"C:/dev/SDL2/lib/x64/SDL2test.lib"
 		#"C:/dev/SDL2_image/lib/x64/SDL2_image.lib"
+		"C:/dev/oidn/lib/OpenImageDenoise.lib"
+		"C:/dev/oidn/lib/tbb.lib"
+		"C:/dev/oidn/lib/tbbmalloc.lib"
 		${WinSDK}
 	)
 endif (WIN32)

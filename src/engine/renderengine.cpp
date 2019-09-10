@@ -94,7 +94,6 @@ glm::vec3 RenderEngine::GetColour(Ray ray, int& depth) {
 	//	colour.r = pattern; colour.g = pattern; colour.b = pattern;
 	//}
 
-
 	if (hit->material->Emissive) return (colour * hit->material->Emittance);
 
 	glm::vec3 direction = hit->material->Bounce(ray.direction, normal);

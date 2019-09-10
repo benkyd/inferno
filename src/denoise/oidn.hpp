@@ -1,0 +1,5 @@
+#ifndef INFERNO_DENOISE_OIDN_H_
+#define INFERNO_DENOISE_OIDN_H_
+
+
+#endif
