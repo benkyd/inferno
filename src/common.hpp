@@ -38,5 +38,4 @@ enum ToneMapMode {
 	MODE_TONEMAP_BASIC
 };
 
-
 #endif

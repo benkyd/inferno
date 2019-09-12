@@ -4,6 +4,7 @@
 #include "../util/threadpool.hpp"
 
 #include "../definitions/materials/material.hpp"
+#include "../definitions/materials/texture.hpp"
 #include "../definitions/materials/random.hpp"
 
 #include "../definitions/primatives/primative.hpp"
@@ -43,7 +44,7 @@ void workerThread(RenderThreadPool* threadpool, ProgressiveRenderer* renderer, i
 
 			int depth = 0;
 			glm::vec3 col = renderer->m_engine->GetColour(ray, depth);
-			
+
 			if (renderer->m_engine->Mode == MODE_RENDER_NORMALS || renderer->m_engine->Mode == MODE_RENDER_PATH_LENGTH) {
 				threadpool->ThreadFrameBuffer->SetPixelSafe(x, y, col, (int)renderer->m_engine->Mode);
 			} else if (renderer->m_engine->Mode == MODE_RENDER_PATH_BOUNCES) {
@@ -79,7 +80,7 @@ glm::vec3 RenderEngine::GetColour(Ray ray, int& depth) {
 	if (!didhit) return	m_scene->SampleSky(ray);
 
 	glm::vec3 hitPoint = ray.origin + ray.direction * t;
-	glm::vec3 normal = hit->SurfaceNormal(hitPoint);
+	glm::vec3 normal = hit->Normal(hitPoint);
 	if (Mode == MODE_RENDER_NORMALS) { return GetNormalColour(normal); }
 	if (Mode == MODE_RENDER_PATH_LENGTH) { if (t > 255.0f) t = 255.0f; return { (float)t, (float)t, (float)t }; }
 

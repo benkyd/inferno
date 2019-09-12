@@ -2,6 +2,8 @@
 #define INFERNO_DEFINITIONS_PRIMATIVES_PRIMATIVE_H_
 
 #include "../materials/material.hpp"
+#include "../materials/texture.hpp"
+
 #include "../../maths.hpp"
 
 class Ray;
@@ -55,6 +57,15 @@ public:
 	virtual glm::vec3 SurfaceNormal(glm::vec3 hitPoint) = 0;
 	virtual glm::vec2 TexCoords(glm::vec3 hitPoint) = 0;
 	virtual void Translate(glm::vec3 trans) = 0;
+
+	inline glm::vec3 Normal(glm::vec3 hitPoint) {
+		if (material == nullptr) return SurfaceNormal(hitPoint);
+		if (material->NormalTexture == nullptr) return SurfaceNormal(hitPoint);
+
+		return material->NormalTexture->SampleNormal(TexCoords(hitPoint));
+
+		// combine with surface normal
+	}
 };
 
 #endif

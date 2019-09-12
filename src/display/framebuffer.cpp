@@ -28,43 +28,31 @@ FrameBuffer::FrameBuffer(int xres, int yres) {
 }
 
 void FrameBuffer::SetPixelSafeNormal(int x, int y, glm::vec3 p) {
-	if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
-		RenderNormalsTarget[y * this->XRes + x] = p;
-	}
+	RenderNormalsTarget[y * this->XRes + x] = p;
 }
 
 void FrameBuffer::SetPixelSafeAlbedo(int x, int y, glm::vec3 p) {
-	if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
-		RenderAlbedoTarget[y * this->XRes + x] = p;
-	}
+	RenderAlbedoTarget[y * this->XRes + x] = p;
 }
 
 void FrameBuffer::SetPixelSafe(int x, int y, glm::vec3 p, int mode) {
-	if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
-		if (m_lastActiveFrameBufferMode != mode) { ClearFramebuffer(); }
-		m_lastActiveFrameBufferMode = mode;
-		RenderTarget[y * this->XRes + x] = p;
-	}
+	if (m_lastActiveFrameBufferMode != mode) { ClearFramebuffer(); }
+	m_lastActiveFrameBufferMode = mode;
+	RenderTarget[y * this->XRes + x] = p;
 }
 
 void FrameBuffer::AddPixelSafe(int x, int y, glm::vec3 p, int mode) {
-	if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
-		if (m_lastActiveFrameBufferMode != mode) { ClearFramebuffer(); }
-		m_lastActiveFrameBufferMode = mode;
-		RenderTarget[y * this->XRes + x] += p;
-	}
+	if (m_lastActiveFrameBufferMode != mode) { ClearFramebuffer(); }
+	m_lastActiveFrameBufferMode = mode;
+	RenderTarget[y * this->XRes + x] += p;
 }
 
 void FrameBuffer::RenderPostProcessSafe(int x, int y, glm::vec3 p) {
-	if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
-		RenderPostProcess[y * this->XRes + x] = p;
-	}
+	RenderPostProcess[y * this->XRes + x] = p;
 }
 
 void FrameBuffer::RenderSetPixelSafe(int x, int y, uint32_t p) {
-	if (x >= 0 && x < this->XRes && y >= 0 && this->YRes) {
-		RenderData[y * this->XRes + x] = p;
-	}
+	RenderData[y * this->XRes + x] = p;
 }
 
 void FrameBuffer::PostProcess(int& spp, ToneMapMode mode, RenderMode rendermode) {

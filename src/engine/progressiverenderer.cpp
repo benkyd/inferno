@@ -126,9 +126,7 @@ void ProgressiveRenderer::Render() {
 
 			m_threadPool->RunJobsAgain();
 
-			frameEndTime = std::chrono::high_resolution_clock::now();
 			m_calculateTimes(frameStartTime, frameEndTime);
-			frameStartTime = std::chrono::high_resolution_clock::now();
 		}
 
 		Input();
@@ -140,8 +138,9 @@ void ProgressiveRenderer::Render() {
 }
 
 
-void ProgressiveRenderer::m_calculateTimes(std::chrono::high_resolution_clock::time_point frameStartTime,
-										   std::chrono::high_resolution_clock::time_point frameEndTime) {
+void ProgressiveRenderer::m_calculateTimes(std::chrono::high_resolution_clock::time_point& frameStartTime,
+										   std::chrono::high_resolution_clock::time_point& frameEndTime) {
+	frameEndTime = std::chrono::high_resolution_clock::now();
 	m_framesRendererd++;
 
 	float frameTime = std::chrono::duration_cast<std::chrono::milliseconds>(frameEndTime - frameStartTime).count();
@@ -152,4 +151,5 @@ void ProgressiveRenderer::m_calculateTimes(std::chrono::high_resolution_clock::t
 	if (FrameTimes.size() > 11) FrameTimes.erase(FrameTimes.begin());
 
 	AverageFrameTime = std::accumulate(FrameTimes.begin(), FrameTimes.end(), 0.0) / FrameTimes.size();
+	frameStartTime = std::chrono::high_resolution_clock::now();
 }

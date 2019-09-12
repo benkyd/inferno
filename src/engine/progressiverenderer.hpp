@@ -41,8 +41,8 @@ public:
 private:
 	std::mutex m_mutex;
 
-	void m_calculateTimes(std::chrono::high_resolution_clock::time_point frameStartTime,
-						  std::chrono::high_resolution_clock::time_point frameEndTime);
+	void m_calculateTimes(std::chrono::high_resolution_clock::time_point& frameStartTime,
+						  std::chrono::high_resolution_clock::time_point& frameEndTime);
 	
 	int m_renderModeSelected = 0;
 	int m_toneMapModeSelected = 0;

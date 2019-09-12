@@ -12,10 +12,14 @@
 
 #include "definitions/scene.hpp"
 #include "definitions/camera.hpp"
+
 #include "definitions/primatives/mesh.hpp"
 #include "definitions/primatives/sphere.hpp"
 #include "definitions/primatives/plane.hpp"
 #include "definitions/primatives/triangle.hpp"
+
+#include "definitions/materials/material.hpp"
+#include "definitions/materials/texture.hpp"
 
 class Display;
 class Renderer;
