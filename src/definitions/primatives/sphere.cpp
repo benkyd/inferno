@@ -23,6 +23,10 @@ glm::vec3 Sphere::SurfaceNormal(glm::vec3 hitPoint) {
 	return glm::normalize(hitPoint - center);
 }
 
+glm::vec3 Sphere::SurfaceTangent(glm::vec3 normal) {
+	return {};
+}
+
 glm::vec2 Sphere::TexCoords(glm::vec3 hitPoint) {
 	glm::vec3 hit = hitPoint - center;
 	return { (1.0f + atan2(hit.z, hit.x) / PI) * 0.5f,

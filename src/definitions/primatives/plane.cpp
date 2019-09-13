@@ -14,6 +14,10 @@ bool Plane::Intersect(Ray& ray, float& t) {
 	return false;
 }
  
+glm::vec3 Plane::SurfaceTangent(glm::vec3 normal) {
+	return {};
+}
+
 glm::vec3 Plane::SurfaceNormal(glm::vec3 hitPoint) {
     return -normal;
 }
