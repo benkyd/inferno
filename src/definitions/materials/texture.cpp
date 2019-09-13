@@ -2,7 +2,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../util/stb_image.hpp"
-#include "../../util/stb_image_Write.hpp"
+#include "../../util/stb_image_write.hpp"
 
 #include "../../common.hpp"
 
@@ -15,21 +15,23 @@ Texture::Texture(std::string texturePath) {
 }
 
 void Texture::Load(std::string texturePath) {
+	struct P {
+		unsigned char r, g, b, a;
+	};
+
 	Width = 0; Height = 0;
 	int channels = 0;
-	uint32_t* imageData = (uint32_t*)stbi_load(texturePath.c_str(), &Width, &Height, &channels, 4);
+
+	P* imageData = (P*)stbi_load(texturePath.c_str(), &Width, &Height, &channels, 4);
 
 	Data = new glm::vec3[Width * Height];
 
 	for (int x = 0; x < Width; x++)
 	for (int y = 0; y < Height; y++) {
-		uint32_t p = imageData[y * Width + x];
-		uint8_t r = (uint8_t)(p);       // 0x000000FF
-		uint8_t g = (uint8_t)(p >> 8);  // 0x0000FF00
-		uint8_t b = (uint8_t)(p >> 16); // 0x00FF0000
-		Data[y * Width + x] = {(float)r / 255.0f, 
-							   (float)g / 255.0f,
-							   (float)b / 255.0f };
+		P p = imageData[y * Width + x];
+		Data[y * Width + x] = {(float)p.r / 255.0f, 
+							   (float)p.g / 255.0f,
+							   (float)p.b / 255.0f };
 	}
 }
 

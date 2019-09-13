@@ -18,15 +18,14 @@ if (UNIX)
 	find_package(SDL2 REQUIRED)
 	#find_package(SDL2_image REQUIRED)
 	#find_package(PNG REQUIRED)
-	#find_package(JPEG REQUIRED)
 endif(UNIX)
 
 if (WIN32)
 	include_directories(${executable}
 		"C:/dev/glm"
 		"C:/dev/SDL2/include/"
-		"C:/dev/oidn/include" 
 		#"C:/dev/SDL2_image/include/"
+		"C:/dev/oidn/include" 
 	)
 endif (WIN32)
 
@@ -44,6 +43,7 @@ if (UNIX)
 	include_directories(${executable}
 		${SDL2_INCLUDE_DIR}
 		#${SDL2_IMAGE_INCLUDE_DIR}
+		"/home/ben/dev/oidn/include/"
 	)
 endif (UNIX)
 
@@ -82,6 +82,9 @@ if (UNIX)
 		#PNG::PNG
 		#JPEG::JPEG
 		Threads::Threads
+		"/home/ben/dev/oidn/lib/libOpenImageDenoise.so"
+		"/home/ben/dev/oidn/lib/libtbb.so.2"
+		"/home/ben/dev/oidn/lib/libtbbmalloc.so.2"
 	)
 endif (UNIX)
 

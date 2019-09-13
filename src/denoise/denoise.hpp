@@ -5,14 +5,16 @@
 
 class Denoiser {
 public:
+	Denoiser();
 
 	void SetAlbedo(glm::vec3* albedoBuffer);
 	void SetNormals(glm::vec3* normalBuffer);
 		
 	void Denoise(glm::vec3* target, bool hdr);
 
-private:
+	
 
+private:
 	bool m_hdr;
 
 	glm::vec3* m_albedoBuffer;

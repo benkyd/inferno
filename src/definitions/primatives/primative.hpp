@@ -55,6 +55,7 @@ public:
 
     virtual bool Intersect(Ray& ray, float& t) = 0;
 	virtual glm::vec3 SurfaceNormal(glm::vec3 hitPoint) = 0;
+	virtual glm::vec3 SurfaceTangent(glm::vec3 normal) = 0;
 	virtual glm::vec2 TexCoords(glm::vec3 hitPoint) = 0;
 	virtual void Translate(glm::vec3 trans) = 0;
 
@@ -65,6 +66,8 @@ public:
 		return material->NormalTexture->SampleNormal(TexCoords(hitPoint));
 
 		// combine with surface normal
+
+
 	}
 };
 
