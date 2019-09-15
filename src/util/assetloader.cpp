@@ -70,6 +70,7 @@ std::vector<Triangle*> LoadTrianglesBasic(std::string path, std::string basePath
 
 				// Material* mat = new Material({ material.diffuse[0], material.diffuse[1], material.diffuse[2] }, 0.6f, material.illum);
 				Material* mat = new Material({ 0.717f, 0.792f, 0.474 }, 0.5f);
+				//Material* mat = new Material({ 0.8, 0.8f, 0.8f });
 
                     // glm::vec3 normal = getNormal(
                     //     {avx[0], avy[0], avz[0]},

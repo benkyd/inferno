@@ -84,7 +84,7 @@ void ProgressiveRenderer::Input() {
 	ImGui::Combo("Render Mode", &m_renderModeSelected, renderItems, IM_ARRAYSIZE(renderItems));
 	m_mode = (RenderMode)m_renderModeSelected;
 
-	const char* toneMapItems[] = { "Clamp", "Basic Tonemap" };
+	const char* toneMapItems[] = { "Clamp", "Reinhard Tonamap", "Exponential Tonemap", "Basic Tonemap" };
 	ImGui::Combo("ToneMap Mode", &m_toneMapModeSelected, toneMapItems, IM_ARRAYSIZE(toneMapItems));
 
 	ImGui::SliderFloat("Gamma", &m_gamma, 1.0f, 4.0f);

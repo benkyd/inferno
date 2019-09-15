@@ -77,7 +77,12 @@ glm::vec3 RenderEngine::GetColour(Ray ray, int& depth) {
 
 	float t = INFINITY; Primative* hit = nullptr;
 	bool didhit = TraceRayScene(ray, m_scene, t, hit);
-	if (!didhit) return	m_scene->SampleSky(ray);
+	if (!didhit) {
+		if (depth > 0) {
+			return m_scene->SampleSky(ray) * 0.2f;
+		}
+		return m_scene->SampleSky(ray);
+	}
 
 	glm::vec3 hitPoint = ray.origin + ray.direction * t;
 	glm::vec3 normal = hit->Normal(hitPoint);

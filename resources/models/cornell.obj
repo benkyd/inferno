@@ -84,8 +84,8 @@ s 1
 f 13//1 14//1 15//1 16//1
 usemtl light
 f 9//2 10//2 11//2 12//2
-usemtl floor
-f 5//3 6//3 7//3 8//3
+semtl floor
+ 5//3 6//3 7//3 8//3
 usemtl ceiling
 f 17//2 18//2 19//2 20//2
 usemtl backWall

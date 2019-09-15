@@ -62,6 +62,7 @@ void FrameBuffer::PostProcess(int& spp, ToneMapMode mode, RenderMode rendermode)
 void FrameBuffer::PostProcess(ToneMapMode mode) {
 	memset((void*)m_swapBuffer, 0, (XRes * YRes) * sizeof(glm::vec3));
 	
+	// reinhard
 	if (mode == MODE_TONEMAP_BASIC) {
 	
 		float max = 0.0f;
@@ -85,6 +86,20 @@ void FrameBuffer::PostProcess(ToneMapMode mode) {
 			m_swapBuffer[y * this->XRes + x] = Clamp(RenderPostProcess[y * this->XRes + x], 1.0f, 0.0f);
 		}
 	
+	} else if (mode == MODE_TONEMAP_REINHARD) {
+
+		for (int x = 0; x < XRes; x++)
+		for (int y = 0; y < YRes; y++) {
+			m_swapBuffer[y * this->XRes + x] = RenderPostProcess[y * this->XRes + x] / (RenderPostProcess[y * this->XRes + x] + 1.0f);
+		}
+
+	} else if (mode == MODE_TONEMAP_EXP) {
+
+		for (int x = 0; x < XRes; x++)
+		for (int y = 0; y < YRes; y++) {
+			m_swapBuffer[y * this->XRes + x] = 1.0f - exp(RenderPostProcess[y * this->XRes + x] * 1.0f);
+		}
+
 	} else {
 		for (int x = 0; x < XRes; x++)
 		for (int y = 0; y < YRes; y++) {
