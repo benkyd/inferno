@@ -63,50 +63,60 @@ void FrameBuffer::PostProcess(ToneMapMode mode) {
 	memset((void*)m_swapBuffer, 0, (XRes * YRes) * sizeof(glm::vec3));
 	
 	// reinhard
-	if (mode == MODE_TONEMAP_BASIC) {
-	
-		float max = 0.0f;
 
-		for (int x = 0; x < XRes; x++)
-		for (int y = 0; y < YRes; y++) {
-			if (RenderPostProcess[y * this->XRes + x].r > max) max = RenderPostProcess[y * this->XRes + x].r;
-			if (RenderPostProcess[y * this->XRes + x].g > max) max = RenderPostProcess[y * this->XRes + x].g;
-			if (RenderPostProcess[y * this->XRes + x].b > max) max = RenderPostProcess[y * this->XRes + x].b;
-		}
+	switch (mode) {
+		case MODE_TONEMAP_REINHARD:
+			{
+				for (int x = 0; x < XRes; x++)
+				for (int y = 0; y < YRes; y++) {
+					m_swapBuffer[y * this->XRes + x] = RenderPostProcess[y * this->XRes + x] /
+													(RenderPostProcess[y * this->XRes + x] + 1.0f);
+				}
 
-		for (int x = 0; x < XRes; x++)
-		for (int y = 0; y < YRes; y++) {
-			m_swapBuffer[y * this->XRes + x] = RenderPostProcess[y * this->XRes + x] / max;
-		}
-	
-	} else if (mode == MODE_TONEMAP_CLAMP) {
+				break;
+			}
+		case MODE_TONEMAP_EXP:
+			{
+				for (int x = 0; x < XRes; x++)
+				for (int y = 0; y < YRes; y++) {
+					m_swapBuffer[y * this->XRes + x] = 1.0f - exp2(RenderPostProcess[y * this->XRes + x] * 1.0f);
+				}
 
-		for (int x = 0; x < XRes; x++)
-		for (int y = 0; y < YRes; y++) {
-			m_swapBuffer[y * this->XRes + x] = Clamp(RenderPostProcess[y * this->XRes + x], 1.0f, 0.0f);
-		}
-	
-	} else if (mode == MODE_TONEMAP_REINHARD) {
+				break;
+			}
+		case MODE_TONEMAP_CLAMP:
+			{
+				for (int x = 0; x < XRes; x++)
+				for (int y = 0; y < YRes; y++) {
+					m_swapBuffer[y * this->XRes + x] = Clamp(RenderPostProcess[y * this->XRes + x], 1.0f, 0.0f);
+				}
 
-		for (int x = 0; x < XRes; x++)
-		for (int y = 0; y < YRes; y++) {
-			m_swapBuffer[y * this->XRes + x] = RenderPostProcess[y * this->XRes + x] / (RenderPostProcess[y * this->XRes + x] + 1.0f);
-		}
+				break;
+			}
+		case MODE_TONEMAP_BASIC:
+			{
+				float max = 0.0f;
 
-	} else if (mode == MODE_TONEMAP_EXP) {
+				for (int x = 0; x < XRes; x++)
+				for (int y = 0; y < YRes; y++) {
+					if (RenderPostProcess[y * this->XRes + x].r > max) max = RenderPostProcess[y * this->XRes + x].r;
+					if (RenderPostProcess[y * this->XRes + x].g > max) max = RenderPostProcess[y * this->XRes + x].g;
+					if (RenderPostProcess[y * this->XRes + x].b > max) max = RenderPostProcess[y * this->XRes + x].b;
+				}
 
-		for (int x = 0; x < XRes; x++)
-		for (int y = 0; y < YRes; y++) {
-			m_swapBuffer[y * this->XRes + x] = 1.0f - exp(RenderPostProcess[y * this->XRes + x] * 1.0f);
-		}
-
-	} else {
-		for (int x = 0; x < XRes; x++)
-		for (int y = 0; y < YRes; y++) {
-			m_swapBuffer[y * this->XRes + x] = Clamp(RenderPostProcess[y * this->XRes + x], 1.0f, 0.0f);
-		}
+				for (int x = 0; x < XRes; x++)
+				for (int y = 0; y < YRes; y++) {
+					m_swapBuffer[y * this->XRes + x] = RenderPostProcess[y * this->XRes + x] / max;
+				}
+				
+				break;
+			}
+		default:
+			{
+				break;
+			}
 	}
-	
+
 	for (int x = 0; x < XRes; x++)
 	for (int y = 0; y < YRes; y++) {
 		RenderPostProcess[y * this->XRes + x] = m_swapBuffer[y * this->XRes + x];

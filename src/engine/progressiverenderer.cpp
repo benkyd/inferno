@@ -84,7 +84,7 @@ void ProgressiveRenderer::Input() {
 	ImGui::Combo("Render Mode", &m_renderModeSelected, renderItems, IM_ARRAYSIZE(renderItems));
 	m_mode = (RenderMode)m_renderModeSelected;
 
-	const char* toneMapItems[] = { "Clamp", "Reinhard Tonamap", "Exponential Tonemap", "Basic Tonemap" };
+	const char* toneMapItems[] = { "Reinhard Tonamap", "Exponential Tonemap", "Clamp", "Basic Tonemap" };
 	ImGui::Combo("ToneMap Mode", &m_toneMapModeSelected, toneMapItems, IM_ARRAYSIZE(toneMapItems));
 
 	ImGui::SliderFloat("Gamma", &m_gamma, 1.0f, 4.0f);
@@ -117,7 +117,7 @@ void ProgressiveRenderer::Render() {
 			m_engine->Mode = m_mode;
 			m_engine->PostProcess(m_threadPool->ThreadFrameBuffer->RenderTarget, m_threadPool->ThreadFrameBuffer->RenderPostProcess, m_scene->w, m_scene->h);
 
-			// Denoise
+			// Denoise in HDR space
 
 			m_threadPool->ThreadFrameBuffer->PostProcess((ToneMapMode)m_toneMapModeSelected);
 

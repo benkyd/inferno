@@ -76,7 +76,7 @@ public:
 	
 	uint32_t* RenderData;
 	int XRes, YRes;
-	float Gamma = 1.0f / 2.3f;
+	float Gamma;
 	
 	~FrameBuffer();
 

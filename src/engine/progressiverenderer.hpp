@@ -75,7 +75,7 @@ private:
 	int m_framesRendererd = 0;
 
 	// Gamma to pass to the framebuffer
-	float m_gamma = 2.3f;
+	float m_gamma = 2.2f;
 
 	// Image save path to pass to the framebuffer
 	std::string m_imageSavePath = "image.png";
