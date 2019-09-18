@@ -6,6 +6,7 @@
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include <random>
 #include <algorithm>
 #include <vector>
 #include <math.h>
@@ -29,6 +30,17 @@ inline float fastDegreetoRadian(const float Degree) { return (Degree * DEG2RAD);
 inline float fastRadianToDegree(const float Radian) { return (Radian * RAD2DEG); }
 inline float getFovAdjustment(const float fov) { return tanf(fov * PI / 360.0f); }
 inline float getAspectRatio(const float w, const float h) { return (float)w / (float)h; }
+
+inline glm::vec3 randomUnitVector() {
+	std::default_random_engine generator;
+	std::uniform_real_distribution<float> distribution(-1, 1);
+
+	float x = distribution(generator);
+	float y = distribution(generator);
+	float z = distribution(generator);
+
+	return glm::normalize(glm::vec3({x,y,z}));
+}
 
 // (-b += sqrt(b^2-4ac)) / 2a
 inline bool quadratic(float a, float b, float c, float& x0, float& x1) {
