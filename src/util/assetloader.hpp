@@ -7,7 +7,8 @@
 #include <string>
 
 class Triangle;
+class Material;
 
-std::vector<Triangle*> LoadTrianglesBasic(std::string path, std::string basePath = "");
+std::vector<Triangle*> LoadTrianglesBasic(std::string path, std::string basePath = "", Material* baseMaterial = nullptr);
 
 #endif

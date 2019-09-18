@@ -74,9 +74,9 @@ void ProgressiveRenderer::Input() {
 	ImGui::Text(str2.str().c_str());
 
 	float upper = 0.0f; float lower = 0.0f;
-	for (int i = 0; i < AllFrameTimes.size(); i++) {
-		if (AllFrameTimes[i] > upper) upper = AllFrameTimes[i];
-		if (AllFrameTimes[i] < lower) lower = AllFrameTimes[i];
+	for (int i = 0; i < FrameTimes.size(); i++) {
+		if (FrameTimes[i] > upper) upper = FrameTimes[i];
+		if (FrameTimes[i] < lower) lower = FrameTimes[i];
 	}
 	ImGui::PlotLines("FrameTimes", FrameTimes.data(), FrameTimes.size(), 0, NULL, lower, upper, ImVec2(0, 40));
 	
@@ -117,7 +117,7 @@ void ProgressiveRenderer::Render() {
 			m_engine->Mode = m_mode;
 			m_engine->PostProcess(m_threadPool->ThreadFrameBuffer->RenderTarget, m_threadPool->ThreadFrameBuffer->RenderPostProcess, m_scene->w, m_scene->h);
 
-			// Denoise in HDR space
+			// Denoise while still in HDR space
 
 			m_threadPool->ThreadFrameBuffer->PostProcess((ToneMapMode)m_toneMapModeSelected);
 

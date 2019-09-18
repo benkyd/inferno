@@ -2,8 +2,8 @@
 
 #include "../src/inferno.hpp"
 
-static const int width = 700;
-static const int height = 700;
+static const int width = 1000;
+static const int height = 1000;
 
 int main(int argc, char** argv) {
 	InfernoEngine inferno;

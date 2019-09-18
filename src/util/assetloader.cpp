@@ -21,7 +21,7 @@ glm::vec3 getNormal(glm::vec3 p0, glm::vec3 p1, glm::vec3 p2) {
 	return normal;
 }
 
-std::vector<Triangle*> LoadTrianglesBasic(std::string path, std::string basePath) {
+std::vector<Triangle*> LoadTrianglesBasic(std::string path, std::string basePath, Material* baseMaterial) {
     tinyobj::attrib_t attrib;
     std::vector<tinyobj::shape_t> shapes;
     std::vector<tinyobj::material_t> materials;
@@ -65,38 +65,41 @@ std::vector<Triangle*> LoadTrianglesBasic(std::string path, std::string basePath
 					any[v] = attrib.normals[3 * idx.normal_index + 1];
 					anz[v] = attrib.normals[3 * idx.normal_index + 2];
 				}
+				
+				Material* mat;
+				if (baseMaterial == nullptr || !baseMaterial) {
+				    tinyobj::material_t material = materials[shapes[s].mesh.material_ids[f]];
+					bool illum = false;
+					if (material.illum > 0.0f) illum = true;
+					mat = new Material({ material.diffuse[0], material.diffuse[1], material.diffuse[2] }, material.illum, 0.0f, 0.0f, 0.0f, false, illum);
+				} else {
+					mat = baseMaterial;
+				}
 
-				// tinyobj::material_t material = materials[shapes[s].mesh.material_ids[f]];
+                // glm::vec3 normal = getNormal(
+                //     {avx[0], avy[0], avz[0]},
+                //     {avx[1], avy[1], avz[1]},
+                //     {avx[2], avy[2], avz[2]}
+                // );
 
-				// Material* mat = new Material({ material.diffuse[0], material.diffuse[1], material.diffuse[2] }, 0.6f, material.illum);
-				Material* mat = new Material({ 0.717f, 0.792f, 0.474 }, 0.5f);
-				//Material* mat = new Material({ 0.8, 0.8f, 0.8f });
+                Triangle* tmp = new Triangle {
+                    {avx[0], avy[0], avz[0]},
+                    {avx[1], avy[1], avz[1]},
+                    {avx[2], avy[2], avz[2]},
 
-                    // glm::vec3 normal = getNormal(
-                    //     {avx[0], avy[0], avz[0]},
-                    //     {avx[1], avy[1], avz[1]},
-                    //     {avx[2], avy[2], avz[2]}
-                    // );
+                    // normal, normal, normal
+				    {anx[0], any[0], anz[0]},
+                    {anx[1], any[1], anz[1]},
+                    {anx[2], any[2], anz[2]},
+					
+					mat,
+                };
 
-                    Triangle* tmp = new Triangle {
-                        {avx[0], avy[0], avz[0]},
-                        {avx[1], avy[1], avz[1]},
-                        {avx[2], avy[2], avz[2]},
-
-                        // normal, normal, normal
-
-                        {anx[0], any[0], anz[0]},
-                        {anx[1], any[1], anz[1]},
-                        {anx[2], any[2], anz[2]},
-
-						mat,
-                    };
-
-                    triangles.push_back(tmp);
-                }
-            index_offset += fv;
+                triangles.push_back(tmp);
+            }
+            
+			index_offset += fv;
         }
     }
-
     return triangles;
 }

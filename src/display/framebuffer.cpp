@@ -142,8 +142,26 @@ void FrameBuffer::Ready() {
 
 void FrameBuffer::DumpToFile(std::string path) {
 	// int stbi_write_png(char const* filename, int w, int h, int comp, const void* data, int stride_in_bytes);
-	// TODO: Red and Blue channels need to be swapped
-	stbi_write_png(path.c_str(), this->XRes, this->YRes, sizeof(uint32_t), this->RenderData, sizeof(uint32_t) * this->XRes);
+	// TODO: Red and Blue channels need to be swapped, no clue why, saving the framebuffer just doesnt work
+	struct P {
+		unsigned char r, g, b, a;
+	};
+
+	P* imageData = (P*)malloc((XRes * YRes) * sizeof(P));
+
+	for (int x = 0; x < XRes; x++)
+	for (int y = 0; y < YRes; y++) {
+		uint32_t pixel = RenderData[y * this->XRes + x];
+		uint8_t er = (pixel & 0x000000FF);
+		uint8_t eg = (pixel & 0x0000FF00) >> 8;
+		uint8_t eb = (pixel & 0x00FF0000) >> 16;
+		uint8_t ea = (pixel & 0xFF000000) >> 24;
+
+		imageData[y * this->XRes + x] = P{ (unsigned char)eb, (unsigned char)eg, (unsigned char)er, (unsigned char)ea };
+	}
+
+	stbi_write_png(path.c_str(), this->XRes, this->YRes, sizeof(P), imageData, sizeof(P) * this->XRes);
+	free(imageData);
 }
 
 void FrameBuffer::CopyData(uint32_t* dest) {

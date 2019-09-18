@@ -10,7 +10,7 @@ set(CMAKE_CXX_FLAGS "-Ofast -mtune=native")
 set(executable output)
 set(SrcDIR ./src)
 set(TestDIR ./test)
-set(CurrentTest main.cpp)
+set(CurrentTest stanford_dragon_cornell.cpp)
 
 set(IncludeDIR ./include)
 
