@@ -66,14 +66,16 @@ std::vector<Triangle*> LoadTrianglesBasic(std::string path, std::string basePath
 					anz[v] = attrib.normals[3 * idx.normal_index + 2];
 				}
 				
-				Material* mat;
-				if (baseMaterial == nullptr || !baseMaterial) {
-				    tinyobj::material_t material = materials[shapes[s].mesh.material_ids[f]];
+				Material* mtl;
+				if (baseMaterial == nullptr) {
+					tinyobj::material_t tinyMtl = materials[shapes[s].mesh.material_ids[f]];
 					bool illum = false;
-					if (material.illum > 0.0f) illum = true;
-					mat = new Material({ material.diffuse[0], material.diffuse[1], material.diffuse[2] }, material.illum, 0.0f, 0.0f, 0.0f, false, illum);
+					if (tinyMtl.illum > 0.0f) illum = true;
+					// TODO: Weird bug where imported illumination is always equal to 15
+					if (illum) tinyMtl.illum = 50;
+					mtl = new Material({ tinyMtl.diffuse[0], tinyMtl.diffuse[1], tinyMtl.diffuse[2] }, tinyMtl.illum, 0.0f, 0.0f, 0.0f, false, illum);
 				} else {
-					mat = baseMaterial;
+					mtl = baseMaterial;
 				}
 
                 // glm::vec3 normal = getNormal(
@@ -92,7 +94,7 @@ std::vector<Triangle*> LoadTrianglesBasic(std::string path, std::string basePath
                     {anx[1], any[1], anz[1]},
                     {anx[2], any[2], anz[2]},
 					
-					mat,
+					mtl,
                 };
 
                 triangles.push_back(tmp);
