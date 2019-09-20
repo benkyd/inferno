@@ -72,7 +72,6 @@ std::vector<Triangle*> LoadTrianglesBasic(std::string path, std::string basePath
 					bool illum = false;
 					if (tinyMtl.illum > 0.0f) illum = true;
 					// TODO: Weird bug where imported illumination is always equal to 15
-					if (illum) tinyMtl.illum = 50;
 					mtl = new Material({ tinyMtl.diffuse[0], tinyMtl.diffuse[1], tinyMtl.diffuse[2] }, tinyMtl.illum, 0.0f, 0.0f, 0.0f, false, illum);
 				} else {
 					mtl = baseMaterial;

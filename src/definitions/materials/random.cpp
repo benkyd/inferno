@@ -10,6 +10,6 @@ float rand01() {
 }
 
 float rand11() {
-	std::uniform_real_distribution<float> distribution(1, 1);
+	std::uniform_real_distribution<float> distribution(-1, 1);
 	return distribution(generator);
 }
