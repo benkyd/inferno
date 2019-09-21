@@ -18,6 +18,9 @@ int main(int argc, char** argv) {
 	Sky* sky = new SolidSky({ 0.0f, 0.0f, 0.0f }, 0.0f);
 	scene->sky = sky;
 
+	Sphere* sphere = new Sphere({ -0.302, -0.385999, -3.74202 }, 0.03f, new Material({ 0.345f, 0.133f, 0.050f }, 300.0f, 0.0f, 0.0f, 0.0f, false, true));
+	scene->objects.push_back(sphere);
+
 	Plane* plane = new Plane({ 0.0f, 0.0f, 0.0f }, { 0.0f, 0.0f, 1.0f }, new Material({ 1.0f, 1.0f, 1.0f }, 0.0f, 0.0f, 0.0f, 0.0f, false, false));
 	scene->objects.push_back(plane);
 

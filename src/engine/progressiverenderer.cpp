@@ -40,19 +40,14 @@ void ProgressiveRenderer::Input() {
 	
 	const Uint8* state = SDL_GetKeyboardState(NULL);
 
-	//glm::vec3 pos = m_scene->objects[0]->center;
-	//if (state[SDL_SCANCODE_W]) m_scene->objects[0]->center.y += 0.01f;
-	//if (state[SDL_SCANCODE_S]) m_scene->objects[0]->center.y -= 0.01f;
-	//if (state[SDL_SCANCODE_D]) m_scene->objects[0]->center.x += 0.01f;
-	//if (state[SDL_SCANCODE_A]) m_scene->objects[0]->center.x -= 0.01f;
-	//if (state[SDL_SCANCODE_R]) m_scene->objects[0]->center.z += 0.01f;
-	//if (state[SDL_SCANCODE_F]) m_scene->objects[0]->center.z -= 0.01f;
-	//glm::vec3 newpos = m_scene->objects[0]->center;
+	//if (state[SDL_SCANCODE_W]) m_scene->objects[0]->center.y += 0.001f;
+	//if (state[SDL_SCANCODE_S]) m_scene->objects[0]->center.y -= 0.001f;
+	//if (state[SDL_SCANCODE_D]) m_scene->objects[0]->center.x += 0.001f;
+	//if (state[SDL_SCANCODE_A]) m_scene->objects[0]->center.x -= 0.001f;
+	//if (state[SDL_SCANCODE_R]) m_scene->objects[0]->center.z += 0.001f;
+	//if (state[SDL_SCANCODE_F]) m_scene->objects[0]->center.z -= 0.001f;
 	
-	//if (newpos.x != pos.x || newpos.y != pos.y || newpos.z != pos.z) {
-	//	m_threadPool->ThreadFrameBuffer->ClearFramebuffer();
-	//	m_engine->SPP = 0; m_engine->SPPDepth = 0;
-	//}
+	//std::cout << m_scene->objects[0]->center.x << " " << m_scene->objects[0]->center.y << " " << m_scene->objects[0]->center.z << std::endl;
 
 	if (!m_interface->ImGui) return;
 

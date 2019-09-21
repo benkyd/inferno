@@ -21,7 +21,7 @@ public:
 	float Emittance;
 	float Specularity; // 1.0f = perfect reflective
 	float Index;        // refractive index
-	float Gloss;        // specular lobe angle in radians
+	float Gloss;        // reflection cone angle in radians
 	// float Tint;         // specular and refractive tinting
 	// float Reflectivity; // metallic reflection
 	bool Transparent;
