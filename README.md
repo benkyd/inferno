@@ -3,7 +3,7 @@
 
 Inferno is a CPU Only, progressive unidirectional pathtracing engine written in C++. 
 
-![Latest Render](https://i.imgur.com/WPs7jjr.jpg)
+![Latest Render](https://imgur.com/WPs7jjr.jpg)
 
 ### Features
 
@@ -77,8 +77,8 @@ While programming this I found a few resources especially useful. Below is some 
 
 ### Samples
 
-![Stanford Dragon](https://i.imgur.com/WPs7jjr.jpg)
-![Cornell Box No Colours](https://imgur.com/u2sIKxK.png)
-![Cornell Box](https://imgur.com/i4hLxra.png)
-![Cornell Box Specular Materials](https://imgur.com/wfOieEk.png)
+![Stanford Dragon](https://imgur.com/WPs7jjr.jpg)
 ![Stanford Dragon](https://imgur.com/POj0JlL.png)
+![Cornell Box Specular Materials](https://imgur.com/wfOieEk.png)
+![Cornell Box](https://imgur.com/i4hLxra.png)
+![Cornell Box No Colours](https://imgur.com/u2sIKxK.png)
