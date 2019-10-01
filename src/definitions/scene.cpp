@@ -22,8 +22,8 @@ glm::vec3 GradientSky::Sample(Ray& ray) {
 }
 
 Scene::Scene(int width, int height) {
-    w = width;
-    h = height;
+	w = width;
+	h = height;
 }
 
 glm::vec3 Scene::SampleSky(Ray& ray) {

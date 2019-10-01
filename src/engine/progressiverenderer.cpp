@@ -21,7 +21,7 @@
 #include "../definitions/ray.hpp"
 
 ProgressiveRenderer::ProgressiveRenderer() {
-    
+	
 }
 
 void ProgressiveRenderer::Init(DisplayInterface* interface, Scene* scene) {
@@ -29,7 +29,7 @@ void ProgressiveRenderer::Init(DisplayInterface* interface, Scene* scene) {
 	m_engine = new RenderEngine();
 	m_engine->Mode = MODE_RENDER_PATHTRACE;
 	m_engine->SetScene(scene);
-    m_interface = interface;
+	m_interface = interface;
 	m_scene = scene;
 }
 
@@ -79,7 +79,7 @@ void ProgressiveRenderer::Input() {
 	ImGui::Combo("Render Mode", &m_renderModeSelected, renderItems, IM_ARRAYSIZE(renderItems));
 	m_mode = (RenderMode)m_renderModeSelected;
 
-	const char* toneMapItems[] = { "Reinhard Tonamap", "Exponential Tonemap", "Clamp", "Basic Tonemap" };
+	const char* toneMapItems[] = { "Reinhard Tonamap", "ACES Filmatic Tonemap", "Uncharted 2", "Clamp", "Basic Tonemap" };
 	ImGui::Combo("ToneMap Mode", &m_toneMapModeSelected, toneMapItems, IM_ARRAYSIZE(toneMapItems));
 
 	ImGui::SliderFloat("Gamma", &m_gamma, 1.0f, 4.0f);

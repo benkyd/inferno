@@ -35,8 +35,8 @@ find_package(OpenGL REQUIRED)
 
 find_package(OpenMP)
 if (OPENMP_FOUND)
-    set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-    set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+	set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 endif()
 
 if (UNIX)
@@ -48,31 +48,31 @@ if (UNIX)
 endif (UNIX)
 
 include_directories(${executable}
-    #${PNG_INCLUDE_DIR}
-    #${JPEG_INCLUDE_DIR}
-    ${IncludeDIR}
+	#${PNG_INCLUDE_DIR}
+	#${JPEG_INCLUDE_DIR}
+	${IncludeDIR}
 )
 
 file(GLOB SourceFiles 
 	${SrcDIR}/*
-    ${SrcDIR}/acceleration/*
-    ${SrcDIR}/core/*
-    ${SrcDIR}/engine/*
-    ${SrcDIR}/display/*
-    ${SrcDIR}/definitions/*
-    ${SrcDIR}/definitions/materials/*
-    ${SrcDIR}/definitions/primatives/*
-    ${SrcDIR}/denoise/*
+	${SrcDIR}/acceleration/*
+	${SrcDIR}/core/*
+	${SrcDIR}/engine/*
+	${SrcDIR}/display/*
+	${SrcDIR}/definitions/*
+	${SrcDIR}/definitions/materials/*
+	${SrcDIR}/definitions/primatives/*
+	${SrcDIR}/denoise/*
 	${SrcDIR}/util/*
 	${SrcDIR}/util/imgui/*
-    ${TestDIR}/${CurrentTest}
+	${TestDIR}/${CurrentTest}
 )
 
 add_executable(${executable} ${SourceFiles})
 
 set_target_properties(${executable} PROPERTIES
-    CXX_STANDARD 17
-    CXX_EXTENSIONS OFF
+	CXX_STANDARD 17
+	CXX_EXTENSIONS OFF
 )
 
 if (UNIX)
@@ -102,5 +102,5 @@ if (WIN32)
 endif (WIN32)
 
 target_link_libraries(${executable}
-    ${CMAKE_DL_LIBS}
+	${CMAKE_DL_LIBS}
 )

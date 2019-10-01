@@ -10,41 +10,41 @@
 #include "../maths.hpp"
 
 glm::vec3 getNormal(glm::vec3 p0, glm::vec3 p1, glm::vec3 p2) {
-    glm::vec3 u = p1 - p0;
-    glm::vec3 v = p2 - p0;
+	glm::vec3 u = p1 - p0;
+	glm::vec3 v = p2 - p0;
 
-    glm::vec3 normal;
-    normal.x = u.y * v.z - u.z * v.y;
-    normal.y = u.z * v.x - u.x * v.z;
-    normal.z = u.x * v.y - u.y * v.x;
+	glm::vec3 normal;
+	normal.x = u.y * v.z - u.z * v.y;
+	normal.y = u.z * v.x - u.x * v.z;
+	normal.z = u.x * v.y - u.y * v.x;
 
 	return normal;
 }
 
 std::vector<Triangle*> LoadTrianglesBasic(std::string path, std::string basePath, Material* baseMaterial) {
-    tinyobj::attrib_t attrib;
-    std::vector<tinyobj::shape_t> shapes;
-    std::vector<tinyobj::material_t> materials;
+	tinyobj::attrib_t attrib;
+	std::vector<tinyobj::shape_t> shapes;
+	std::vector<tinyobj::material_t> materials;
 
-    std::string warn, err;
+	std::string warn, err;
 
 	bool canLoad = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, path.c_str(), basePath.c_str());
 
 	if (!err.empty() || !canLoad) {
 		std::cerr << "Cannot load obj: '" << path << "': " << err << std::endl;
-        exit(0);
+		exit(0);
 	}
 
 	if (!warn.empty()) {
 		std::cerr << "Warning from obj loader while loading obj: '" << path << "': " << warn << std::endl;
 	}
 
-    std::vector<Triangle*> triangles;
+	std::vector<Triangle*> triangles;
 
-    for (size_t s = 0; s < shapes.size(); s++) {
-        size_t index_offset = 0;
-        for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
-            int fv = shapes[s].mesh.num_face_vertices[f];
+	for (size_t s = 0; s < shapes.size(); s++) {
+		size_t index_offset = 0;
+		for (size_t f = 0; f < shapes[s].mesh.num_face_vertices.size(); f++) {
+			int fv = shapes[s].mesh.num_face_vertices[f];
 			if (fv == 3) {
 				tinyobj::real_t avx[3];
 				tinyobj::real_t avy[3];
@@ -77,30 +77,30 @@ std::vector<Triangle*> LoadTrianglesBasic(std::string path, std::string basePath
 					mtl = baseMaterial;
 				}
 
-                // glm::vec3 normal = getNormal(
-                //     {avx[0], avy[0], avz[0]},
-                //     {avx[1], avy[1], avz[1]},
-                //     {avx[2], avy[2], avz[2]}
-                // );
+				// glm::vec3 normal = getNormal(
+				//     {avx[0], avy[0], avz[0]},
+				//     {avx[1], avy[1], avz[1]},
+				//     {avx[2], avy[2], avz[2]}
+				// );
 
-                Triangle* tmp = new Triangle {
-                    {avx[0], avy[0], avz[0]},
-                    {avx[1], avy[1], avz[1]},
-                    {avx[2], avy[2], avz[2]},
+				Triangle* tmp = new Triangle {
+					{avx[0], avy[0], avz[0]},
+					{avx[1], avy[1], avz[1]},
+					{avx[2], avy[2], avz[2]},
 
-                    // normal, normal, normal
-				    {anx[0], any[0], anz[0]},
-                    {anx[1], any[1], anz[1]},
-                    {anx[2], any[2], anz[2]},
+					// normal, normal, normal
+					{anx[0], any[0], anz[0]},
+					{anx[1], any[1], anz[1]},
+					{anx[2], any[2], anz[2]},
 					
 					mtl,
-                };
+				};
 
-                triangles.push_back(tmp);
-            }
-            
+				triangles.push_back(tmp);
+			}
+			
 			index_offset += fv;
-        }
-    }
-    return triangles;
+		}
+	}
+	return triangles;
 }

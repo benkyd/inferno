@@ -66,55 +66,113 @@ void FrameBuffer::PostProcess(ToneMapMode mode) {
 
 	switch (mode) {
 		case MODE_TONEMAP_REINHARD:
-			{
-				for (int x = 0; x < XRes; x++)
-				for (int y = 0; y < YRes; y++) {
-					m_swapBuffer[y * this->XRes + x] = RenderPostProcess[y * this->XRes + x] /
-													(RenderPostProcess[y * this->XRes + x] + 1.0f);
-				}
-
-				break;
+		{
+			for (int x = 0; x < XRes; x++)
+			for (int y = 0; y < YRes; y++) {
+				m_swapBuffer[y * this->XRes + x] = RenderPostProcess[y * this->XRes + x] /
+												(RenderPostProcess[y * this->XRes + x] + 1.0f);
 			}
-		case MODE_TONEMAP_EXP:
-			{
-				for (int x = 0; x < XRes; x++)
-				for (int y = 0; y < YRes; y++) {
-					m_swapBuffer[y * this->XRes + x] = 1.0f - exp2(RenderPostProcess[y * this->XRes + x] * 1.0f);
-				}
+			
+			break;
+		}
+		case MODE_TONEMAP_ACES_FILMATIC: 
+		{
 
-				break;
-			}
-		case MODE_TONEMAP_CLAMP:
-			{
-				for (int x = 0; x < XRes; x++)
-				for (int y = 0; y < YRes; y++) {
-					m_swapBuffer[y * this->XRes + x] = Clamp(RenderPostProcess[y * this->XRes + x], 1.0f, 0.0f);
-				}
+			static const glm::mat3 inputMat{
+				{0.59719, 0.35458, 0.04823},
+				{0.07600, 0.90834, 0.01566},
+				{0.02840, 0.13383, 0.83777}
+			};
 
-				break;
-			}
-		case MODE_TONEMAP_BASIC:
-			{
-				float max = 0.0f;
+			static const glm::mat3 outputMat{
+				{ 1.60475, -0.53108, -0.07367},
+				{-0.10208,  1.10813, -0.00605},
+				{-0.00327, -0.07276,  1.07602}
+			};
 
-				for (int x = 0; x < XRes; x++)
-				for (int y = 0; y < YRes; y++) {
-					if (RenderPostProcess[y * this->XRes + x].r > max) max = RenderPostProcess[y * this->XRes + x].r;
-					if (RenderPostProcess[y * this->XRes + x].g > max) max = RenderPostProcess[y * this->XRes + x].g;
-					if (RenderPostProcess[y * this->XRes + x].b > max) max = RenderPostProcess[y * this->XRes + x].b;
-				}
+			auto ACES = [&](glm::vec3 v) -> glm::vec3 {
+				glm::vec3 a = v * (v + 0.0245786f) - 0.000090537f;
+				glm::vec3 b = v * (0.983729f * v + 0.4329510f) + 0.238081f;
+				return a / b;
+			};
 
-				for (int x = 0; x < XRes; x++)
-				for (int y = 0; y < YRes; y++) {
-					m_swapBuffer[y * this->XRes + x] = RenderPostProcess[y * this->XRes + x] / max;
-				}
+			for (int x = 0; x < XRes; x++)
+			for (int y = 0; y < YRes; y++) {
+				glm::vec3 col = RenderPostProcess[y * this->XRes + x];
 				
-				break;
+				col = col * inputMat;
+				col = ACES(col);
+				col = col * outputMat;
+				col = Clamp(col, 1.0f, 0.0f);
+
+				m_swapBuffer[y * this->XRes + x] = col;
 			}
+
+			break;
+		}
+		case MODE_TONEMAP_UNCHARTED2:
+		{
+			static const float exposure = 2.0f;
+			static const glm::vec3 W = { 11.2f, 11.2f, 11.2f };
+
+			auto Uncharted2 = [&](glm::vec3 x) -> glm::vec3 {
+				float A = 0.15f;
+				float B = 0.50f;
+				float C = 0.10f;
+				float D = 0.20f;
+				float E = 0.02f;
+				float F = 0.30f;
+				return ((x * (A * x + C * B) + D * E) / (x * (A * x + B) + D * F)) - E / F;
+			};
+
+			glm::vec3 white = glm::vec3{ 1.0f, 1.0f, 1.0f } / Uncharted2(W);
+
+
+			for (int x = 0; x < XRes; x++)
+			for (int y = 0; y < YRes; y++) {
+				glm::vec3 col = RenderPostProcess[y * this->XRes + x];
+				
+				glm::vec3 cur = Uncharted2(col * exposure);
+
+				col = cur * white;
+				col = Clamp(col, 1.0f, 0.0f);
+
+				m_swapBuffer[y * this->XRes + x] = col;
+			}
+
+			break;
+		}
+		case MODE_TONEMAP_CLAMP:
+		{
+			for (int x = 0; x < XRes; x++)
+			for (int y = 0; y < YRes; y++) {
+				m_swapBuffer[y * this->XRes + x] = Clamp(RenderPostProcess[y * this->XRes + x], 1.0f, 0.0f);
+			}
+			
+			break;
+		}
+		case MODE_TONEMAP_BASIC:
+		{
+			float max = 0.0f;
+
+			for (int x = 0; x < XRes; x++)
+			for (int y = 0; y < YRes; y++) {
+				if (RenderPostProcess[y * this->XRes + x].r > max) max = RenderPostProcess[y * this->XRes + x].r;
+				if (RenderPostProcess[y * this->XRes + x].g > max) max = RenderPostProcess[y * this->XRes + x].g;
+				if (RenderPostProcess[y * this->XRes + x].b > max) max = RenderPostProcess[y * this->XRes + x].b;
+			}
+
+			for (int x = 0; x < XRes; x++)
+			for (int y = 0; y < YRes; y++) {
+				m_swapBuffer[y * this->XRes + x] = RenderPostProcess[y * this->XRes + x] / max;
+			}
+				
+			break;
+		}
 		default:
-			{
-				break;
-			}
+		{
+			break;
+		}
 	}
 
 	for (int x = 0; x < XRes; x++)
