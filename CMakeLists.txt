@@ -9,7 +9,7 @@ set(CMAKE_CXX_FLAGS "-Ofast")
 set(executable output)
 set(SrcDIR ./src)
 set(TestDIR ./test)
-set(CurrentTest main.cpp)
+set(CurrentTest lucy_cornell.cpp)
 
 set(IncludeDIR ./include)
 

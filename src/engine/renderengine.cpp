@@ -97,10 +97,10 @@ glm::vec3 RenderEngine::GetColour(Ray ray, int& depth) {
 		float S = 0.4f; float T = 0.4f;
 		float pattern = (modulo(s * S) < 0.5f) ^ (modulo(t * T) < 0.5f);
 		if (pattern == 1) {
-			mat->Specularity = 0.9f;
+			mat->Specularity = 1.0f;
 			mat->Gloss = fastRadianToDegree(0.02f);
 		} else {
-			mat->Specularity = 0.9f;
+			mat->Specularity = 1.0f;
 			mat->Gloss = fastRadianToDegree(0.0f);
 		}
 	}
