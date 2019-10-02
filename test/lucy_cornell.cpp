@@ -18,12 +18,9 @@ int main(int argc, char** argv) {
 	Sky* sky = new SolidSky({ 0.0f, 0.0f, 0.0f }, 0.0f);
 	scene->sky = sky;
 
-	Sphere* sphere = new Sphere({ -0.302, -0.385999, -3.74202 }, 0.03f, new Material({ 0.345f, 0.133f, 0.050f }, 300.0f, 0.0f, 0.0f, 0.0f, false, true));
-	scene->objects.push_back(sphere);
-
 	Material* mat = new GlossyMaterial({ 1.0f, 1.0f, 1.0f }, 0.2f, fastDegreetoRadian(30.0f));
 	//std::vector<Triangle*> tris = LoadTrianglesBasic("E://Projects//Inferno//resources//models//dragon-cornell-size.obj", "E://Projects//Inferno//resources//models", mat);
-	std::vector<Triangle*> tris = LoadTrianglesBasic("/home/ben/programming/inferno/resources/models/dragon-cornell-size.obj", "/home/ben/programming/inferno/resources/models/", mat);
+	// std::vector<Triangle*> tris = LoadTrianglesBasic("/home/ben/programming/inferno/resources/models/dragon-cornell-size.obj", "/home/ben/programming/inferno/resources/models/", mat);
 
 	//Mesh* mesh = new Mesh(tris);
 	//mesh->Translate({ 0.01f, -1.0, -3.6f });

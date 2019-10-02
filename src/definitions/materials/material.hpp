@@ -9,7 +9,6 @@ class Texture;
 class Material {
 public:
 	Material();
-	Material(glm::vec3 col, float specularity = 0.0f, float emmitance = 0.0f);
 	Material(glm::vec3 colour, float emittance, float Specularity, float index, float gloss, bool transparent, bool emissive);
 
 	glm::vec3 Bounce(glm::vec3 in, glm::vec3 normal);
@@ -30,7 +29,7 @@ public:
 
 class GlossyMaterial : public Material {
 public:
-	GlossyMaterial(glm::vec3 colour, float shine, float gloss)
+	GlossyMaterial(glm::vec3 colour, float shine, float gloss, float index = 1.5f)
 		: Material(colour, 0.0f, shine, 1.0f, gloss, false, false) { };
 };
 

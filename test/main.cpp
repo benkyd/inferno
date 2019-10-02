@@ -2,8 +2,8 @@
 
 #include "../src/inferno.hpp"
 
-static const int width = 1000;
-static const int height = 1000;
+static const int width = 700;
+static const int height = 700;
 
 int main(int argc, char** argv) {
 	InfernoEngine inferno;
@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
 
 	Scene* scene = new Scene(width, height);
 
-	Sky* sky = new GradientSky({ 35.0f / 255.0f, 148.0f / 255.0f, 235.0f / 255.0f }, { 1.0f, 1.0f, 1.0f }, 5.0f);
+	Sky* sky = new GradientSky({ 35.0f / 255.0f, 148.0f / 255.0f, 235.0f / 255.0f }, { 1.0f, 1.0f, 1.0f }, 3.0f);
 	scene->sky = sky;
 
 	scene->camera = new Camera(width, height);
@@ -26,17 +26,17 @@ int main(int argc, char** argv) {
 	//Sphere sphere1({ 1.3f, -0.8f, -5.0f }, 0.2f, new Material({ 0.817f, 0.374, 0.574 }));
 	//scene->objects.push_back(&sphere1);
 
-	Sphere sphere({ -2.1f, 0.0f, -8.0f }, 1.0f, new GlossyMaterial({ 0.817f, 0.374, 0.574 }, 0.5f, fastDegreetoRadian(0.0f)));
+	Sphere sphere({ -2.1f, 0.0f, -8.0f }, 1.0f, new Material({ 0.817f, 0.374, 0.574 }, 0.0f, 0.0f, 0.0f, 0.0f, false, false));
 	scene->objects.push_back(&sphere);
-	Sphere sphere1({ 0.0f, 0.0f, -8.0f }, 1.0f, new GlossyMaterial({ 0.817f, 0.374, 0.574 }, 0.5f, fastDegreetoRadian(3.0f)));
+	Sphere sphere1({ 0.0f, 0.0f, -8.0f }, 1.0f, new GlossyMaterial({ 0.817f, 0.374, 0.574 }, 0.7f, fastDegreetoRadian(30.0f)));
 	scene->objects.push_back(&sphere1);
-	Sphere sphere2({ 2.1f, 0.0f, -8.0f }, 1.0f, new GlossyMaterial({ 0.817f, 0.374, 0.574 }, 0.5f, fastDegreetoRadian(30.0f)));
+	Sphere sphere2({ 2.1f, 0.0f, -8.0f }, 1.0f, new GlossyMaterial({ 0.817f, 0.374, 0.574 }, 0.7f, fastDegreetoRadian(60.0f)));
 	scene->objects.push_back(&sphere2);
 
-	Sphere light({ 35.0f, 50.0f, 25.0f }, 25.0f, new Material({ 1.0f, 1.0f, 1.0f }, 0.0f, 200.0f));
+	Sphere light({ 35.0f, 50.0f, 25.0f }, 25.0f, new Material({ 1.0f, 1.0f, 1.0f }, 100.0f, 0.0f, 1.5f, 0.0f, false, true));
 	scene->objects.push_back(&light);
 
-	Plane plane({ 0.0f, -1.0f, 0.0f }, { 0.0f, -1.0f, 0.0f }, new Material({ 0.2f, 0.2f, 0.2f }));
+	Plane plane({ 0.0f, -1.0f, 0.0f }, { 0.0f, -1.0f, 0.0f }, new Material({ 0.2f, 0.2f, 0.2f }, 0.0f, 0.0f, 1.5f, 0.0f, false, false));
 	scene->objects.push_back(&plane);
 
 	inferno.SetScene(scene);

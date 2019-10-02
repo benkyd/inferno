@@ -7,6 +7,7 @@ bool Plane::Intersect(Ray& ray, float& t) {
 		glm::vec3 v = center - ray.origin;
 		float distance = glm::dot(v, normal) / dNormal;
 		if (distance >= 0.0f) {
+			if (distance > 20.0f) return false;
 			t = distance;
 			return true;
 		}

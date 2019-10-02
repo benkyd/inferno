@@ -78,9 +78,6 @@ glm::vec3 RenderEngine::GetColour(Ray ray, int& depth) {
 	float t = INFINITY; Primative* hit = nullptr;
 	bool didhit = TraceRayScene(ray, m_scene, t, hit);
 	if (!didhit) {
-		if (depth > 0) {
-			return m_scene->SampleSky(ray) * 0.2f;
-		}
 		return m_scene->SampleSky(ray);
 	}
 
@@ -89,20 +86,28 @@ glm::vec3 RenderEngine::GetColour(Ray ray, int& depth) {
 	if (Mode == MODE_RENDER_NORMALS) { return GetNormalColour(normal); }
 	if (Mode == MODE_RENDER_PATH_LENGTH) { if (t > 255.0f) t = 255.0f; return { (float)t, (float)t, (float)t }; }
 
-	glm::vec3 colour = hit->material->Colour;
-	//if (hit->type == TYPE_PLANE) {
-	//	glm::vec2 uv = hit->TexCoords(hitPoint);
-	//	float angle = fastDegreetoRadian(.0f);
-	//	float s = uv.x * cos(angle) - uv.y * sin(angle);
-	//	float t = uv.y * cos(angle) + uv.x * sin(angle);
-	//	float S = 0.4f; float T = 0.4f;
-	//	float pattern = (modulo(s * S) < 0.5f) ^ (modulo(t * T) < 0.5f);
-	//	colour.r = pattern; colour.g = pattern; colour.b = pattern;
-	//}
+	Material* mat = hit->material;
+	glm::vec3 colour = mat->Colour;
 
-	if (hit->material->Emissive) return (colour * hit->material->Emittance);
+	if (hit->type == TYPE_PLANE) {
+		glm::vec2 uv = hit->TexCoords(hitPoint);
+		float angle = fastDegreetoRadian(.0f);
+		float s = uv.x * cos(angle) - uv.y * sin(angle);
+		float t = uv.y * cos(angle) + uv.x * sin(angle);
+		float S = 0.4f; float T = 0.4f;
+		float pattern = (modulo(s * S) < 0.5f) ^ (modulo(t * T) < 0.5f);
+		if (pattern == 1) {
+			mat->Specularity = 0.9f;
+			mat->Gloss = fastRadianToDegree(0.02f);
+		} else {
+			mat->Specularity = 0.9f;
+			mat->Gloss = fastRadianToDegree(0.0f);
+		}
+	}
 
-	glm::vec3 direction = hit->material->Bounce(ray.direction, normal);
+	if (mat->Emissive) return (colour * mat->Emittance);
+
+	glm::vec3 direction = mat->Bounce(ray.direction, normal);
 
 	Ray newRay{ hitPoint, direction };
 

@@ -69,7 +69,7 @@ private:
 	// and are used to set them, must be indexed correctly
 	// according to the enums
 	int m_renderModeSelected = 0;
-	int m_toneMapModeSelected = 0;
+	int m_toneMapModeSelected = 1;
 
 
 	int m_framesRendererd = 0;
