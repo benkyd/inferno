@@ -1,7 +1,7 @@
 # Inferno Pathtracer
 [![Build Status](https://travis-ci.org/plane000/inferno.png?branch=master)](https://travis-ci.org/plane000/inferno)
 
-Inferno is a CPU Only, progressive unidirectional pathtracing engine written in C++. 
+Inferno is a CPU Only, progressive, unidirectional pathtracing engine written in C++. 
 
 ![Latest Render](https://imgur.com/WPs7jjr.jpg)
 
@@ -10,10 +10,10 @@ Inferno is a CPU Only, progressive unidirectional pathtracing engine written in 
 * Supports OBJ Files
 * Supports many material properties
 * Uses multiple types of acceleration structures
-* Fully capable GUI adds much runtime customization to the scene and render settings
+* Fully capable GUI adds many runtime customizations to the scene and render settings
 * Custom threadpool for best performance
 
-### Installation 
+### Build Instructions
 
 ```
 git clone https://github.com/plane000/inferno
@@ -26,7 +26,7 @@ make
 
 ### Examples
 
-There are many example scenes that I have made already. Just change the CurrentTest variable inside the CMakeList to the name of the file you wish to demo.
+There are many example scenes that I have made already. Just modify the CurrentTest variable inside the CMakeLists.txt to the name of the file you wish to demo.
 
 ### Basic Scene
 
@@ -71,7 +71,7 @@ int main(int argc, char** argv) {
 
 ### References
 
-While programming this I found a few resources especially useful. Below is some listed.
+While I have been working on this project, I have found a few resources to be especially useful. Below are a few I have listed.
 
 * [Scratch A Pixel - Global Illumination](https://www.scratchapixel.com)
 
