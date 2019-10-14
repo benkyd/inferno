@@ -30,7 +30,7 @@ glm::vec3 ConeBounce(glm::vec3 reflectDir, float theta) {
 	return glm::normalize(d);
 }
 
-float FresnelReflect (Material* mat, glm::vec3 normal, glm::vec3 incident) {
+float FresnelReflect(Material* mat, glm::vec3 normal, glm::vec3 incident) {
 	float n1 = 1.0f;
 	float n2 = mat->Index;
 
