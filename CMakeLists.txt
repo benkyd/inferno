@@ -6,6 +6,8 @@ cmake_policy(SET CMP0037 OLD)
 #set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS "-Ofast")
 
+add_definitions(-DRESOURCES="${CMAKE_SOURCE_DIR}/resources/")
+
 set(executable output)
 set(SrcDIR ./src)
 set(TestDIR ./test)
@@ -15,15 +17,12 @@ set(IncludeDIR ./include)
 
 if (UNIX)
 	find_package(SDL2 REQUIRED)
-	#find_package(SDL2_image REQUIRED)
-	#find_package(PNG REQUIRED)
 endif(UNIX)
 
 if (WIN32)
 	include_directories(${executable}
 		"C:/dev/glm"
 		"C:/dev/SDL2/include/"
-		#"C:/dev/SDL2_image/include/"
 		"C:/dev/oidn/include" 
 	)
 endif (WIN32)
@@ -41,14 +40,11 @@ endif()
 if (UNIX)
 	include_directories(${executable}
 		${SDL2_INCLUDE_DIR}
-		#${SDL2_IMAGE_INCLUDE_DIR}
 		"/home/ben/dev/oidn/include/"
 	)
 endif (UNIX)
 
 include_directories(${executable}
-	#${PNG_INCLUDE_DIR}
-	#${JPEG_INCLUDE_DIR}
 	${IncludeDIR}
 )
 
@@ -77,13 +73,12 @@ set_target_properties(${executable} PROPERTIES
 if (UNIX)
 	target_link_libraries(${executable}
 		SDL2
-		#SDL2_image
-		#PNG::PNG
-		#JPEG::JPEG
 		Threads::Threads
-		"/home/ben/dev/oidn/lib/libOpenImageDenoise.so"
-		"/home/ben/dev/oidn/lib/libtbb.so.2"
-		"/home/ben/dev/oidn/lib/libtbbmalloc.so.2"
+		OpenGL::OpenGL
+		OpenGL::GL
+		# "/home/ben/dev/oidn/lib/libOpenImageDenoise.so"
+		# "/home/ben/dev/oidn/lib/libtbb.so.2"
+		# "/home/ben/dev/oidn/lib/libtbbmalloc.so.2"
 	)
 endif (UNIX)
 
@@ -92,10 +87,9 @@ if (WIN32)
 		"C:/dev/SDL2/lib/x64/SDL2.lib"
 		"C:/dev/SDL2/lib/x64/SDL2main.lib"
 		"C:/dev/SDL2/lib/x64/SDL2test.lib"
-		#"C:/dev/SDL2_image/lib/x64/SDL2_image.lib"
-		"C:/dev/oidn/lib/OpenImageDenoise.lib"
-		"C:/dev/oidn/lib/tbb.lib"
-		"C:/dev/oidn/lib/tbbmalloc.lib"
+		# "C:/dev/oidn/lib/OpenImageDenoise.lib"
+		# "C:/dev/oidn/lib/tbb.lib"
+		# "C:/dev/oidn/lib/tbbmalloc.lib"
 		${WinSDK}
 	)
 endif (WIN32)
