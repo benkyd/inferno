@@ -33,4 +33,10 @@ public:
 		: Material(colour, 0.0f, shine, 1.0f, gloss, false, false) { };
 };
 
+class MatteMaterial : public Material {
+public:
+	MatteMaterial(glm::vec3 colour)
+		: Material(colour, 0.0f, 0.0f, 1.0f, 0.0f, false, false) { };
+};
+
 #endif

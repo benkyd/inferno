@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
 
 	Material* mat = new GlossyMaterial({ 1.0f, 1.0f, 1.0f }, 0.2f, fastDegreetoRadian(30.0f));
 
-	std::string models =  RESOURCES + std::string("//models//");
+	std::string models =  RESOURCES + std::string("//models//"); 	
 	std::string lucy =    RESOURCES + std::string("//models//lucy.obj");
 	std::string cornell = RESOURCES + std::string("//models//cornell-box.obj");
 

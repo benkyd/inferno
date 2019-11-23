@@ -21,17 +21,20 @@ int main(int argc, char** argv) {
 	Sphere* sphere = new Sphere({ -0.302, -0.385999, -3.74202 }, 0.03f, new Material({ 0.345f, 0.133f, 0.050f }, 300.0f, 0.0f, 0.0f, 0.0f, false, true));
 	scene->objects.push_back(sphere);
 
-	Material* mat = new GlossyMaterial({ 1.0f, 1.0f, 1.0f }, 0.2f, fastDegreetoRadian(30.0f));
-	//std::vector<Triangle*> tris = LoadTrianglesBasic("E://Projects//Inferno//resources//models//dragon-cornell-size.obj", "E://Projects//Inferno//resources//models", mat);
-	std::vector<Triangle*> tris = LoadTrianglesBasic("/home/ben/programming/inferno/resources/models/dragon-cornell-size.obj", "/home/ben/programming/inferno/resources/models/", mat);
+	std::string models  = RESOURCES + std::string("//models//"); 	
+	std::string dragon  = RESOURCES + std::string("//models//dragon-cornell-size.obj");
+	std::string cornell = RESOURCES + std::string("//models//cornell-box.obj");
 
-	//Mesh* mesh = new Mesh(tris);
-	//mesh->Translate({ 0.01f, -1.0, -3.6f });
-	//mesh->Optimise();
-	//scene->meshs.push_back(mesh);
+	// Material* mat = new GlossyMaterial({ 1.0f, 1.0f, 1.0f }, 0.2f, fastDegreetoRadian(30.0f));
+	Material* mat = new MatteMaterial({ 1.0f, 1.0f, 1.0f });
+	std::vector<Triangle*> tris = LoadTrianglesBasic(dragon, models, mat);
 
-	// std::vector<Triangle*> tris1 = LoadTrianglesBasic("E://Projects//Inferno//resources//models//cornell-box.obj", "E://Projects//Inferno//resources//models//");
-	std::vector<Triangle*> tris1 = LoadTrianglesBasic("/home/ben/programming/inferno/resources/models/cornell-box.obj", "/home/ben/programming/inferno/resources/models/");
+	Mesh* mesh = new Mesh(tris);
+	mesh->Translate({ 0.01f, -1.0, -3.6f });
+	mesh->Optimise();
+	scene->meshs.push_back(mesh);
+
+	std::vector<Triangle*> tris1 = LoadTrianglesBasic(cornell, models);
 
 	Mesh* mesh1 = new Mesh(tris1);
 	mesh1->Translate({ 0.01f, -1.0, -3.6f });

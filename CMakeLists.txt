@@ -3,6 +3,7 @@ project(Inferno)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} CMakeModules/)
 cmake_policy(SET CMP0037 OLD)
+
 #set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS "-Ofast")
 
@@ -11,7 +12,7 @@ add_definitions(-DRESOURCES="${CMAKE_SOURCE_DIR}/resources/")
 set(executable output)
 set(SrcDIR ./src)
 set(TestDIR ./test)
-set(CurrentTest lucy_cornell.cpp)
+set(CurrentTest stanford_dragon_cornell.cpp)
 
 set(IncludeDIR ./include)
 
