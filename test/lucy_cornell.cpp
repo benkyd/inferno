@@ -18,7 +18,8 @@ int main(int argc, char** argv) {
 	Sky* sky = new SolidSky({ 0.0f, 0.0f, 0.0f }, 0.0f);
 	scene->sky = sky;
 
-	Material* mat = new GlossyMaterial({ 1.0f, 1.0f, 1.0f }, 0.2f, fastDegreetoRadian(30.0f));
+	// Material* mat = new GlossyMaterial({ 1.0f, 1.0f, 1.0f }, 0.2f, fastDegreetoRadian(30.0f));
+	Material* mat = new MatteMaterial({ 1.0f, 1.0f, 1.0f });
 
 	std::string models =  RESOURCES + std::string("//models//"); 	
 	std::string lucy =    RESOURCES + std::string("//models//lucy.obj");

@@ -26,13 +26,13 @@ int main(int argc, char** argv) {
 	std::string cornell = RESOURCES + std::string("//models//cornell-box.obj");
 
 	// Material* mat = new GlossyMaterial({ 1.0f, 1.0f, 1.0f }, 0.2f, fastDegreetoRadian(30.0f));
-	Material* mat = new MatteMaterial({ 1.0f, 1.0f, 1.0f });
-	std::vector<Triangle*> tris = LoadTrianglesBasic(dragon, models, mat);
+	// Material* mat = new MatteMaterial({ 1.0f, 1.0f, 1.0f });
+	// std::vector<Triangle*> tris = LoadTrianglesBasic(dragon, models, mat);
 
-	Mesh* mesh = new Mesh(tris);
-	mesh->Translate({ 0.01f, -1.0, -3.6f });
-	mesh->Optimise();
-	scene->meshs.push_back(mesh);
+	// Mesh* mesh = new Mesh(tris);
+	// mesh->Translate({ 0.01f, -1.0, -3.6f });
+	// mesh->Optimise();
+	// scene->meshs.push_back(mesh);
 
 	std::vector<Triangle*> tris1 = LoadTrianglesBasic(cornell, models);
 

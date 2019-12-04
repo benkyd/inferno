@@ -39,4 +39,10 @@ public:
 		: Material(colour, 0.0f, 0.0f, 1.0f, 0.0f, false, false) { };
 };
 
+class Light : public Material {
+public:
+	Light(glm::vec3 colour, float intensity)
+		: Material(colour, intensity, 0.0f, 1.0f, 0.0f, false, false) { };
+};
+
 #endif
