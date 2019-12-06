@@ -22,8 +22,13 @@ int main(int argc, char** argv) {
 
 	scene->camera = new Camera(width, height);
 
-	scene->objects.push_back(new Sphere({ 0.0f, 0.0f, -6.0f }, 1.0f, new MatteMaterial({ 0.2f, 0.2f, 0.2f })));
-	scene->objects.push_back(new Sphere({ -5.0f, -5.0f, -1.0f }, 1.0f, new Light({ 0.2f, 0.2f, 0.2f }, 5.0f)));
+	scene->objects.push_back(new Sphere({ -2.1f, 0.0f, -8.0f }, 1.0f, new Material({ 0.817f, 0.374, 0.574 }, 0.0f, 0.0f, 0.0f, 0.0f, false, false)));
+	scene->objects.push_back(new Sphere({ 0.0f, 0.0f, -8.0f }, 1.0f, new GlossyMaterial({ 0.817f, 0.374, 0.574 }, 0.7f, fastDegreetoRadian(30.0f))));
+	scene->objects.push_back(new Sphere({ 2.1f, 0.0f, -8.0f }, 1.0f, new GlossyMaterial({ 0.817f, 0.374, 0.574 }, 0.7f, fastDegreetoRadian(60.0f))));
+
+	scene->objects.push_back(new Sphere({ 35.0f, 50.0f, 25.0f }, 25.0f, new Light({ 1.0f, 1.0f, 1.0f }, 100.0f)));
+
+	scene->objects.push_back(new Plane({ 0.0f, -1.0f, 0.0f }, { 0.0f, -1.0f, 0.0f }, new Material({ 0.2f, 0.2f, 0.2f }, 0.0f, 0.0f, 1.5f, 0.0f, false, false)));
 
 	inferno.SetScene(scene);
 

@@ -74,15 +74,15 @@ bool Box::Hit(Ray* ray) {
     float tmin = fmax(fmax(fmin(t1, t2), fmin(t3, t4)), fmin(t5, t6));
     float tmax = fmin(fmin(fmax(t1, t2), fmax(t3, t4)), fmax(t5, t6));
 
-    if (tmax < 0.0f) {
+    if (tmax <= 0.0f) {
         return false;
     }
 
-    if (tmin > tmax) {
+    if (tmin >= tmax) {
         return false;
     }
 
-    return tmin > 0.0f;
+    return tmin >= 0.0f;
 }
 
 void BuildKDTreeSlow(KDTreeSlow*& node, const std::vector<Triangle*>& triangles) {

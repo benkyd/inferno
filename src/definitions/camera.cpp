@@ -32,9 +32,9 @@ void Camera::LookAt(glm::vec3 position, glm::vec3 sky, glm::vec3 lookAt, float a
 
 Ray Camera::CastRay(int x, int y, float spX, float spY) {
     // TODO: ACTUALLY GET A WORKING CAMERA
-    float camX = (((float)x + spX) / (float)width  * 2.0f - 1.0f) * getAspectRatio(width, height) * getFovAdjustment(45.0f);
+    float camX = (((float)x + spX) / (float)width  * 2.0f - 1.0f) * getAspectRatio(width, height) * getFovAdjustment(80.0f);
     // 1.0 is taken first here as y is in the vertical
-    float camY = (1.0f - ((float)y + spY) / (float)height * 2.0f) * getFovAdjustment(45.0f);
+    float camY = (1.0f - ((float)y + spY) / (float)height * 2.0f) * getFovAdjustment(80.0f);
     Ray ray{ {0.0f, 0.0f, 0.0f}, {camX, camY, -1.0f} };
     ray.direction = glm::normalize(ray.direction);
 

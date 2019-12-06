@@ -12,7 +12,7 @@ add_definitions(-DRESOURCES="${CMAKE_SOURCE_DIR}/resources/")
 set(executable output)
 set(SrcDIR ./src)
 set(TestDIR ./test)
-set(CurrentTest main.cpp)
+set(CurrentTest conference.cpp)
 
 set(IncludeDIR ./include)
 
