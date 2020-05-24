@@ -1,7 +1,7 @@
 # Inferno Pathtracer
 [![Build Status](https://travis-ci.org/plane000/inferno.png?branch=master)](https://travis-ci.org/plane000/inferno)
 
-Inferno is a CPU Only, progressive, unidirectional pathtracing engine written in C++. 
+Inferno is a CPU-Only, progressive, unidirectional pathtracing engine written in C++. 
 
 ![Latest Render](https://imgur.com/WPs7jjr.jpg)
 
